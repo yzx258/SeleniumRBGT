@@ -1,9 +1,14 @@
 package com.example.selenium.hutool;
 
-import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.example.selenium.bet.BetCopyUtil;
+import com.example.selenium.dto.InstructionDTO;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
+import java.util.List;
+
 
 /**
  * @author 俞春旺
@@ -11,20 +16,31 @@ import java.util.HashMap;
  * @date 2020-08-31 22:00:29
  * @description: 工具类测试
  */
+@Slf4j
 public class HuToolTest {
+
+    /**
+     * 响应码
+     */
+    private static String R_CODE = "200";
+    private static String URL_S = "http://47.106.143.218:8081/instruction/get";
 
     public static void main(String[] args) {
         // 最简单的HTTP请求，可以自动通过header等信息判断编码，不区分HTTP和HTTPS
-        String result1= HttpUtil.get("https://www.baidu.com");
-        System.out.println(result1);
-
-        // 当无法识别页面编码的时候，可以自定义请求页面的编码
-        String result2= HttpUtil.get("https://www.baidu.com", CharsetUtil.CHARSET_UTF_8);
-        System.out.println(result1);
-        //可以单独传入http参数，这样参数会自动做URL编码，拼接在URL中
-        HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("city", "北京");
-        String result3= HttpUtil.get("https://www.baidu.com", paramMap);
-        System.out.println(result1);
+        String result1= HttpUtil.get(URL_S);
+        System.out.println("响应码 ："+JSON.parseObject(result1).get("code"));
+        String code = JSON.parseObject(result1).get("code").toString();
+        if(!R_CODE.equals(code)){
+            log.info("请求失败，请查询！");
+            return;
+        }
+        // 获取转换参数
+        JSONArray jsonArray = JSON.parseArray(JSON.toJSONString(JSON.parseObject(result1).get("data")));
+        List<InstructionDTO> instructionDTOS = JSON.parseArray(jsonArray.toJSONString(), InstructionDTO.class);
+        BetCopyUtil bet = new BetCopyUtil();
+        for(InstructionDTO ins : instructionDTOS){
+            // 执行操作
+            bet.betSend(ins);
+        }
     }
 }
