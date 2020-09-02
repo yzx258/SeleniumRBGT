@@ -123,16 +123,25 @@ public class BetCopyUtil {
                             System.out.println(element.get(i).findElement(By.className("fts-15")).getText());
                             // 判断是否单双
                             System.out.println(element.get(i).findElement(By.className("fts-15")).getText() + " -> " + ins.getBetSessionName());
+                            System.out.println(element.get(i).findElement(By.className("fts-15")).getText().equals(ins.getBetSessionName()));
                             if (element.get(i).findElement(By.className("fts-15")).getText().equals(ins.getBetSessionName())) {
                                 // 判断点击单双购买操作：[1:单；2：双]
+//                                List<WebElement> oddsWrapper = allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper"));
+//                                for (WebElement w : oddsWrapper) {
+//                                    System.out.println(w.getAttribute("id"));
+//                                    System.out.println("请求参数："+w.findElement(By.className("odds")).getText());
+//                                }
+                                Thread.sleep(1000);
                                 if (ins.getBetSingleOrDouble() == 1) {
                                     // 点击单
+                                    System.out.println("请求参数："+allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(0).findElement(By.className("odds")).getText());
                                     allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(0).findElement(By.className("odds")).click();
                                 } else {
                                     // 点击双
-                                    allMarkets.get(1).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(0).findElement(By.className("odds")).click();
+                                    System.out.println("请求参数："+allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(1).findElement(By.className("odds")).getText());
+                                    allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(1).findElement(By.className("odds")).click();
                                 }
-                                Thread.sleep(3000);
+                                Thread.sleep(2000);
                                 // 下注操作
                                 WebElement monery = driver.findElement(By.className("js-stake"));
                                 log.info("下注金额 -> {}", ins.getBetAmount() + "");
@@ -143,32 +152,13 @@ public class BetCopyUtil {
                                 System.out.println(driver.findElement(By.className("js-message")).getText());
                                 if (driver.findElement(By.className("js-message")).getText().contains("失败")) {
                                     // 下注失败次数
-                                    HttpUtil.get(URL_ERROR + ins.getId());
-                                    // 60秒
-                                    Thread.sleep(2000);
-                                    driver.findElement(By.className("js-placebet")).click();
-                                    System.out.println(driver.findElement(By.className("js-message")).getText());
-                                    if (driver.findElement(By.className("js-message")).getText().contains("失败")) {
-                                        // 下注失败次数
-                                        HttpUtil.get(URL_ERROR + ins.getId());
-                                        // 60秒
-                                        Thread.sleep(2000);
-                                        driver.findElement(By.className("js-placebet")).click();
-                                        System.out.println(driver.findElement(By.className("js-message")).getText());
-                                        if (driver.findElement(By.className("js-message")).getText().contains("失败")) {
-                                            // 下注失败次数
-                                            HttpUtil.get(URL_ERROR + ins.getId());
-                                            // 60秒
-                                            Thread.sleep(2000);
-                                            driver.findElement(By.className("js-placebet")).click();
-                                        } else if (driver.findElement(By.className("js-message")).getText().contains("成功")) {
-                                            HttpUtil.get(URL_SUCCESS + ins.getId());
-                                        }
-                                    } else if (driver.findElement(By.className("js-message")).getText().contains("成功")) {
-                                        HttpUtil.get(URL_SUCCESS + ins.getId());
-                                    }
-                                } else if (driver.findElement(By.className("js-message")).getText().contains("成功")) {
-                                    HttpUtil.get(URL_SUCCESS + ins.getId());
+                                    System.out.println("下注失败："+URL_SUCCESS + ins.getId());
+                                    String s = HttpUtil.get(URL_ERROR + ins.getId());
+                                    System.out.println(s);
+                                } else {
+                                    System.out.println("下注成功："+URL_SUCCESS + ins.getId());
+                                    String s = HttpUtil.get(URL_SUCCESS + ins.getId());
+                                    System.out.println(s);
                                 }
                             }
                         }
