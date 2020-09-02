@@ -72,8 +72,10 @@ public class BetCopyUtil {
         WebElement elementMm = driver.findElement(By.xpath("//*[@id=\"login\"]/form/div[1]/div[2]/input"));
         // 清空输入框
         elementMm.clear();
-        elementZh.sendKeys("dhxm2376");
-        elementMm.sendKeys("dhxm2376");
+        // elementZh.sendKeys("dhxm2376");
+        // elementMm.sendKeys("dhxm2376");
+        elementZh.sendKeys("huangxr");
+        elementMm.sendKeys("hx8325554");
         //点击确定按钮
         driver.findElement(By.xpath("//*[@id=\"login\"]/form/button")).click();
     }
@@ -149,16 +151,21 @@ public class BetCopyUtil {
                                 Thread.sleep(1000);
                                 driver.findElement(By.className("js-placebet")).click();
                                 Thread.sleep(2000);
-                                System.out.println(driver.findElement(By.className("js-message")).getText());
-                                if (driver.findElement(By.className("js-message")).getText().contains("失败")) {
-                                    // 下注失败次数
-                                    System.out.println("下注失败："+URL_SUCCESS + ins.getId());
-                                    String s = HttpUtil.get(URL_ERROR + ins.getId());
-                                    System.out.println(s);
-                                } else {
+                                try {
+                                    String text = driver.findElement(By.className("js-msg-txt")).getText();
+                                    System.out.println("请求码："+text);
+                                    Thread.sleep(1000);
                                     System.out.println("下注成功："+URL_SUCCESS + ins.getId());
                                     String s = HttpUtil.get(URL_SUCCESS + ins.getId());
                                     System.out.println(s);
+                                }catch (Exception ex){
+                                    String text = driver.findElement(By.className("js-message")).getText();
+                                    System.out.println("请求码："+text);
+                                    Thread.sleep(1000);
+                                    System.out.println("下注失败："+URL_ERROR + ins.getId());
+                                    String s = HttpUtil.get(URL_ERROR + ins.getId());
+                                    System.out.println(s);
+                                    System.out.println("=======================点击篮球赛事报错了=======================");
                                 }
                             }
                         }
@@ -166,6 +173,9 @@ public class BetCopyUtil {
                 }
             }
         } catch (Exception e) {
+            System.out.println("下注失败："+URL_ERROR + ins.getId());
+            String s = HttpUtil.get(URL_ERROR + ins.getId());
+            System.out.println(s);
             System.out.println("=======================点击篮球赛事报错了=======================");
             return;
         }
