@@ -111,10 +111,10 @@ public class BetCopyUtil {
             for (WebElement e : table) {
                 // 判断不为空的篮球赛事
                 if (StrUtil.isNotBlank(e.getAttribute("id"))) {
-                    System.out.println(e.findElement(By.className("dsp-iblk")).getText() + " -> " + ins.getBetAtn());
-                    System.out.println(e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetAtn()));
+                    System.out.println(e.findElement(By.className("dsp-iblk")).getText() + " -> " + ins.getBetHtn());
+                    System.out.println(e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetHtn()));
                     // 判断需要购买的是否匹配
-                    if (e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetAtn())) {
+                    if (e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetHtn())) {
                         e.findElement(By.className("dsp-iblk")).click();
                         Thread.sleep(3000);
                         List<WebElement> allMarkets = driver.findElements(By.id("allMarkets"));
