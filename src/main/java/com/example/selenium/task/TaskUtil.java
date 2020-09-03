@@ -1,5 +1,7 @@
 package com.example.selenium.task;
 
+import cn.hutool.cache.Cache;
+import cn.hutool.cache.CacheUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -26,6 +28,7 @@ public class TaskUtil {
      */
     private static String R_CODE = "200";
     private static String URL_S = "http://47.106.143.218:8081/instruction/get";
+    private static Cache<String,String> fifoCache = CacheUtil.newFIFOCache(10);
 
     /**
      * 描述：发起下注
@@ -46,8 +49,16 @@ public class TaskUtil {
         List<InstructionDTO> instructionDTOS = JSON.parseArray(jsonArray.toJSONString(), InstructionDTO.class);
         BetCopyUtil bet = new BetCopyUtil();
         for(InstructionDTO ins : instructionDTOS){
+            if(null != fifoCache.get(ins.getId())){
+                log.info("正在进行中，跳过 —> {},{}",fifoCache.get(ins.getId()),ins.getBetHtn());
+                continue;
+            }
+            fifoCache.put(ins.getId(),"进行中");
+            log.info("添加至缓存数据 -> {},{}",ins.getId(),fifoCache.get(ins.getId()));
             // 执行操作
             bet.betSend(ins);
+            fifoCache.remove(ins.getId());
+            log.info("清除缓存数据 -> {},{}",ins.getId(),fifoCache.get(ins.getId()));
         }
     }
 }

@@ -99,7 +99,7 @@ public class BetCopyUtil {
     private void betSend(WebDriver driver, InstructionDTO ins) {
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
             // 点击滚球按钮
             driver.findElement(By.xpath("//*[@id=\"sp2\"]/div[2]/span")).click();
             Thread.sleep(4000);
