@@ -45,14 +45,8 @@ public class BetCopyUtil {
         btnSend(driver);
         // 下注
         betSend(driver, ins);
-        try {
-            Thread.sleep(3000);
-            System.out.println("=================== 关闭浏览器 ====================");
-            driver.quit();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        System.out.println("=================== 关闭浏览器 ====================");
+        driver.quit();
     }
 
     /**
@@ -103,10 +97,10 @@ public class BetCopyUtil {
     private void betSend(WebDriver driver, InstructionDTO ins) {
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             // 点击滚球按钮
             driver.findElement(By.xpath("//*[@id=\"sp2\"]/div[2]/span")).click();
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             List<WebElement> table = driver.findElements(By.tagName("table"));
             System.out.println("获取table数据：" + table.size());
             // 循环判断最近的篮球赛事
@@ -118,7 +112,7 @@ public class BetCopyUtil {
                     // 判断需要购买的是否匹配
                     if (e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetHtn())) {
                         e.findElement(By.className("dsp-iblk")).click();
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                         List<WebElement> allMarkets = driver.findElements(By.id("allMarkets"));
                         List<WebElement> element = allMarkets.get(0).findElements(By.className("mg-t-1"));
                         for (int i = 0; i < element.size(); i++) {
@@ -143,25 +137,25 @@ public class BetCopyUtil {
                                     System.out.println("请求参数："+allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(1).findElement(By.className("odds")).getText());
                                     allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(1).findElement(By.className("odds")).click();
                                 }
-                                Thread.sleep(2000);
+                                Thread.sleep(1000);
                                 // 下注操作
                                 WebElement monery = driver.findElement(By.className("js-stake"));
                                 log.info("下注金额 -> {}", ins.getBetAmount() + "");
                                 monery.sendKeys(ins.getBetAmount() + "");
                                 Thread.sleep(1000);
                                 driver.findElement(By.className("js-placebet")).click();
-                                Thread.sleep(2000);
+                                Thread.sleep(6000);
                                 try {
-                                    String text = driver.findElement(By.className("js-msg-txt")).getText();
+                                    // String text = driver.findElement(By.className("js-msg")).findElement(By.className("t-va-m")).getText();
+                                    String text = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[3]/div/div/div[3]/div[2]/div/div[2]/div[4]/span[2]")).getText();
                                     System.out.println("请求码："+text);
-                                    Thread.sleep(1000);
                                     System.out.println("下注成功："+URL_SUCCESS + ins.getId());
                                     String s = HttpUtil.get(URL_SUCCESS + ins.getId());
                                     System.out.println(s);
                                 }catch (Exception ex){
-                                    String text = driver.findElement(By.className("js-message")).getText();
+                                    // String text = driver.findElement(By.className("js-message")).getText();
+                                    String text = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[3]/div/div/div[3]/div[2]/div/div[2]/div[6]")).getText();
                                     System.out.println("请求码："+text);
-                                    Thread.sleep(1000);
                                     System.out.println("下注失败："+URL_ERROR + ins.getId());
                                     String s = HttpUtil.get(URL_ERROR + ins.getId());
                                     System.out.println(s);
