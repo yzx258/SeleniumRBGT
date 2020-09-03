@@ -31,8 +31,10 @@ public class BetCopyUtil {
      */
     public void betSend(InstructionDTO ins) {
         // chromeDriver服务地址，需要手动下载
-        //String chromeDriverUrl = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\chromedriver.exe";
-        String chromeDriverUrl = "D:\\00002YX\\chromedriver.exe";
+        // 测试环境：D:\00002YX\chromedriver.exe
+        // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
+        // 正式环境：C:\\software\\chrome\\chromedriver.exe
+        String chromeDriverUrl = System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
         System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
         // 自己本地最新的charm版本，需要添加启动参数
@@ -100,7 +102,7 @@ public class BetCopyUtil {
             Thread.sleep(1000);
             // 点击滚球按钮
             driver.findElement(By.xpath("//*[@id=\"sp2\"]/div[2]/span")).click();
-            Thread.sleep(1000);
+            Thread.sleep(4000);
             List<WebElement> table = driver.findElements(By.tagName("table"));
             System.out.println("获取table数据：" + table.size());
             // 循环判断最近的篮球赛事
