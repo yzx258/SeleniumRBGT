@@ -31,9 +31,9 @@ public class BetCopyUtil {
      */
     public void betSend(InstructionDTO ins) {
         // chromeDriver服务地址，需要手动下载
-        // 测试环境：D:\00002YX\chromedriver.exe
+        // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
-        // 正式环境：C:\\software\\chrome\\chromedriver.exe
+        // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         String chromeDriverUrl = System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
         System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
