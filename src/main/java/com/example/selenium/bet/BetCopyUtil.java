@@ -3,6 +3,7 @@ package com.example.selenium.bet;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.example.selenium.dto.InstructionDTO;
+import com.example.selenium.util.DingUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -10,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -24,6 +26,8 @@ public class BetCopyUtil {
     private static String URL_ERROR = "http://47.106.143.218:8081/instruction/update/error/";
     private static String URL_SUCCESS = "http://47.106.143.218:8081/instruction/update/success/";
 
+    @Autowired
+    private DingUtil dingUtil;
     /**
      * 描述：188下注
      *
@@ -147,12 +151,13 @@ public class BetCopyUtil {
                                     System.out.println("下注成功："+URL_SUCCESS + ins.getId());
                                     String s = HttpUtil.get(URL_SUCCESS + ins.getId());
                                     System.out.println(s);
+                                    dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"\\rXZJR : "+ins.getBetAmount()+"\\rXZBS : 成功了\\rXZCS : "+ins.getBetNumber());
                                 }catch (Exception ex){
                                     String text = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[3]/div/div/div[3]/div[2]/div/div[2]/div[6]")).getText();
                                     System.out.println("请求码："+text);
-                                    System.out.println("下注失败："+URL_ERROR + ins.getId());
                                     String s = HttpUtil.get(URL_ERROR + ins.getId());
                                     System.out.println(s);
+                                    dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"\\rXZJR : "+ins.getBetAmount()+"\\rXZBS : 失败了\\rXZCS : "+ins.getBetNumber());
                                     System.out.println("=======================点击篮球赛事报错了=======================");
                                 }
                             }
@@ -161,9 +166,10 @@ public class BetCopyUtil {
                 }
             }
         } catch (Exception e) {
-            System.out.println("下注失败："+URL_ERROR + ins.getId());
+            log.info("下注失败："+URL_ERROR + ins.getId());
             String s = HttpUtil.get(URL_ERROR + ins.getId());
             System.out.println(s);
+            dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"\\rXZJR : "+ins.getBetAmount()+"\\rXZBS : 失败了\\rXZCS : "+ins.getBetNumber());
             System.out.println("=======================点击篮球赛事报错了=======================");
             return;
         }
