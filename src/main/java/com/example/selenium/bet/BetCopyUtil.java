@@ -104,13 +104,13 @@ public class BetCopyUtil {
             driver.findElement(By.xpath("//*[@id=\"sp2\"]/div[2]/span")).click();
             Thread.sleep(4000);
             List<WebElement> table = driver.findElements(By.tagName("table"));
-            System.out.println("获取table数据：" + table.size());
+            log.info("table头部数据 -> {}",table.size());
             // 循环判断最近的篮球赛事
             for (WebElement e : table) {
                 // 判断不为空的篮球赛事
                 if (StrUtil.isNotBlank(e.getAttribute("id"))) {
-                    System.out.println(e.findElement(By.className("dsp-iblk")).getText() + " -> " + ins.getBetHtn());
-                    System.out.println(e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetHtn()));
+                    log.info("对比数据 -> {}",e.findElement(By.className("dsp-iblk")).getText() + " -> " + ins.getBetHtn());
+                    log.info("对比数据结果 -> {}",e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetHtn()));
                     // 判断需要购买的是否匹配
                     if (e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetHtn())) {
                         e.findElement(By.className("dsp-iblk")).click();
@@ -118,17 +118,11 @@ public class BetCopyUtil {
                         List<WebElement> allMarkets = driver.findElements(By.id("allMarkets"));
                         List<WebElement> element = allMarkets.get(0).findElements(By.className("mg-t-1"));
                         for (int i = 0; i < element.size(); i++) {
-                            System.out.println(element.get(i).findElement(By.className("fts-15")).getText());
                             // 判断是否单双
-                            System.out.println(element.get(i).findElement(By.className("fts-15")).getText() + " -> " + ins.getBetSessionName());
-                            System.out.println(element.get(i).findElement(By.className("fts-15")).getText().equals(ins.getBetSessionName()));
+                            log.info("对比数据 -> {}",element.get(i).findElement(By.className("fts-15")).getText() + " -> " + ins.getBetSessionName());
+                            log.info("对比数据结果 -> {}",element.get(i).findElement(By.className("fts-15")).getText().equals(ins.getBetSessionName()));
                             if (element.get(i).findElement(By.className("fts-15")).getText().equals(ins.getBetSessionName())) {
                                 // 判断点击单双购买操作：[1:单；2：双]
-//                                List<WebElement> oddsWrapper = allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper"));
-//                                for (WebElement w : oddsWrapper) {
-//                                    System.out.println(w.getAttribute("id"));
-//                                    System.out.println("请求参数："+w.findElement(By.className("odds")).getText());
-//                                }
                                 Thread.sleep(1000);
                                 if (ins.getBetSingleOrDouble() == 1) {
                                     // 点击单
@@ -141,21 +135,19 @@ public class BetCopyUtil {
                                 }
                                 Thread.sleep(1000);
                                 // 下注操作
-                                WebElement monery = driver.findElement(By.className("js-stake"));
+                                WebElement em = driver.findElement(By.className("js-stake"));
                                 log.info("下注金额 -> {}", ins.getBetAmount() + "");
-                                monery.sendKeys(ins.getBetAmount() + "");
+                                em.sendKeys(ins.getBetAmount() + "");
                                 Thread.sleep(1000);
                                 driver.findElement(By.className("js-placebet")).click();
                                 Thread.sleep(6000);
                                 try {
-                                    // String text = driver.findElement(By.className("js-msg")).findElement(By.className("t-va-m")).getText();
                                     String text = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[3]/div/div/div[3]/div[2]/div/div[2]/div[4]/span[2]")).getText();
                                     System.out.println("请求码："+text);
                                     System.out.println("下注成功："+URL_SUCCESS + ins.getId());
                                     String s = HttpUtil.get(URL_SUCCESS + ins.getId());
                                     System.out.println(s);
                                 }catch (Exception ex){
-                                    // String text = driver.findElement(By.className("js-message")).getText();
                                     String text = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[3]/div/div/div[3]/div[2]/div/div[2]/div[6]")).getText();
                                     System.out.println("请求码："+text);
                                     System.out.println("下注失败："+URL_ERROR + ins.getId());

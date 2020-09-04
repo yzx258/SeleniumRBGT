@@ -1,5 +1,9 @@
 package com.example.selenium.bet;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
+import com.example.selenium.dto.InstructionDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -7,7 +11,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,17 +18,22 @@ import java.util.List;
  * @date 2020/8/14 14:14
  * 描述：188下注平台
  */
+@Slf4j
 public class BetUtil {
 
-    private static final String DS = "总得分:滚球 单 / 双";
+    private static String URL_ERROR = "http://47.106.143.218:8081/instruction/update/error/";
+    private static String URL_SUCCESS = "http://47.106.143.218:8081/instruction/update/success/";
 
     /**
      * 描述：188下注
      *
      * @param
      */
-    public void betSend() {
+    public void betSend(InstructionDTO ins) {
         // chromeDriver服务地址，需要手动下载
+        // 测试环境：D:\00002YX\chromedriver.exe
+        // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
+        // 正式环境：C:\\software\\chrome\\chromedriver.exe
         String chromeDriverUrl = System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
         System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
@@ -38,15 +46,9 @@ public class BetUtil {
         // 点击188赛事信息
         btnSend(driver);
         // 下注
-        betSend(driver);
-        try {
-            Thread.sleep(3000);
-            System.out.println("=================== 关闭浏览器 ====================");
-            driver.quit();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        betSend(driver, ins);
+        System.out.println("=================== 关闭浏览器 ====================");
+        driver.quit();
     }
 
     /**
@@ -66,8 +68,10 @@ public class BetUtil {
         WebElement elementMm = driver.findElement(By.xpath("//*[@id=\"login\"]/form/div[1]/div[2]/input"));
         // 清空输入框
         elementMm.clear();
-        elementZh.sendKeys("dhxm2376");
-        elementMm.sendKeys("dhxm2376");
+        // elementZh.sendKeys("dhxm2376");
+        // elementMm.sendKeys("dhxm2376");
+        elementZh.sendKeys("huangxr");
+        elementMm.sendKeys("hx8325554");
         //点击确定按钮
         driver.findElement(By.xpath("//*[@id=\"login\"]/form/button")).click();
     }
@@ -92,49 +96,84 @@ public class BetUtil {
      *
      * @param driver
      */
-    private void betSend(WebDriver driver) {
+    private void betSend(WebDriver driver, InstructionDTO ins) {
 
-        try {
-            Thread.sleep(3000);
-            // 点击滚球按钮
-            driver.findElement(By.xpath("//*[@id=\"sp2\"]/div[2]/span")).click();
-            Thread.sleep(3000);
-            List<WebElement> table = driver.findElements(By.tagName("table"));
-            for (WebElement e : table) {
-                System.out.println(e.getAttribute("id"));
-            }
-            table.get(2).findElement(By.className("dsp-iblk")).click();
-            System.out.println("休眠开始");
-            Thread.sleep(3000);
-            System.out.println("休眠结束");
-            List<WebElement> allMarkets = driver.findElements(By.id("allMarkets"));
-            List<WebElement> element = allMarkets.get(0).findElements(By.className("mg-t-1"));
-            for (int i = 0; i < element.size(); i++) {
-                System.out.println(element.get(i).findElement(By.className("fts-15")).getText());
-                // 判断是否单双
-                if (DS.equals(element.get(i).findElement(By.className("fts-15")).getText())) {
-                    // 点击单双购买操作
-                    // 60秒
-                    allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(0).findElement(By.className("odds")).click();
-                    Thread.sleep(3000);
-                    // 下注操作
-                    // 60秒
-                    WebElement monery = driver.findElement(By.className("js-stake"));
-                    monery.sendKeys("10");
-                    Thread.sleep(1000);
-                    driver.findElement(By.className("js-placebet")).click();
-                    Thread.sleep(2000);
-                    System.out.println(driver.findElement(By.className("js-message")).getText());
-                    if (driver.findElement(By.className("js-message")).getText().contains("投注失败")) {
-                        // 60秒
-                        Thread.sleep(2000);
-                        driver.findElement(By.className("js-placebet")).click();
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("=======================点击篮球赛事报错了=======================");
-            return;
-        }
+//        try {
+//            Thread.sleep(2000);
+//            // 点击滚球按钮
+//            driver.findElement(By.xpath("//*[@id=\"sp2\"]/div[2]/span")).click();
+//            Thread.sleep(4000);
+//            List<WebElement> table = driver.findElements(By.tagName("table"));
+//            System.out.println("获取table数据：" + table.size());
+//            // 循环判断最近的篮球赛事
+//            for (WebElement e : table) {
+//                // 判断不为空的篮球赛事
+//                if (StrUtil.isNotBlank(e.getAttribute("id"))) {
+//                    System.out.println(e.findElement(By.className("dsp-iblk")).getText() + " -> " + ins.getBetHtn());
+//                    System.out.println(e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetHtn()));
+//                    // 判断需要购买的是否匹配
+//                    if (e.findElement(By.className("dsp-iblk")).getText().equals(ins.getBetHtn())) {
+//                        e.findElement(By.className("dsp-iblk")).click();
+//                        Thread.sleep(1000);
+//                        List<WebElement> allMarkets = driver.findElements(By.id("allMarkets"));
+//                        List<WebElement> element = allMarkets.get(0).findElements(By.className("mg-t-1"));
+//                        for (int i = 0; i < element.size(); i++) {
+//                            System.out.println(element.get(i).findElement(By.className("fts-15")).getText());
+//                            // 判断是否单双
+//                            System.out.println(element.get(i).findElement(By.className("fts-15")).getText() + " -> " + ins.getBetSessionName());
+//                            System.out.println(element.get(i).findElement(By.className("fts-15")).getText().equals(ins.getBetSessionName()));
+//                            if (element.get(i).findElement(By.className("fts-15")).getText().equals(ins.getBetSessionName())) {
+//                                // 判断点击单双购买操作：[1:单；2：双]
+////                                List<WebElement> oddsWrapper = allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper"));
+////                                for (WebElement w : oddsWrapper) {
+////                                    System.out.println(w.getAttribute("id"));
+////                                    System.out.println("请求参数："+w.findElement(By.className("odds")).getText());
+////                                }
+//                                Thread.sleep(1000);
+//                                if (ins.getBetSingleOrDouble() == 1) {
+//                                    // 点击单
+//                                    System.out.println("请求参数："+allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(0).findElement(By.className("odds")).getText());
+//                                    allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(0).findElement(By.className("odds")).click();
+//                                } else {
+//                                    // 点击双
+//                                    System.out.println("请求参数："+allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(1).findElement(By.className("odds")).getText());
+//                                    allMarkets.get(0).findElements(By.className("bg-c-43")).get(i).findElements(By.className("OddsWrapper")).get(1).findElement(By.className("odds")).click();
+//                                }
+//                                Thread.sleep(1000);
+//                                // 下注操作
+//                                WebElement monery = driver.findElement(By.className("js-stake"));
+//                                log.info("下注金额 -> {}", ins.getBetAmount() + "");
+//                                monery.sendKeys(ins.getBetAmount() + "");
+//                                Thread.sleep(1000);
+//                                driver.findElement(By.className("js-placebet")).click();
+//                                Thread.sleep(6000);
+//                                try {
+//                                    // String text = driver.findElement(By.className("js-msg")).findElement(By.className("t-va-m")).getText();
+//                                    String text = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[3]/div/div/div[3]/div[2]/div/div[2]/div[4]/span[2]")).getText();
+//                                    System.out.println("请求码："+text);
+//                                    System.out.println("下注成功："+URL_SUCCESS + ins.getId());
+//                                    String s = HttpUtil.get(URL_SUCCESS + ins.getId());
+//                                    System.out.println(s);
+//                                }catch (Exception ex){
+//                                    // String text = driver.findElement(By.className("js-message")).getText();
+//                                    String text = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[3]/div/div/div[3]/div[2]/div/div[2]/div[6]")).getText();
+//                                    System.out.println("请求码："+text);
+//                                    System.out.println("下注失败："+URL_ERROR + ins.getId());
+//                                    String s = HttpUtil.get(URL_ERROR + ins.getId());
+//                                    System.out.println(s);
+//                                    System.out.println("=======================点击篮球赛事报错了=======================");
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println("下注失败："+URL_ERROR + ins.getId());
+//            String s = HttpUtil.get(URL_ERROR + ins.getId());
+//            System.out.println(s);
+//            System.out.println("=======================点击篮球赛事报错了=======================");
+//            return;
+//        }
     }
 }
