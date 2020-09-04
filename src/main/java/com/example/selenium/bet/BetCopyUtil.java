@@ -72,10 +72,10 @@ public class BetCopyUtil {
         WebElement elementMm = driver.findElement(By.xpath("//*[@id=\"login\"]/form/div[1]/div[2]/input"));
         // 清空输入框
         elementMm.clear();
-        // elementZh.sendKeys("dhxm2376");
-        // elementMm.sendKeys("dhxm2376");
-        elementZh.sendKeys("huangxr");
-        elementMm.sendKeys("hx8325554");
+         elementZh.sendKeys("dhxm2376");
+         elementMm.sendKeys("dhxm2376");
+//        elementZh.sendKeys("huangxr");
+//        elementMm.sendKeys("hx8325554");
         //点击确定按钮
         driver.findElement(By.xpath("//*[@id=\"login\"]/form/button")).click();
     }
