@@ -26,8 +26,6 @@ public class BetCopyUtil {
     private static String URL_ERROR = "http://47.106.143.218:8081/instruction/update/error/";
     private static String URL_SUCCESS = "http://47.106.143.218:8081/instruction/update/success/";
 
-    @Autowired
-    private DingUtil dingUtil;
     /**
      * 描述：188下注
      *
@@ -101,9 +99,9 @@ public class BetCopyUtil {
      * @param driver
      */
     private void betSend(WebDriver driver, InstructionDTO ins) {
-
+        DingUtil dingUtil = new DingUtil();
         try {
-            Thread.sleep(2000);
+            Thread.sleep(4000);
             // 点击滚球按钮
             driver.findElement(By.xpath("//*[@id=\"sp2\"]/div[2]/span")).click();
             Thread.sleep(4000);
