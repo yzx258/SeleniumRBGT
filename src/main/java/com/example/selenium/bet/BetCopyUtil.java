@@ -149,14 +149,14 @@ public class BetCopyUtil {
                                     String s = HttpUtil.get(URL_SUCCESS + ins.getId());
                                     System.out.println(s);
                                     String ZJE = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[1]/span[2]")).getText();
-                                    dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"\\rXZJR : "+ins.getBetAmount()+"\\rXZBS : 成功了\\rXZCS : "+ins.getBetNumber()+"\\rZJE : "+ZJE);
+                                    dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"[第"+ins.getBetSession()+"节 / "+(ins.getBetSingleOrDouble() == 1 ? "搭":"洒")+"] \\rXZJR : "+ins.getBetAmount()+" \\rXZBS : 成功了 \\rXZCS : "+ins.getBetNumber()+" \\rZJE : "+ZJE);
                                 }catch (Exception ex){
                                     String text = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[3]/div/div/div[3]/div[2]/div/div[2]/div[6]")).getText();
                                     System.out.println("请求码："+text);
                                     String s = HttpUtil.get(URL_ERROR + ins.getId());
                                     System.out.println(s);
                                     String ZJE = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[1]/span[2]")).getText();
-                                    dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"\\rXZJR : "+ins.getBetAmount()+"\\rXZBS : 失败了\\rXZCS : "+ins.getBetNumber()+"\\rZJE : "+ZJE);
+                                    dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"[第"+ins.getBetSession()+"节 / "+(ins.getBetSingleOrDouble() == 1 ? "搭":"洒")+"] \\rXZJR : "+ins.getBetAmount()+" \\rXZBS : 失败了 \\rXZCS : "+ins.getBetNumber()+" \\rZJE : "+ZJE);
                                     System.out.println("=======================点击篮球赛事报错了=======================");
                                 }
                             }
@@ -169,7 +169,7 @@ public class BetCopyUtil {
             String s = HttpUtil.get(URL_ERROR + ins.getId());
             System.out.println(s);
             String ZJE = driver.findElement(By.xpath("//*[@id=\"lt-left\"]/div[1]/span[2]")).getText();
-            dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"\\rXZJR : "+ins.getBetAmount()+"\\rXZBS : 失败了\\rXZCS : "+ins.getBetNumber()+"\\rZJE : "+ZJE);
+            dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"[第"+ins.getBetSession()+"节 / "+(ins.getBetSingleOrDouble() == 1 ? "搭":"洒")+"] \\rXZJR : "+ins.getBetAmount()+" \\rXZBS : 失败了 \\rXZCS : "+ins.getBetNumber()+" \\rZJEM : "+ZJE);
             System.out.println("=======================点击篮球赛事报错了=======================");
             return;
         }
