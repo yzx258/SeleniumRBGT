@@ -2,7 +2,6 @@ package com.example.selenium.task;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import cn.hutool.core.date.DateUnit;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -39,7 +38,6 @@ public class TaskUtil {
     {
         // 最简单的HTTP请求，可以自动通过header等信息判断编码，不区分HTTP和HTTPS
         String result1= HttpUtil.get(URL_S);
-        System.out.println("响应码 ："+ JSON.parseObject(result1).get("code"));
         String code = JSON.parseObject(result1).get("code").toString();
         if(!R_CODE.equals(code)){
             log.info("请求失败，请查询！");
@@ -54,8 +52,7 @@ public class TaskUtil {
                 log.info("正在进行中，跳过 —> {},{}",fifoCache.get(ins.getId()),ins.getBetHtn());
                 continue;
             }
-            // 过期时间设置为90秒
-            fifoCache.put(ins.getId(),"进行中", DateUnit.SECOND.getMillis() * 90);
+            fifoCache.put(ins.getId(),"进行中");
             log.info("添加至缓存数据 -> {},{}",ins.getId(),fifoCache.get(ins.getId()));
             // 执行操作
             bet.betSend(ins,fifoCache);

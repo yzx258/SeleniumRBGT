@@ -57,7 +57,7 @@ public class BetCopyUtil {
             driver.quit();
         }
         // 下注
-        betSend(driver, ins);
+        betTargetSend(driver, ins);
         System.out.println("=================== 关闭浏览器 ====================");
         driver.quit();
     }
@@ -107,7 +107,7 @@ public class BetCopyUtil {
      *
      * @param driver
      */
-    private void betSend(WebDriver driver, InstructionDTO ins) {
+    private void betTargetSend(WebDriver driver, InstructionDTO ins) {
         DingUtil dingUtil = new DingUtil();
         try {
             Thread.sleep(4000);
