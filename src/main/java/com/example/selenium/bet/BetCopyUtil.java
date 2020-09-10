@@ -1,5 +1,6 @@
 package com.example.selenium.bet;
 
+import cn.hutool.cache.Cache;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.example.selenium.dto.InstructionDTO;
@@ -30,7 +31,7 @@ public class BetCopyUtil {
      *
      * @param
      */
-    public void betSend(InstructionDTO ins) {
+    public void betSend(InstructionDTO ins,Cache<String,String> fifoCache) {
         // chromeDriver服务地址，需要手动下载
         // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
@@ -42,10 +43,19 @@ public class BetCopyUtil {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         WebDriver driver = new ChromeDriver();
-        // 登录信息
-        login(driver);
-        // 点击188赛事信息
-        btnSend(driver);
+        try{
+            // 登录信息
+            login(driver);
+            // 点击188赛事信息
+            btnSend(driver);
+        }catch (Exception e){
+            // 出现异常直接关闭浏览器
+            DingUtil dingUtil = new DingUtil();
+            dingUtil.sendMassage("\\rBSMC : "+ins.getBetHtn()+"VS"+ins.getBetAtn()+"[第"+ins.getBetSession()+"节 / "+(ins.getBetSingleOrDouble() == 1 ? "搭":"洒")+"] \\rXZJR : "+ins.getBetAmount()+" \\rXZBS : 失败了 \\rXZCS : "+ins.getBetNumber()+" \\rZJEM : 浏览器网络延迟");
+            // 清除KEY
+            fifoCache.remove(ins.getId());
+            driver.quit();
+        }
         // 下注
         betSend(driver, ins);
         System.out.println("=================== 关闭浏览器 ====================");

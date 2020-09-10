@@ -2,6 +2,7 @@ package com.example.selenium.task;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -53,10 +54,11 @@ public class TaskUtil {
                 log.info("正在进行中，跳过 —> {},{}",fifoCache.get(ins.getId()),ins.getBetHtn());
                 continue;
             }
-            fifoCache.put(ins.getId(),"进行中");
+            // 过期时间设置为90秒
+            fifoCache.put(ins.getId(),"进行中", DateUnit.SECOND.getMillis() * 90);
             log.info("添加至缓存数据 -> {},{}",ins.getId(),fifoCache.get(ins.getId()));
             // 执行操作
-            bet.betSend(ins);
+            bet.betSend(ins,fifoCache);
             fifoCache.remove(ins.getId());
             log.info("清除缓存数据 -> {},{}",ins.getId(),fifoCache.get(ins.getId()));
         }
