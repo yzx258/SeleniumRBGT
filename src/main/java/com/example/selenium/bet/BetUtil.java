@@ -5,6 +5,7 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.example.selenium.dto.InstructionDTO;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -163,7 +164,6 @@ public class BetUtil {
                     System.out.println("ww -> :" + ww + " -> " + fifoCache.get("sendBet"));
                     flag = false;
                 }
-                System.out.println("====================================================================");
                 // 点击选择分
                 Thread.sleep(1000);
                 driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
@@ -174,10 +174,12 @@ public class BetUtil {
                     // 单
                     driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[4]")).click();
                     fifoCache.put("sendBet", "单");
+                    System.out.println("期数 ："+qs+",购买：单");
                 } else {
                     // 双
                     driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[5]")).click();
                     fifoCache.put("sendBet", "双");
+                    System.out.println("期数 ："+qs+",购买：双");
                 }
                 if (flag) {
                     // 填写金额
@@ -201,6 +203,7 @@ public class BetUtil {
                         }
                     }
                 }
+                System.out.println("====================================================================");
                 // 确认下注
                 Thread.sleep(2000);
                 driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
