@@ -6,6 +6,7 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.example.selenium.bet.BetCopyUtil;
+import com.example.selenium.bet.BetUtil;
 import com.example.selenium.dto.InstructionDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -59,5 +60,14 @@ public class TaskUtil {
             fifoCache.remove(ins.getId());
             log.info("清除缓存数据 -> {},{}",ins.getId(),fifoCache.get(ins.getId()));
         }
+    }
+
+    /**
+     * 描述：发起下注
+     */
+    @Async("myTaskAsyncPool")
+    public void getBasketballTournament1() {
+        BetUtil bet = new BetUtil();
+        bet.sz();
     }
 }
