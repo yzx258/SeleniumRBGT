@@ -207,6 +207,7 @@ public class BetUtil {
                 Thread.sleep(2000);
                 driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
                 Thread.sleep(2000);
+                driver.switchTo().window(JB).navigate().refresh();
             } while (true);
 
         } catch (InterruptedException e) {
