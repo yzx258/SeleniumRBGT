@@ -107,15 +107,15 @@ public class BetUtil {
             driver.switchTo().window(JB).manage().window().maximize();
             List<String> rl = new ArrayList<>();
             rl.add("1");
-            rl.add("2");
-            rl.add("4");
-            rl.add("8");
-            rl.add("17");
-            rl.add("33");
-            rl.add("69");
-            rl.add("141");
-            rl.add("279");
-            rl.add("558");
+            rl.add("3");
+            rl.add("7");
+            rl.add("15");
+            rl.add("31");
+            rl.add("60");
+            rl.add("122");
+            rl.add("250");
+            rl.add("509");
+            rl.add("1034");
             // 循环调用即可
             int addbs = 10;
             do {
@@ -141,24 +141,29 @@ public class BetUtil {
                 fifoCache.put("QS", qs);
                 // 等待结果开启
                 Thread.sleep(6000);
+                System.out.println("====================================================================");
                 // 红单标识
                 Boolean flag = true;
                 // 判断是否红
                 if (Integer.parseInt(ww) % 2 == 1 && "单".equals(fifoCache.get("sendBet"))) {
                     // 上期比赛结果为单
+                    System.out.println("比赛单【单.equals(fifoCache.get(sendBet))】 -> "+"单".equals(fifoCache.get("sendBet")));
                     System.out.println("购买比赛结果[fifoCache.get(\"sendBet\")]:" + fifoCache.get("sendBet"));
                     System.out.println("ww -> :" + ww + " -> " + fifoCache.get("sendBet"));
                     flag = true;
                 } else if (Integer.parseInt(ww) % 2 == 0 && "双".equals(fifoCache.get("sendBet"))) {
                     // 上期比赛结果为双
-                    System.out.println("购买比赛结果[fifoCache.get(\"sendBet\")]:" + fifoCache.get("sendBet"));
+                    System.out.println("比赛双【单.equals(fifoCache.get(sendBet))】 -> "+"单".equals(fifoCache.get("sendBet")));
+                    System.out.println("购买比赛结果[fifoCache.get(sendBet)]:" + fifoCache.get("sendBet"));
                     System.out.println("ww -> :" + ww + " -> " + fifoCache.get("sendBet"));
                     flag = true;
                 } else {
                     // 黑了
+                    System.out.println("比赛黑了");
                     System.out.println("ww -> :" + ww + " -> " + fifoCache.get("sendBet"));
                     flag = false;
                 }
+                System.out.println("====================================================================");
                 // 点击选择分
                 Thread.sleep(1000);
                 driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
@@ -181,15 +186,18 @@ public class BetUtil {
                 } else {
                     if (fifoCache.get("sendBetNumber") == null) {
                         fifoCache.put("sendBetNumber", "0");
-                    }
-                    int sendBetNumber = Integer.parseInt(fifoCache.get("sendBetNumber"));
-                    fifoCache.put("sendBetNumber", sendBetNumber + "");
-                    String s = rl.get(sendBetNumber);
-                    fifoCache.put("sendBetAmount", s);
-                    // 获取输入款
-                    addbs = Integer.parseInt(s) - 1;
-                    for (int i = 0; i < addbs; i++) {
-                        driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
+                        fifoCache.put("sendBetAmount", "1");
+                    }else{
+                        int sendBetNumber = Integer.parseInt(fifoCache.get("sendBetNumber"))+1;
+                        fifoCache.put("sendBetNumber", sendBetNumber + "");
+                        String s = rl.get(sendBetNumber);
+                        fifoCache.put("sendBetAmount", s);
+                        // 获取输入款
+                        addbs = Integer.parseInt(s) - 1;
+                        System.out.println("我是addbs参数：" + addbs);
+                        for (int i = 0; i < addbs; i++) {
+                            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
+                        }
                     }
                 }
                 // 确认下注
