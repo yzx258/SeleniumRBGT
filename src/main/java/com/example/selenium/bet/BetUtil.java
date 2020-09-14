@@ -117,7 +117,6 @@ public class BetUtil {
             rl.add("509");
             rl.add("1034");
             // 循环调用即可
-            int addbs = 10;
             do {
                 Thread.sleep(2000);
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
@@ -194,9 +193,10 @@ public class BetUtil {
                         String s = rl.get(sendBetNumber);
                         fifoCache.put("sendBetAmount", s);
                         // 获取输入款
-                        addbs = Integer.parseInt(s) - 1;
+                        int addbs = Integer.parseInt(s) - 1;
                         System.out.println("我是addbs参数：" + addbs);
                         for (int i = 0; i < addbs; i++) {
+                            Thread.sleep(10);
                             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
                         }
                     }
