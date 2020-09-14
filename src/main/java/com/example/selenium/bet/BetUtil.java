@@ -144,6 +144,7 @@ public class BetUtil {
                 System.out.println("====================================================================");
                 // 红单标识
                 Boolean flag = true;
+                ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num4\"]")).getText();
                 // 判断是否红
                 if (Integer.parseInt(ww) % 2 == 1 && "单".equals(fifoCache.get("sendBet"))) {
                     // 上期比赛结果为单
