@@ -34,12 +34,9 @@ public class BetUtil {
      * @throws InterruptedException
      */
     public void sz() {
-
-        if (null == fifoCache.get("statusSend")) {
-            fifoCache.put("statusSend", "ON");
-        }
+        // 比赛进行中
         if ("ON".equals(fifoCache.get("statusSend"))) {
-            System.out.println("比赛为出现错误，进行中 -> " + fifoCache.get("statusSend"));
+            System.out.println("比赛进行中 -> " + fifoCache.get("statusSend"));
             return;
         }
         fifoCache.put("statusSend", "ON");
@@ -49,7 +46,7 @@ public class BetUtil {
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
-        System.setProperty("webdriver.chrome.driver", "D:\\00002YX\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -204,6 +201,10 @@ public class BetUtil {
             } while (true);
 
         } catch (InterruptedException e) {
+            fifoCache.put("statusSend","OFF");
+            fifoCache.remove("sendBetAmount");
+            fifoCache.remove("sendBetNumber");
+            fifoCache.remove("sendBet");
             driver.quit();
         }
     }
