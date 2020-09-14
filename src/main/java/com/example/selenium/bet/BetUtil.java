@@ -122,7 +122,7 @@ public class BetUtil {
                 Thread.sleep(2000);
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
                 System.out.println("str -> " + str);
-                String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num4\"]")).getText();
+                String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
                 System.out.println("万位是否符合:" + ww);
                 // 判断是否进行中
                 if (str.equals("准备开奖") || StrUtil.isEmpty(ww)) {
@@ -144,7 +144,7 @@ public class BetUtil {
                 System.out.println("====================================================================");
                 // 红单标识
                 Boolean flag = true;
-                ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num4\"]")).getText();
+                ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
                 // 判断是否红
                 if (Integer.parseInt(ww) % 2 == 1 && "单".equals(fifoCache.get("sendBet"))) {
                     // 上期比赛结果为单
