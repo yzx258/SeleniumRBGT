@@ -112,7 +112,7 @@ public class BetUtil {
             rl.add("1034");
             // 循环调用即可
             do {
-                Thread.sleep(2000);
+                Thread.sleep(100);
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
                 System.out.println("str -> " + str);
                 String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
@@ -132,26 +132,27 @@ public class BetUtil {
                     continue;
                 }
                 fifoCache.put("QS", qs);
+                Thread.sleep(100);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
                 log.info("万位数据 -> {}",wws);
                 sendBet(wws,driver,JB,qs,rl,"sendBetWw","sendBetAmountWw","sendBetNumberWw",1);
-                Thread.sleep(300);
+                Thread.sleep(2000);
                 // 下注千位
                 String qws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[2]")).getText();
                 log.info("千位数据 -> {}",qws);
                 sendBet(qws,driver,JB,qs,rl,"sendBetQw","sendBetAmountQw","sendBetNumberQw",2);
-                Thread.sleep(300);
+                Thread.sleep(2000);
                 // 下注百位
                 String bws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[3]")).getText();
                 log.info("百位数据 -> {}",bws);
                 sendBet(bws,driver,JB,qs,rl,"sendBetBw","sendBetAmountBw","sendBetNumberBw",3);
-                Thread.sleep(300);
+                Thread.sleep(2000);
                 // 下注十位
                 String sws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[4]")).getText();
                 log.info("十位数据 -> {}",sws);
                 sendBet(sws,driver,JB,qs,rl,"sendBetSw","sendBetAmountSw","sendBetNumberSw",4);
-                Thread.sleep(300);
+                Thread.sleep(2000);
                 // 下注个位
                 String gws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[5]")).getText();
                 log.info("个位数据 -> {}",gws);
@@ -240,11 +241,11 @@ public class BetUtil {
             }
         }
         // 确认下注
-        Thread.sleep(500);
+        Thread.sleep(200);
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
-        Thread.sleep(500);
+        Thread.sleep(200);
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
-        Thread.sleep(500);
+        Thread.sleep(200);
         driver.switchTo().window(JB).navigate().refresh();
         log.info(sendBetKey+"，下注完成");
         log.info("====================================================================");
