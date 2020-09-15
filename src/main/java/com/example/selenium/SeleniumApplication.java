@@ -13,9 +13,6 @@ public class SeleniumApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SeleniumApplication.class, args);
-        // 异步执行下注数据
-        TaskUtil taskService = new TaskUtil();
-        taskService.getBasketballTournament1();
     }
 
 }
