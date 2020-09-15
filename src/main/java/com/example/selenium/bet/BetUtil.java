@@ -140,7 +140,7 @@ public class BetUtil {
                 }
                 fifoCache.put("QS", qs);
                 // 等待结果开启
-                Thread.sleep(6000);
+                Thread.sleep(3000);
                 // 下注万位
                 sendBet(driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText(),driver,JB,qs,rl,"sendBetWw","sendBetAmountWw","sendBetNumberWw",1);
                 Thread.sleep(1000);
