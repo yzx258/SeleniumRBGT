@@ -242,10 +242,10 @@ public class BetUtil {
                 }
             }
             // 点击选择分
-            Thread.sleep(1000);
+            Thread.sleep(500);
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
             // 点击单
-            Thread.sleep(1000);
+            Thread.sleep(500);
             if (random() == 1) {
                 // 单
                 driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
@@ -282,9 +282,9 @@ public class BetUtil {
                 }
             }
             // 确认下注
-            Thread.sleep(200);
+            Thread.sleep(100);
             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
-            Thread.sleep(200);
+            Thread.sleep(100);
             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
             Thread.sleep(200);
             driver.switchTo().window(JB).navigate().refresh();
