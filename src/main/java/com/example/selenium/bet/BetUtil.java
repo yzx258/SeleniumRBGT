@@ -297,6 +297,8 @@ public class BetUtil {
                         Thread.sleep(500);
                         element.sendKeys("100");
                         addbs = addbs - 1001;
+                    }else{
+                        addbs = addbs - 1;
                     }
                     log.info("&&&&&&&&&&我是最终addbs参数&&&&&&&&&& -> {}", addbs);
                     for (int i = 0; i < addbs; i++) {
