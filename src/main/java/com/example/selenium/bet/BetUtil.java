@@ -186,7 +186,6 @@ public class BetUtil {
      */
     public Boolean checkTime(){
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");//设置日期格式
-        System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
         if("11:00".equals(df.format(new Date())) || "15:00".equals(df.format(new Date())) || "19:00".equals(df.format(new Date())) || "23:00".equals(df.format(new Date()))){
             log.info("=======================");
             log.info("发送钉钉通知当前盈利状况");
