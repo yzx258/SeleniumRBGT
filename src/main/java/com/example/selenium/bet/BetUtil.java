@@ -53,7 +53,7 @@ public class BetUtil {
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
-        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
+        System.setProperty("webdriver.chrome.driver", "D:\\00002YX\\chromedriver.exe");
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -71,8 +71,8 @@ public class BetUtil {
             // 清空输入框
             elementMm.clear();
 
-            elementZh.sendKeys("dhxm2376");
-            elementMm.sendKeys("dhxm2376");
+            elementZh.sendKeys("huangxr");
+            elementMm.sendKeys("hx8325554");
             //点击确定按钮
             driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[3]/button")).click();
             Thread.sleep(1000);
@@ -274,8 +274,31 @@ public class BetUtil {
                     String s = rl.get(sendBetNumber);
                     fifoCache.put(sendBetAmountKey, s);
                     // 获取输入款
-                    int addbs = Integer.parseInt(s) - 1;
-                    log.info("&&&&&&&&&&我是addbs参数&&&&&&&&&& -> {}", addbs);
+                    int addbs = Integer.parseInt(s);
+                    log.info("&&&&&&&&&&我是开始addbs参数&&&&&&&&&& -> {}", addbs);
+                    // 根据比例扣减循环数
+                    if(addbs > 100 && addbs < 200){
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        Thread.sleep(500);
+                        element.sendKeys("10");
+                        addbs = addbs - 101;
+                    }else if(addbs > 200 && addbs < 300){
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        Thread.sleep(500);
+                        element.sendKeys("20");
+                        addbs = addbs - 201;
+                    }else if(addbs > 500 && addbs < 600){
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        Thread.sleep(500);
+                        element.sendKeys("50");
+                        addbs = addbs - 501;
+                    }else if(addbs > 1000 && addbs < 1200){
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        Thread.sleep(500);
+                        element.sendKeys("100");
+                        addbs = addbs - 1001;
+                    }
+                    log.info("&&&&&&&&&&我是最终addbs参数&&&&&&&&&& -> {}", addbs);
                     for (int i = 0; i < addbs; i++) {
                         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
                     }
