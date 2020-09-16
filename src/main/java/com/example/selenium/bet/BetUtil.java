@@ -142,6 +142,9 @@ public class BetUtil {
                     continue;
                 }
                 fifoCache.put("QS", qs);
+                log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                log.info("************* "+qs+" *************");
+                log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 Thread.sleep(2000);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
