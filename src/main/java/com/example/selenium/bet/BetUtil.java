@@ -143,7 +143,7 @@ public class BetUtil {
                 }
                 fifoCache.put("QS", qs);
                 log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-                log.info("************* "+qs+" *************");
+                log.info("************* 开始下注期数 : "+qs+" *************");
                 log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 Thread.sleep(2000);
                 // 下注万位
@@ -313,7 +313,6 @@ public class BetUtil {
             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
             Thread.sleep(200);
             driver.switchTo().window(JB).navigate().refresh();
-            log.info(sendBetKey + "，下注完成");
             log.info("====================================================================");
         } catch (Exception e) {
             log.info("====================== 下注报错了，跳过此次购买[购买单位："+sendBetKey+"] ======================");
