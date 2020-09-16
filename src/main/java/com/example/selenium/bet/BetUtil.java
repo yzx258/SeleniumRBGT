@@ -123,7 +123,7 @@ public class BetUtil {
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                     DingUtil dingUtil = new DingUtil();
                     dingUtil.sendMassage("航行者前来汇报 : " + text);
-                    fifoCache.get("sendMassage").equals("NO");
+                    fifoCache.put("sendMassage","NO");
                 }
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
                 System.out.println("str -> " + str);
