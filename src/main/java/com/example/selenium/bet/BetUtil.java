@@ -2,6 +2,7 @@ package com.example.selenium.bet;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.example.selenium.dto.InstructionDTO;
@@ -45,6 +46,7 @@ public class BetUtil {
             return;
         }
         S_W = 1;
+        fifoCache.put("sendMassage","NO");
         // chromeDriver服务地址，需要手动下载
         // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
@@ -117,10 +119,11 @@ public class BetUtil {
             do {
                 // 判断当前时间是否在这个事件段
                 Thread.sleep(500);
-                if(checkTime()){
+                if(checkTime() && "OK".equals(fifoCache.get("sendMassage"))){
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                     DingUtil dingUtil = new DingUtil();
-                    dingUtil.sendMassage("当前HL:" + text);
+                    dingUtil.sendMassage("航行者前来汇报 : " + text);
+                    fifoCache.get("sendMassage").equals("NO");
                 }
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
                 System.out.println("str -> " + str);
@@ -187,6 +190,7 @@ public class BetUtil {
             log.info("=======================");
             log.info("发送钉钉通知当前盈利状况");
             log.info("=======================");
+            fifoCache.put("sendMassage","OK", DateUnit.SECOND.getMillis() * 70);
             return true;
         }
         return false;
