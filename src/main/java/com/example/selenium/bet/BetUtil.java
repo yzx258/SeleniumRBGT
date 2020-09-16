@@ -277,7 +277,6 @@ public class BetUtil {
                     int addbs = Integer.parseInt(s) - 1;
                     log.info("&&&&&&&&&&我是addbs参数&&&&&&&&&& -> {}", addbs);
                     for (int i = 0; i < addbs; i++) {
-                        Thread.sleep(10);
                         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
                     }
                 }
