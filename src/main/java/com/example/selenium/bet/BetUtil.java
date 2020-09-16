@@ -145,6 +145,8 @@ public class BetUtil {
                 log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 log.info("************* 开始下注期数 : "+qs+" *************");
                 log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                Thread.sleep(200);
+                driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
