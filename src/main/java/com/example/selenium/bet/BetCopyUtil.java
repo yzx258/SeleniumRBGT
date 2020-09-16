@@ -72,19 +72,17 @@ public class BetCopyUtil {
         driver.get("https://www.52365v.com");
         driver.manage().window().maximize();
         // 获取用户输入框
-        WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"login\"]/form/div[1]/div[1]/input"));
+        WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[1]/input"));
         // 清空输入框
         elementZh.clear();
         // 获取用户输入框
-        WebElement elementMm = driver.findElement(By.xpath("//*[@id=\"login\"]/form/div[1]/div[2]/input"));
+        WebElement elementMm = driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[2]/input"));
         // 清空输入框
         elementMm.clear();
-         elementZh.sendKeys("dhxm2376");
-         elementMm.sendKeys("dhxm2376");
-//        elementZh.sendKeys("huangxr");
-//        elementMm.sendKeys("hx8325554");
+        elementZh.sendKeys("dhxm2376");
+        elementMm.sendKeys("dhxm2376");
         //点击确定按钮
-        driver.findElement(By.xpath("//*[@id=\"login\"]/form/button")).click();
+        driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[3]/button")).click();
     }
 
     /**
@@ -94,7 +92,7 @@ public class BetCopyUtil {
      */
     private void btnSend(WebDriver driver) {
         // 点击体育赛事
-        driver.findElement(By.xpath("//*[@id=\"head\"]/div[2]/div[1]/div/a/div/div")).click();
+        driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
         // 点击188赛事
         driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/a[3]/img")).click();
         //存在iframe,首先需要进到iframe
