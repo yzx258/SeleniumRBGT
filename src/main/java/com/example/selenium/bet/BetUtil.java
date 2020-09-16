@@ -142,7 +142,7 @@ public class BetUtil {
                     continue;
                 }
                 fifoCache.put("QS", qs);
-                Thread.sleep(100);
+                Thread.sleep(2000);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
                 // log.info("万位数据 -> {}", wws);
