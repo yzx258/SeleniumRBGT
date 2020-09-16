@@ -53,7 +53,7 @@ public class BetUtil {
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
-        System.setProperty("webdriver.chrome.driver", "D:\\00002YX\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -71,8 +71,8 @@ public class BetUtil {
             // 清空输入框
             elementMm.clear();
 
-            elementZh.sendKeys("huangxr");
-            elementMm.sendKeys("hx8325554");
+            elementZh.sendKeys("dhxm2376");
+            elementMm.sendKeys("dhxm2376");
             //点击确定按钮
             driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[3]/button")).click();
             Thread.sleep(1000);
