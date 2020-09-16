@@ -61,7 +61,7 @@ public class BetUtil {
             driver.get("https://www.52365v.com");
             driver.manage().window().maximize();
             // 获取用户输入框
-            WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[1]/input1"));
+            WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[1]/input"));
             // 清空输入框
             elementZh.clear();
             // 获取用户输入框
