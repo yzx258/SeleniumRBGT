@@ -15,7 +15,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -113,7 +115,13 @@ public class BetUtil {
             rl.add("1034");
             // 循环调用即可
             do {
-                Thread.sleep(100);
+                // 判断当前时间是否在这个事件段
+                Thread.sleep(500);
+                if(checkTime()){
+                    String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                    DingUtil dingUtil = new DingUtil();
+                    dingUtil.sendMassage("当前HL:" + text);
+                }
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
                 System.out.println("str -> " + str);
                 String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
@@ -158,6 +166,7 @@ public class BetUtil {
                 String gws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[5]")).getText();
                 log.info("个位数据 -> {}", gws);
                 sendBet(gws, driver, JB, qs, rl, "sendBetGw", "sendBetAmountGw", "sendBetNumberGw", 5);
+                Thread.sleep(2000);
             } while (true);
         } catch (Exception e) {
             System.out.println("====================== 报错了 ======================");
@@ -165,6 +174,22 @@ public class BetUtil {
             S_W = 0;
             fifoCache.clear();
         }
+    }
+
+    /**
+     * 判断时间，并发钉钉消息
+     * @return
+     */
+    public Boolean checkTime(){
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");//设置日期格式
+        System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+        if("11:00".equals(df.format(new Date())) || "15:00".equals(df.format(new Date())) || "19:00".equals(df.format(new Date())) || "23:00".equals(df.format(new Date()))){
+            log.info("=======================");
+            log.info("发送钉钉通知当前盈利状况");
+            log.info("=======================");
+            return true;
+        }
+        return false;
     }
 
     /**
