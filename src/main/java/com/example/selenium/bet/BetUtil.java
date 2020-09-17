@@ -72,7 +72,7 @@ public class BetUtil {
             elementMm.clear();
 
             elementZh.sendKeys("dhxm2376");
-            elementMm.sendKeys("dhxm2376");
+            elementMm.sendKeys("ycw15659512376");
             //点击确定按钮
             driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[3]/button")).click();
             Thread.sleep(1000);
