@@ -122,7 +122,7 @@ public class BetUtil {
                 if(checkTime() && "OK".equals(fifoCache.get("sendMassage"))){
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                     DingUtil dingUtil = new DingUtil();
-                    dingUtil.sendMassage("航行者前来汇报 : " + text);
+                    dingUtil.sendMassage("我是航行者,前来汇报 : " + text);
                     fifoCache.put("sendMassage","NO", DateUnit.SECOND.getMillis() * 70);
                 }
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
