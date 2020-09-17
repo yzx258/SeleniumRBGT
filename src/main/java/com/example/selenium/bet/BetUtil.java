@@ -46,7 +46,7 @@ public class BetUtil {
             return;
         }
         S_W = 1;
-        fifoCache.put("sendMassage","NO");
+        fifoCache.put("sendMassage","OK");
         // chromeDriver服务地址，需要手动下载
         // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
@@ -105,16 +105,16 @@ public class BetUtil {
             Thread.sleep(1000);
             driver.switchTo().window(JB).manage().window().maximize();
             List<String> rl = new ArrayList<>();
-            rl.add("1");
-            rl.add("3");
-            rl.add("7");
-            rl.add("15");
-            rl.add("31");
-            rl.add("60");
-            rl.add("122");
-            rl.add("250");
-            rl.add("509");
-            rl.add("1034");
+            rl.add("2");
+            rl.add("6");
+            rl.add("14");
+            rl.add("30");
+            rl.add("62");
+            rl.add("120");
+            rl.add("244");
+            rl.add("502");
+            rl.add("1020");
+            rl.add("2072");
             // 循环调用即可
             do {
                 // 判断当前时间是否在这个事件段
@@ -123,13 +123,13 @@ public class BetUtil {
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                     DingUtil dingUtil = new DingUtil();
                     dingUtil.sendMassage("航行者前来汇报 : " + text);
-                    fifoCache.put("sendMassage","NO");
+                    fifoCache.put("sendMassage","NO", DateUnit.SECOND.getMillis() * 70);
                 }
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
                 String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
                 // 判断是否进行中
                 if (str.equals("准备开奖") || StrUtil.isEmpty(ww)) {
-                    System.out.println("正在开奖，跳过");
+                    // System.out.println("正在开奖，跳过");
                     continue;
                 }
                 String qs = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"kjdates_mc_txt\"]")).getText();
@@ -188,11 +188,10 @@ public class BetUtil {
      */
     public Boolean checkTime(){
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");//设置日期格式
-        if("11:00".equals(df.format(new Date())) || "15:00".equals(df.format(new Date())) || "19:00".equals(df.format(new Date())) || "23:00".equals(df.format(new Date()))){
+        if("03:00".equals(df.format(new Date())) || "07:00".equals(df.format(new Date())) || "11:00".equals(df.format(new Date())) || "15:00".equals(df.format(new Date())) || "19:00".equals(df.format(new Date())) || "23:00".equals(df.format(new Date()))){
             log.info("=======================");
             log.info("发送钉钉通知当前盈利状况");
             log.info("=======================");
-            fifoCache.put("sendMassage","OK", DateUnit.SECOND.getMillis() * 70);
             return true;
         }
         return false;
