@@ -263,12 +263,12 @@ public class BetUtil {
             log.info("==================");
             if (flag) {
                 // 填写金额
-                fifoCache.put(sendBetAmountKey, "1");
+                fifoCache.put(sendBetAmountKey, "2");
                 fifoCache.put(sendBetNumberKey, "0");
             } else {
                 if (fifoCache.get(sendBetNumberKey) == null) {
                     fifoCache.put(sendBetNumberKey, "0");
-                    fifoCache.put(sendBetAmountKey, "1");
+                    fifoCache.put(sendBetAmountKey, "2");
                 } else {
                     int sendBetNumber = Integer.parseInt(fifoCache.get(sendBetNumberKey)) + 1;
                     fifoCache.put(sendBetNumberKey, sendBetNumber + "");
