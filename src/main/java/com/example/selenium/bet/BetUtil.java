@@ -237,8 +237,8 @@ public class BetUtil {
                     if(Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 10){
                         log.info("[ "+sendBetKey+" ]比赛黑10场，从第9场开始购开始购买");
                         DingUtil d = new DingUtil();
-                        d.sendMassage("[ "+sendBetKey+" ]比赛黑10场，从第9场开始购开始购买,确保12期");
-                        fifoCache.put(sendBetNumberKey,"8");
+                        d.sendMassage("[ "+sendBetKey+" ]比赛黑10场，重新开始下");
+                        fifoCache.remove(sendBetNumberKey);
                     }
                 }
             }
