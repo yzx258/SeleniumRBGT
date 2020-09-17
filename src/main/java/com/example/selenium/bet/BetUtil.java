@@ -300,7 +300,13 @@ public class BetUtil {
                         Thread.sleep(500);
                         element.sendKeys("100");
                         addbs = addbs - 1001;
-                    }else{
+                    }else if(addbs > 2000 && addbs < 2100){
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        Thread.sleep(500);
+                        element.sendKeys("200");
+                        addbs = addbs - 2001;
+                    }
+                    else{
                         addbs = addbs - 1;
                     }
                     log.info("&&&&&&&&&&我是最终addbs参数&&&&&&&&&& -> {}", addbs);
