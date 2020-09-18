@@ -46,7 +46,6 @@ public class BetUtil {
             return;
         }
         S_W = 1;
-        fifoCache.put("sendMassage","OK");
         // chromeDriver服务地址，需要手动下载
         // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
@@ -119,11 +118,11 @@ public class BetUtil {
             do {
                 // 判断当前时间是否在这个事件段
                 Thread.sleep(500);
-                if(checkTime() && "OK".equals(fifoCache.get("sendMassage"))){
+                if(checkTime() && null == fifoCache.get("sendMassage")){
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                     DingUtil dingUtil = new DingUtil();
                     dingUtil.sendMassage("我是航行者,前来汇报 : " + text);
-                    fifoCache.put("sendMassage","NO", DateUnit.SECOND.getMillis() * 70);
+                    fifoCache.put("sendMassage","OK", DateUnit.SECOND.getMillis() * 70);
                 }
                 String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
                 String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
@@ -187,7 +186,11 @@ public class BetUtil {
      */
     public Boolean checkTime(){
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");//设置日期格式
-        if("03:00".equals(df.format(new Date())) || "07:00".equals(df.format(new Date())) || "11:00".equals(df.format(new Date())) || "15:00".equals(df.format(new Date())) || "19:00".equals(df.format(new Date())) || "23:00".equals(df.format(new Date()))){
+        if("23:53".equals(df.format(new Date())) || "23:56".equals(df.format(new Date())) || "23:59".equals(df.format(new Date()))
+            || "05:53".equals(df.format(new Date())) || "05:56".equals(df.format(new Date())) || "05:59".equals(df.format(new Date()))
+            || "11:53".equals(df.format(new Date())) || "11:56".equals(df.format(new Date())) || "11:59".equals(df.format(new Date()))
+            || "18:53".equals(df.format(new Date())) || "18:56".equals(df.format(new Date())) || "18:59".equals(df.format(new Date()))
+        ){
             log.info("=======================");
             log.info("发送钉钉通知当前盈利状况");
             log.info("=======================");
@@ -235,6 +238,7 @@ public class BetUtil {
                 if(null != fifoCache.get(sendBetNumberKey)){
                     if(Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 10){
                         log.info("[ "+sendBetKey+" ]比赛黑10场，从第9场开始购开始购买");
+                        Thread.sleep(200);
                         DingUtil d = new DingUtil();
                         d.sendMassage("[ "+sendBetKey+" ]比赛黑10场，重新开始下");
                         fifoCache.remove(sendBetNumberKey);
