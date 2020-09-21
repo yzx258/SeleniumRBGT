@@ -405,7 +405,7 @@ public class BetUtil {
                 }
             } else {
                 // 判断单双是否中
-                if(checkOddAndEven(ws,sendBetKey)){
+                if(checkOddAndEven(ws,sendBetWs)){
                     log.info("该比赛红单，走初倍逻辑2222222222");
                     sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
                 }else{
@@ -503,21 +503,21 @@ public class BetUtil {
      * @param sendBetKey
      * @return
      */
-    public Boolean checkOddAndEven(String ws,String sendBetKey){
-        if (Integer.parseInt(ws) % 2 == 1 && "单".equals(fifoCache.get(sendBetKey))) {
+    public Boolean checkOddAndEven(String ws,String sendBetWs){
+        if (Integer.parseInt(ws) % 2 == 1 && "单".equals(fifoCache.get(sendBetWs))) {
             // 上期比赛结果为单
-            log.info("比赛单【单.equals(fifoCache.get(" + sendBetKey + "))】 -> " + "单".equals(fifoCache.get(sendBetKey)));
-            log.info("ws -> :" + ws + " -> " + fifoCache.get(sendBetKey));
+            log.info("比赛单【单.equals(fifoCache.get(" + sendBetWs + "))】 -> " + "单".equals(fifoCache.get(sendBetWs)));
+            log.info("ws -> :" + ws + " -> " + fifoCache.get(sendBetWs));
             return true;
-        } else if (Integer.parseInt(ws) % 2 == 0 && "双".equals(fifoCache.get(sendBetKey))) {
+        } else if (Integer.parseInt(ws) % 2 == 0 && "双".equals(fifoCache.get(sendBetWs))) {
             // 上期比赛结果为双
-            log.info("比赛双【双.equals(fifoCache.get(\"+sendBetKey+\"))】 -> " + "双".equals(fifoCache.get(sendBetKey)));
-            log.info("ws -> :" + ws + " -> " + fifoCache.get(sendBetKey));
+            log.info("比赛双【双.equals(fifoCache.get(\"+sendBetWs+\"))】 -> " + "双".equals(fifoCache.get(sendBetWs)));
+            log.info("ws -> :" + ws + " -> " + fifoCache.get(sendBetWs));
             return true;
         } else {
             // 黑了
             log.info("比赛黑了");
-            log.info("ww -> :" + ws + " -> " + fifoCache.get(sendBetKey));
+            log.info("ww -> :" + ws + " -> " + fifoCache.get(sendBetWs));
             return false;
         }
     }
