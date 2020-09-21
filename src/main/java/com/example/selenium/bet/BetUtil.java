@@ -412,7 +412,8 @@ public class BetUtil {
                     log.info("该比赛黑单，走加倍逻辑3333333333");
                     if(Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 6){
                         DingUtil d = new DingUtil();
-                        d.sendMassage("[ " + sendBetKey + " ]比赛黑7场，重新开始下");
+                        String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑7场，重新开始下[航行者,前来汇报："+text+"]");
                         sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
                     }else{
                         // 点击单双
