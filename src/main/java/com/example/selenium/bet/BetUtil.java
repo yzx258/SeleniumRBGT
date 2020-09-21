@@ -378,13 +378,16 @@ public class BetUtil {
             if (null == fifoCache.get(sendBetNumberKey)) {
                 fifoCache.put(sendBetNumberKey, "0");
             }
+            if(null == fifoCache.get(sendBetKey)){
+                fifoCache.put(sendBetKey, "0,9");
+            }
             int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             log.info("=================== ["+div+"] 开始 ===================");
             log.info("我是购买次数[sendBetNumberKey] -> {}", numberKey);
             if (numberKey <= 2) {
                 // 判断WS是否红单
-                log.info(sendBetKey + ".contains(ws) -> {}", sendBetKey.contains(ws));
-                if (sendBetKey.contains(ws)) {
+                log.info(fifoCache.get(sendBetKey) + ".contains("+ws+") -> {}", fifoCache.get(sendBetKey).contains(ws));
+                if (fifoCache.get(sendBetKey).contains(ws)) {
                     log.info("该比赛黑单，走加倍逻辑");
                     if (numberKey == 2) {
                         // 走单双下注逻辑
