@@ -540,7 +540,7 @@ public class BetUtil {
         }
         numberKey = 0;
         fifoCache.put(sendBetNumberKey, numberKey + "");
-        fifoCache.put(sendBetKey, "0,9");
+        fifoCache.put(sendBetKey, jzws);
     }
 
     /**
@@ -564,7 +564,7 @@ public class BetUtil {
         }
         numberKey = numberKey + 1;
         fifoCache.put(sendBetNumberKey, numberKey + "");
-        fifoCache.put(sendBetKey, "0,9");
+        fifoCache.put(sendBetKey, jzws);
     }
 
     /**
