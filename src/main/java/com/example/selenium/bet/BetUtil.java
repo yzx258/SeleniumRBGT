@@ -462,22 +462,22 @@ public class BetUtil {
             Thread.sleep(500);
             element.sendKeys("10");
             addbs = addbs - 101;
-        } else if (addbs > 200 && addbs < 300) {
+        } else if (addbs > 200 && addbs < 400) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("20");
+            element.sendKeys("30");
             addbs = addbs - 201;
-        } else if (addbs > 500 && addbs < 600) {
+        } else if (addbs > 500 && addbs < 700) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("50");
-            addbs = addbs - 501;
-        } else if (addbs > 1000 && addbs < 1200) {
+            element.sendKeys("60");
+            addbs = addbs - 601;
+        } else if (addbs > 1000 && addbs < 1400) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("100");
-            addbs = addbs - 1001;
-        } else if (addbs > 2000 && addbs < 2100) {
+            element.sendKeys("130");
+            addbs = addbs - 1301;
+        } else if (addbs > 2000 && addbs < 2800) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
             element.sendKeys("270");
