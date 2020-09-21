@@ -438,8 +438,8 @@ public class BetUtil {
      */
     public void sendBetOk(int numberKey,WebDriver driver,String JB) throws InterruptedException {
         // 点击选择分
-        Thread.sleep(500);
         driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
+        Thread.sleep(1000);
         // 倍率
         List<String> rl = new ArrayList<>();
         rl.add("5");
