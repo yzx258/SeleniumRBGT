@@ -160,9 +160,9 @@ public class BetUtil {
                     continue;
                 }
                 fifoCache.put("QS", qs);
-                log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                log.info("*******************************");
                 log.info("************* 开始下注期数 : " + qs + " *************");
-                log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                log.info("*******************************");
                 Thread.sleep(200);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
@@ -378,6 +378,9 @@ public class BetUtil {
      */
     public void sendBetDob(String ws, WebDriver driver, String JB, String sendBetKey, String sendBetNumberKey, String sendBetWs, int div) {
         try {
+            // 点击选择分
+            driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
+            Thread.sleep(1000);
             // 判断比赛是否走8位
             if (null == fifoCache.get(sendBetNumberKey)) {
                 fifoCache.put(sendBetNumberKey, "0");
@@ -392,7 +395,7 @@ public class BetUtil {
                 // 判断WS是否红单
                 log.info(fifoCache.get(sendBetKey) + ".contains("+ws+") -> {}", fifoCache.get(sendBetKey).contains(ws));
                 if (fifoCache.get(sendBetKey).contains(ws)) {
-                    log.info("该比赛黑单，走加倍逻辑");
+                    log.info("该比赛黑单，走加倍逻辑0000000000");
                     if (numberKey == 2) {
                         // 走单双下注逻辑
                         sendOddAndEven(driver,numberKey,div,sendBetWs,sendBetNumberKey,JB);
@@ -400,15 +403,16 @@ public class BetUtil {
                         sendEightDigitsErr(driver,JB,sendBetKey,numberKey,sendBetNumberKey,div);
                     }
                 } else {
-                    log.info("该比赛红单，走初倍逻辑");
+                    log.info("该比赛红单，走初倍逻辑1111111111");
                     sendEightDigitsOk(driver,JB,sendBetKey,numberKey,sendBetNumberKey,div);
                 }
             } else {
                 // 判断单双是否中
                 if(checkOddAndEven(ws,sendBetKey)){
-                    log.info("该比赛红单，走初倍逻辑");
+                    log.info("该比赛红单，走初倍逻辑2222222222");
                     sendEightDigitsOk(driver,JB,sendBetKey,numberKey,sendBetNumberKey,div);
                 }else{
+                    log.info("该比赛黑单，走加倍逻辑3333333333");
                     if(numberKey == 6){
                         DingUtil d = new DingUtil();
                         d.sendMassage("[ " + sendBetKey + " ]比赛黑7场，重新开始下");
@@ -421,7 +425,7 @@ public class BetUtil {
                 }
             }
             // 点击下注使用
-            sendBetOk(numberKey,driver,JB);
+            sendBetOk(sendBetNumberKey,driver,JB);
             log.info("=================== ["+div+"] 结束 ===================");
         } catch (Exception e) {
             log.info("====================== 下注报错了，跳过此次购买[购买单位：" + sendBetKey + "] ======================");
@@ -436,10 +440,7 @@ public class BetUtil {
      * @param JB
      * @throws InterruptedException
      */
-    public void sendBetOk(int numberKey,WebDriver driver,String JB) throws InterruptedException {
-        // 点击选择分
-        driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
-        Thread.sleep(1000);
+    public void sendBetOk(String sendBetNumberKey,WebDriver driver,String JB) throws InterruptedException {
         // 倍率
         List<String> rl = new ArrayList<>();
         rl.add("5");
@@ -450,7 +451,11 @@ public class BetUtil {
         rl.add("1340");
         rl.add("2710");
         // 将倍率取出
+        int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
         String amount = rl.get(numberKey);
+        log.info("---------------------------------");
+        log.info("我是取出来的倍率次数和倍数[numberKey],[amount] -> {},{}",numberKey,amount);
+        log.info("---------------------------------");
         int addbs = Integer.parseInt(amount);
         log.info("&&&&&&&&&&我是开始addbs参数&&&&&&&&&& -> {}", addbs);
         // 根据比例扣减循环数
@@ -528,7 +533,6 @@ public class BetUtil {
      * @param div
      */
     public void sendEightDigitsOk(WebDriver driver,String JB,String sendBetKey,int numberKey,String sendBetNumberKey,int div){
-        log.info("该比赛红单，走初倍逻辑");
         String jzws = random1();
         String[] split = jzws.split(",");
         for (int i = 0; i < 10; i++) {
@@ -552,7 +556,6 @@ public class BetUtil {
      * @param div
      */
     public void sendEightDigitsErr(WebDriver driver,String JB,String sendBetKey,int numberKey,String sendBetNumberKey,int div){
-        log.info("该比赛红单，走加倍逻辑");
         String jzws = random1();
         String[] split = jzws.split(",");
         for (int i = 0; i < 10; i++) {
@@ -577,6 +580,7 @@ public class BetUtil {
      * @param JB
      */
     public void sendOddAndEven(WebDriver driver,int numberKey,int div,String sendBetWs,String sendBetNumberKey,String JB){
+        log.info("走单双判断逻辑");
         if (random() == 1) {
             // 单
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
