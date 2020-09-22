@@ -122,17 +122,6 @@ public class BetUtil {
             // 全屏操作
             Thread.sleep(1000);
             driver.switchTo().window(JB).manage().window().maximize();
-            List<String> rl = new ArrayList<>();
-            rl.add("2");
-            rl.add("6");
-            rl.add("14");
-            rl.add("30");
-            rl.add("62");
-            rl.add("120");
-            rl.add("244");
-            rl.add("502");
-            rl.add("1020");
-            rl.add("2072");
             // 循环调用即可
             do {
                 // 判断当前时间是否在这个事件段
@@ -434,6 +423,8 @@ public class BetUtil {
             Thread.sleep(500);
             element.sendKeys("164");
             addbs = addbs - 1641;
+        }else{
+            addbs = addbs - 1;
         }
         log.info("&&&&&&&&&&我是最终addbs参数&&&&&&&&&& -> {}", addbs);
         for (int i = 0; i < addbs; i++) {
@@ -446,7 +437,7 @@ public class BetUtil {
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
         Thread.sleep(200);
         driver.switchTo().window(JB).navigate().refresh();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         // 点击下一个参数
         List<String> r2 = new ArrayList<>();
         rl.add("10");
@@ -476,16 +467,18 @@ public class BetUtil {
             Thread.sleep(500);
             element.sendKeys("164");
             addbs2 = addbs2 - 1641;
+        }else{
+            addbs = addbs - 1;
         }
         for (int i = 0; i < addbs2; i++) {
             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
         }
         // 确认下注
-        Thread.sleep(200);
+        Thread.sleep(100);
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
-        Thread.sleep(200);
+        Thread.sleep(100);
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
-        Thread.sleep(200);
+        Thread.sleep(100);
     }
 
     /**
