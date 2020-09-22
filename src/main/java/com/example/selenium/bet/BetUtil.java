@@ -417,12 +417,12 @@ public class BetUtil {
         // 根据比例扣减循环数
         if (addbs > 100 && addbs < 200) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(500);
+            Thread.sleep(200);
             element.sendKeys("12");
             addbs = addbs - 121;
         } else if (addbs > 1000 && addbs < 2000) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(500);
+            Thread.sleep(200);
             element.sendKeys("164");
             addbs = addbs - 1641;
         }else{
@@ -441,7 +441,7 @@ public class BetUtil {
         Thread.sleep(2000);
 
         String[] split = fifoCache.get(sendBetKey).split(",");
-        log.info("我是新增购买数据 - > {},{}",JSON.toJSONString(str),str.split(",")[0]);
+        log.info("我是新增购买数据 - > {},{}",JSON.toJSONString(split),split[0]);
         // 点击
         driver.switchTo().window(JB).findElement(By.xpath(str.split(",")[0])).click();
         fifoCache.put(sendBetKey,split[1]);
@@ -453,12 +453,12 @@ public class BetUtil {
         int addbs2 = Integer.parseInt(amount2);
         if (addbs2 > 100 && addbs2 < 200) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(500);
+            Thread.sleep(200);
             element.sendKeys("12");
             addbs2 = addbs2 - 121;
         } else if (addbs2 > 1000 && addbs2 < 2000) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(500);
+            Thread.sleep(200);
             element.sendKeys("164");
             addbs2 = addbs2 - 1641;
         }else{
