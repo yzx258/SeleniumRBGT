@@ -433,12 +433,12 @@ public class BetUtil {
             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
         }
         // 确认下注
-        Thread.sleep(200);
+        Thread.sleep(100);
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
-        Thread.sleep(200);
+        Thread.sleep(100);
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
         driver.switchTo().window(JB).navigate().refresh();
-        Thread.sleep(3000);
+        Thread.sleep(2000);
 
         String[] split = fifoCache.get(sendBetKey).split(",");
         log.info("我是新增购买数据 - > {},{}",JSON.toJSONString(split),split[0]);
