@@ -400,6 +400,7 @@ public class BetUtil {
             // 点击下注使用
             sendBetOk(sendBetNumberKey,driver,JB);
             log.info("=================== ["+div+"] 结束 ===================");
+            System.out.println("");
         } catch (Exception e) {
             log.info("====================== 下注报错了，跳过此次购买[购买单位：" + sendBetKey + "] ======================");
         }
@@ -585,9 +586,7 @@ public class BetUtil {
             if (ran1 != ran2) {
                 flag = true;
             }
-            System.out.println(ran1 + " == " + ran2 + " " + flag);
         } while (!flag);
-        System.out.println(ran1 + " != " + ran2);
         return ran1 + "," + ran2;
     }
 
