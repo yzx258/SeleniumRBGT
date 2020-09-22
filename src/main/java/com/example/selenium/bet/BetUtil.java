@@ -165,7 +165,7 @@ public class BetUtil {
                 log.info("*******************************");
                 Thread.sleep(200);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(3000);
+                Thread.sleep(2000);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
                 // log.info("万位数据 -> {}", wws);
@@ -387,18 +387,13 @@ public class BetUtil {
             log.info(fifoCache.get(sendBetKey) + ".contains("+ws+") -> {}", fifoCache.get(sendBetKey).contains(ws));
             if (fifoCache.get(sendBetKey).contains(ws)) {
                 log.info("该比赛黑单，走加倍逻辑0000000000");
-                if (numberKey >= 2) {
-                    // 走单双下注逻辑
-                    sendOddAndEven(driver,div,sendBetKey,sendBetNumberKey,JB);
-                } else {
-                    sendEightDigitsErr(driver,JB,sendBetKey,sendBetNumberKey,div);
-                }
+                sendEightDigitsErr(driver,JB,sendBetKey,sendBetNumberKey,div);
             } else {
                 log.info("该比赛红单，走初倍逻辑1111111111");
                 sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
             }
             // 点击下注使用
-            sendBetOk(sendBetNumberKey,driver,JB);
+            sendBetOk(sendBetNumberKey,driver,JB,sendBetKey,div);
             log.info("=================== ["+div+"] 结束 ===================");
             System.out.println("");
         } catch (Exception e) {
@@ -414,15 +409,12 @@ public class BetUtil {
      * @param JB
      * @throws InterruptedException
      */
-    public void sendBetOk(String sendBetNumberKey,WebDriver driver,String JB) throws InterruptedException {
+    public void sendBetOk(String sendBetNumberKey,WebDriver driver,String JB,String sendBetKey,int div) throws InterruptedException {
         // 倍率
         List<String> rl = new ArrayList<>();
-        rl.add("5");
-        rl.add("30");
-        rl.add("165");
-        rl.add("1100");
-        rl.add("660");
-        rl.add("1340");
+        rl.add("10");
+        rl.add("130");
+        rl.add("1650");
         // 将倍率取出
         int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
         String amount = rl.get(numberKey);
@@ -432,7 +424,12 @@ public class BetUtil {
         int addbs = Integer.parseInt(amount);
         log.info("&&&&&&&&&&我是开始addbs参数&&&&&&&&&& -> {}", addbs);
         // 根据比例扣减循环数
-        if (addbs > 100 && addbs < 200) {
+        if (addbs > 50 && addbs < 70) {
+            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+            Thread.sleep(500);
+            element.sendKeys("6");
+            addbs = addbs - 61;
+        }else if (addbs > 100 && addbs < 200) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
             element.sendKeys("15");
@@ -442,11 +439,11 @@ public class BetUtil {
             Thread.sleep(500);
             element.sendKeys("30");
             addbs = addbs - 301;
-        } else if (addbs > 500 && addbs < 700) {
+        } else if (addbs > 500 && addbs <900) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("60");
-            addbs = addbs - 601;
+            element.sendKeys("81");
+            addbs = addbs - 811;
         } else if (addbs > 1000 && addbs < 1400) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
@@ -462,6 +459,47 @@ public class BetUtil {
         }
         log.info("&&&&&&&&&&我是最终addbs参数&&&&&&&&&& -> {}", addbs);
         for (int i = 0; i < addbs; i++) {
+            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
+        }
+        // 确认下注
+        Thread.sleep(200);
+        driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
+        Thread.sleep(200);
+        driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
+        Thread.sleep(200);
+        driver.switchTo().window(JB).navigate().refresh();
+        Thread.sleep(2000);
+        // 点击下一个参数
+        List<String> r2 = new ArrayList<>();
+        rl.add("20");
+        rl.add("260");
+        rl.add("3300");
+        String[] split = fifoCache.get(sendBetKey).split(",");
+        // 点击
+        driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[2]/table/tbody/tr/td[" + split[0] + "]")).click();
+        fifoCache.put(sendBetKey,split[1]);
+        // 点击分
+        driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
+        Thread.sleep(200);
+        // 根据比例扣减循环数
+        String amount2 = rl.get(numberKey);
+        log.info("---------------------------------");
+        log.info("我是取出来的倍率次数和倍数[numberKey],[amount] -> {},{}",numberKey,amount2);
+        log.info("---------------------------------");
+        int addbs2 = Integer.parseInt(amount);
+        log.info("&&&&&&&&&&我是开始addbs2参数&&&&&&&&&& -> {}", addbs2);
+        if (addbs2 > 200 && addbs2 < 400) {
+            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+            Thread.sleep(500);
+            element.sendKeys("25");
+            addbs2 = addbs2 - 251;
+        } else if (addbs2 > 3000 && addbs2 < 4000) {
+            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+            Thread.sleep(500);
+            element.sendKeys("329");
+            addbs2 = addbs2 - 3291;
+        }
+        for (int i = 0; i < addbs2; i++) {
             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
         }
         // 确认下注
