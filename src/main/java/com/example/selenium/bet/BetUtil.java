@@ -5,6 +5,7 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSON;
 import com.example.selenium.dto.InstructionDTO;
 import com.example.selenium.util.DingUtil;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
@@ -367,22 +368,20 @@ public class BetUtil {
             if (null == fifoCache.get(sendBetNumberKey)) {
                 fifoCache.put(sendBetNumberKey, "0");
             }
-            if(null == fifoCache.get(sendBetKey)){
-                fifoCache.put(sendBetKey, "0,9");
-            }
             int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             log.info("=================== ["+div+"] 开始 ===================");
             log.info("我是购买次数[sendBetNumberKey] -> {}", numberKey);
             log.info(fifoCache.get(sendBetKey) + ".contains("+ws+") -> {}", fifoCache.get(sendBetKey).contains(ws));
-            if (fifoCache.get(sendBetKey).contains(ws)) {
+            String str = "";
+            if (fifoCache.get(sendBetKey).contains(ws) && null != fifoCache.get(sendBetKey)) {
                 log.info("该比赛黑单，走加倍逻辑0000000000");
                 sendEightDigitsErr(driver,JB,sendBetKey,sendBetNumberKey,div);
             } else {
                 log.info("该比赛红单，走初倍逻辑1111111111");
-                sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
+                str = sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
             }
             // 点击下注使用
-            sendBetOk(sendBetNumberKey,driver,JB,sendBetKey,div);
+            sendBetOk(sendBetNumberKey,driver,JB,sendBetKey,div,str);
             log.info("=================== ["+div+"] 结束 ===================");
             System.out.println("");
         } catch (Exception e) {
@@ -398,7 +397,7 @@ public class BetUtil {
      * @param JB
      * @throws InterruptedException
      */
-    public void sendBetOk(String sendBetNumberKey,WebDriver driver,String JB,String sendBetKey,int div) throws InterruptedException {
+    public void sendBetOk(String sendBetNumberKey,WebDriver driver,String JB,String sendBetKey,int div,String str) throws InterruptedException {
         // 倍率
         List<String> rl = new ArrayList<>();
         rl.add("10");
@@ -435,28 +434,20 @@ public class BetUtil {
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
         Thread.sleep(200);
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
-        Thread.sleep(200);
         driver.switchTo().window(JB).navigate().refresh();
-        Thread.sleep(1000);
-        // 点击下一个参数
-        List<String> r2 = new ArrayList<>();
-        rl.add("10");
-        rl.add("130");
-        rl.add("1650");
+        Thread.sleep(3000);
+
         String[] split = fifoCache.get(sendBetKey).split(",");
+        log.info("我是新增购买数据 - > {},{}",JSON.toJSONString(split),split[0]);
         // 点击
-        driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[2]/table/tbody/tr/td[" + split[0] + "]")).click();
+        driver.switchTo().window(JB).findElement(By.xpath(str.split(",")[0])).click();
         fifoCache.put(sendBetKey,split[1]);
         // 点击分
         driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
         Thread.sleep(200);
         // 根据比例扣减循环数
         String amount2 = rl.get(numberKey);
-        log.info("---------------------------------");
-        log.info("我是取出来的倍率次数和倍数[numberKey],[amount] -> {},{}",numberKey,amount2);
-        log.info("---------------------------------");
-        int addbs2 = Integer.parseInt(amount);
-        log.info("&&&&&&&&&&我是开始addbs2参数&&&&&&&&&& -> {}", addbs2);
+        int addbs2 = Integer.parseInt(amount2);
         if (addbs2 > 100 && addbs2 < 200) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
@@ -514,11 +505,14 @@ public class BetUtil {
      * @param sendBetNumberKey
      * @param div
      */
-    public void sendEightDigitsOk(WebDriver driver,String JB,String sendBetKey,String sendBetNumberKey,int div){
+    public String sendEightDigitsOk(WebDriver driver,String JB,String sendBetKey,String sendBetNumberKey,int div){
+        StringBuffer buf = new StringBuffer();
         String jzws = random1();
         String[] split = jzws.split(",");
         for (int i = 0; i < 10; i++) {
             if (Integer.parseInt(split[0]) == i || Integer.parseInt(split[1]) == i) {
+                String str = "/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[2]/table/tbody/tr/td[" + (i + 1) + "]";
+                buf.append(str).append(",");
                 continue;
             }
             // 点击
@@ -527,6 +521,7 @@ public class BetUtil {
         int numberKey = 0;
         fifoCache.put(sendBetNumberKey, numberKey + "");
         fifoCache.put(sendBetKey, jzws);
+        return buf.toString();
     }
 
     /**
@@ -537,11 +532,14 @@ public class BetUtil {
      * @param sendBetNumberKey
      * @param div
      */
-    public void sendEightDigitsErr(WebDriver driver,String JB,String sendBetKey,String sendBetNumberKey,int div){
+    public String sendEightDigitsErr(WebDriver driver,String JB,String sendBetKey,String sendBetNumberKey,int div){
+        StringBuffer buf = new StringBuffer();
         String jzws = random1();
         String[] split = jzws.split(",");
         for (int i = 0; i < 10; i++) {
             if (Integer.parseInt(split[0]) == i || Integer.parseInt(split[1]) == i) {
+                String str = "/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[2]/table/tbody/tr/td[" + (i + 1) + "]";
+                buf.append(str).append(",");
                 continue;
             }
             // 点击
@@ -558,6 +556,7 @@ public class BetUtil {
         }
         fifoCache.put(sendBetNumberKey, numberKey + "");
         fifoCache.put(sendBetKey, jzws);
+        return buf.toString();
     }
 
     /**
