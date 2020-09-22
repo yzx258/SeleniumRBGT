@@ -388,6 +388,7 @@ public class BetUtil {
             int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             log.info("=================== ["+div+"] 开始 ===================");
             log.info("我是购买次数[sendBetNumberKey] -> {}", numberKey);
+            log.info(fifoCache.get(sendBetKey) + ".contains("+ws+") -> {}", fifoCache.get(sendBetKey).contains(ws));
             if (fifoCache.get(sendBetKey).contains(ws)) {
                 log.info("该比赛黑单，走加倍逻辑0000000000");
                 if (numberKey >= 2) {
