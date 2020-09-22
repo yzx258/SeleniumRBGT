@@ -171,7 +171,6 @@ public class BetUtil {
                 // log.info("万位数据 -> {}", wws);
                 // sendBet(wws, driver, JB, qs, rl, "sendBetWw", "sendBetAmountWw", "sendBetNumberWw", 1);
                 sendBetDob(wws, driver, JB, "WW_BD", "WW_CS", "WW", 1);
-                Thread.sleep(1000);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注千位
@@ -179,7 +178,6 @@ public class BetUtil {
                 // log.info("千位数据 -> {}", qws);
                 // sendBet(qws, driver, JB, qs, rl, "sendBetQw", "sendBetAmountQw", "sendBetNumberQw", 2);
                 sendBetDob(qws, driver, JB, "QW_BD", "QW_CS", "QW", 2);
-                Thread.sleep(1000);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注百位
@@ -187,7 +185,6 @@ public class BetUtil {
                 //  log.info("百位数据 -> {}", bws);
                 // sendBet(bws, driver, JB, qs, rl, "sendBetBw", "sendBetAmountBw", "sendBetNumberBw", 3);
                 sendBetDob(bws, driver, JB, "BW_BD", "BW_CS", "BW", 3);
-                Thread.sleep(1000);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注十位
@@ -195,7 +192,6 @@ public class BetUtil {
                 // log.info("十位数据 -> {}", sws);
                 //sendBet(sws, driver, JB, qs, rl, "sendBetSw", "sendBetAmountSw", "sendBetNumberSw", 4);
                 sendBetDob(sws, driver, JB, "SW_BD", "SW_CS", "SW", 4);
-                Thread.sleep(1000);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注个位
@@ -377,7 +373,7 @@ public class BetUtil {
         try {
             // 点击选择分
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
-            Thread.sleep(1000);
+            Thread.sleep(200);
             // 判断比赛是否走8位
             if (null == fifoCache.get(sendBetNumberKey)) {
                 fifoCache.put(sendBetNumberKey, "0");
