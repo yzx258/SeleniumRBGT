@@ -403,9 +403,10 @@ public class BetUtil {
     public void sendBetOk(String sendBetNumberKey,WebDriver driver,String JB,String sendBetKey,int div,String str) throws InterruptedException {
         // 倍率
         List<String> rl = new ArrayList<>();
-        rl.add("10");
-        rl.add("130");
-        rl.add("1650");
+        rl.add("1");
+        rl.add("13");
+        rl.add("165");
+        rl.add("1000");
         // 将倍率取出
         int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
         String amount = rl.get(numberKey);
@@ -420,11 +421,11 @@ public class BetUtil {
             Thread.sleep(200);
             element.sendKeys("12");
             addbs = addbs - 121;
-        } else if (addbs > 1000 && addbs < 2000) {
+        } else if (addbs > 900 && addbs < 1200) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(200);
-            element.sendKeys("164");
-            addbs = addbs - 1641;
+            element.sendKeys("99");
+            addbs = addbs - 991;
         }else{
             addbs = addbs - 1;
         }
@@ -438,41 +439,42 @@ public class BetUtil {
         Thread.sleep(100);
         driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
         driver.switchTo().window(JB).navigate().refresh();
-        Thread.sleep(2000);
-
-        String[] split = fifoCache.get(sendBetKey).split(",");
-        log.info("我是新增购买数据 - > {},{}",JSON.toJSONString(split),split[0]);
-        // 点击
-        driver.switchTo().window(JB).findElement(By.xpath(str.split(",")[0])).click();
-        fifoCache.put(sendBetKey,split[1]);
-        // 点击分
-        driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
-        Thread.sleep(200);
-        // 根据比例扣减循环数
-        String amount2 = rl.get(numberKey);
-        int addbs2 = Integer.parseInt(amount2);
-        if (addbs2 > 100 && addbs2 < 200) {
-            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+        if(numberKey != 3){
+            Thread.sleep(2000);
+            String[] split = fifoCache.get(sendBetKey).split(",");
+            log.info("我是新增购买数据 - > {},{}",JSON.toJSONString(split),split[0]);
+            // 点击
+            driver.switchTo().window(JB).findElement(By.xpath(str.split(",")[0])).click();
+            fifoCache.put(sendBetKey,split[1]);
+            // 点击分
+            driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
             Thread.sleep(200);
-            element.sendKeys("12");
-            addbs2 = addbs2 - 121;
-        } else if (addbs2 > 1000 && addbs2 < 2000) {
-            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(200);
-            element.sendKeys("164");
-            addbs2 = addbs2 - 1641;
-        }else{
-            addbs2 = addbs2 - 1;
+            // 根据比例扣减循环数
+            String amount2 = rl.get(numberKey);
+            int addbs2 = Integer.parseInt(amount2);
+            if (addbs2 > 100 && addbs2 < 200) {
+                WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                Thread.sleep(200);
+                element.sendKeys("12");
+                addbs2 = addbs2 - 121;
+            } else if (addbs2 > 1000 && addbs2 < 2000) {
+                WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                Thread.sleep(200);
+                element.sendKeys("164");
+                addbs2 = addbs2 - 1641;
+            }else{
+                addbs2 = addbs2 - 1;
+            }
+            for (int i = 0; i < addbs2; i++) {
+                driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
+            }
+            // 确认下注
+            Thread.sleep(100);
+            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
+            Thread.sleep(100);
+            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
+            Thread.sleep(100);
         }
-        for (int i = 0; i < addbs2; i++) {
-            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
-        }
-        // 确认下注
-        Thread.sleep(100);
-        driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
-        Thread.sleep(100);
-        driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
-        Thread.sleep(100);
     }
 
     /**
