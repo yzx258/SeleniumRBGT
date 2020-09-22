@@ -368,12 +368,15 @@ public class BetUtil {
             if (null == fifoCache.get(sendBetNumberKey)) {
                 fifoCache.put(sendBetNumberKey, "0");
             }
+            if(null == fifoCache.get(sendBetKey)){
+                fifoCache.put(sendBetKey, "10");
+            }
             int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             log.info("=================== ["+div+"] 开始 ===================");
             log.info("我是购买次数[sendBetNumberKey] -> {}", numberKey);
             log.info(fifoCache.get(sendBetKey) + ".contains("+ws+") -> {}", fifoCache.get(sendBetKey).contains(ws));
             String str = "";
-            if (fifoCache.get(sendBetKey).contains(ws) && null != fifoCache.get(sendBetKey)) {
+            if (fifoCache.get(sendBetKey).contains(ws)) {
                 log.info("该比赛黑单，走加倍逻辑0000000000");
                 sendEightDigitsErr(driver,JB,sendBetKey,sendBetNumberKey,div);
             } else {
