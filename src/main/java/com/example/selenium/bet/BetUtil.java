@@ -556,6 +556,9 @@ public class BetUtil {
         }
         int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
         if(numberKey == 2){
+            String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+            DingUtil dingUtil = new DingUtil();
+            dingUtil.sendMassage("黑3场了，航行者,前来汇报 : " + text);
             numberKey = 0;
         }else{
             numberKey = numberKey + 1;
