@@ -369,7 +369,7 @@ public class BetUtil {
                 fifoCache.put(sendBetNumberKey, "0");
             }
             if(null == fifoCache.get(sendBetKey)){
-                fifoCache.put(sendBetKey, "10");
+                fifoCache.put(sendBetKey, "红");
             }
             int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             log.info("=================== ["+div+"] 开始 ===================");
