@@ -378,7 +378,7 @@ public class BetUtil {
             String str = "";
             if (fifoCache.get(sendBetKey).contains(ws)) {
                 log.info("该比赛黑单，走加倍逻辑0000000000");
-                sendEightDigitsErr(driver,JB,sendBetKey,sendBetNumberKey,div);
+                str = sendEightDigitsErr(driver,JB,sendBetKey,sendBetNumberKey,div);
             } else {
                 log.info("该比赛红单，走初倍逻辑1111111111");
                 str = sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
@@ -441,7 +441,7 @@ public class BetUtil {
         Thread.sleep(2000);
 
         String[] split = fifoCache.get(sendBetKey).split(",");
-        log.info("我是新增购买数据 - > {},{}",JSON.toJSONString(split),split[0]);
+        log.info("我是新增购买数据 - > {},{}",JSON.toJSONString(str),str.split(",")[0]);
         // 点击
         driver.switchTo().window(JB).findElement(By.xpath(str.split(",")[0])).click();
         fifoCache.put(sendBetKey,split[1]);
