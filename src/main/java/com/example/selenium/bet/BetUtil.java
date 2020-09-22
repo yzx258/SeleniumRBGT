@@ -468,7 +468,7 @@ public class BetUtil {
             element.sendKeys("164");
             addbs2 = addbs2 - 1641;
         }else{
-            addbs = addbs - 1;
+            addbs2 = addbs2 - 1;
         }
         for (int i = 0; i < addbs2; i++) {
             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
