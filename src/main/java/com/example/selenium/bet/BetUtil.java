@@ -165,7 +165,7 @@ public class BetUtil {
                 log.info("*******************************");
                 Thread.sleep(200);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(2000);
+                Thread.sleep(3000);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
                 // log.info("万位数据 -> {}", wws);
@@ -388,39 +388,17 @@ public class BetUtil {
             int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             log.info("=================== ["+div+"] 开始 ===================");
             log.info("我是购买次数[sendBetNumberKey] -> {}", numberKey);
-            if (numberKey <= 2) {
-                // 判断WS是否红单
-                log.info(fifoCache.get(sendBetKey) + ".contains("+ws+") -> {}", fifoCache.get(sendBetKey).contains(ws));
-                if (fifoCache.get(sendBetKey).contains(ws)) {
-                    log.info("该比赛黑单，走加倍逻辑0000000000");
-                    if (numberKey == 2) {
-                        // 走单双下注逻辑
-                        sendOddAndEven(driver,div,sendBetWs,sendBetNumberKey,JB);
-                    } else {
-                        sendEightDigitsErr(driver,JB,sendBetKey,sendBetNumberKey,div);
-                    }
+            if (fifoCache.get(sendBetKey).contains(ws)) {
+                log.info("该比赛黑单，走加倍逻辑0000000000");
+                if (numberKey >= 2) {
+                    // 走单双下注逻辑
+                    sendOddAndEven(driver,div,sendBetKey,sendBetNumberKey,JB);
                 } else {
-                    log.info("该比赛红单，走初倍逻辑1111111111");
-                    sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
+                    sendEightDigitsErr(driver,JB,sendBetKey,sendBetNumberKey,div);
                 }
             } else {
-                // 判断单双是否中
-                if(checkOddAndEven(ws,sendBetWs)){
-                    log.info("该比赛红单，走初倍逻辑2222222222");
-                    sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
-                }else{
-                    log.info("该比赛黑单，走加倍逻辑3333333333");
-                    if(Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 6){
-                        DingUtil d = new DingUtil();
-                        String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                        d.sendMassage("[ " + sendBetKey + " ]比赛黑7场，重新开始下[航行者,前来汇报："+text+"]");
-                        sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
-                    }else{
-                        // 点击单双
-                        log.info("点击单双");
-                        sendOddAndEven(driver,div,sendBetWs,sendBetNumberKey,JB);
-                    }
-                }
+                log.info("该比赛红单，走初倍逻辑1111111111");
+                sendEightDigitsOk(driver,JB,sendBetKey,sendBetNumberKey,div);
             }
             // 点击下注使用
             sendBetOk(sendBetNumberKey,driver,JB);
@@ -460,13 +438,13 @@ public class BetUtil {
         if (addbs > 100 && addbs < 200) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("10");
-            addbs = addbs - 101;
+            element.sendKeys("15");
+            addbs = addbs - 151;
         } else if (addbs > 200 && addbs < 400) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
             element.sendKeys("30");
-            addbs = addbs - 201;
+            addbs = addbs - 301;
         } else if (addbs > 500 && addbs < 700) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
@@ -573,22 +551,22 @@ public class BetUtil {
      * @param driver
      * @param numberKey
      * @param div
-     * @param sendBetWs
+     * @param sendBetKey
      * @param sendBetNumberKey
      * @param JB
      */
-    public void sendOddAndEven(WebDriver driver,int div,String sendBetWs,String sendBetNumberKey,String JB){
+    public void sendOddAndEven(WebDriver driver,int div,String sendBetKey,String sendBetNumberKey,String JB){
         log.info("走单双判断逻辑");
         if (random() == 1) {
             // 单
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
-            fifoCache.put(sendBetWs, "单");
-            log.info("fifoCache.get(" + sendBetWs + ")购买： -> {}", fifoCache.get(sendBetWs));
+            fifoCache.put(sendBetKey, "0,2,4,6,8");
+            log.info("fifoCache.get(" + sendBetKey + ")购买： -> {}", fifoCache.get(sendBetKey));
         } else {
             // 双
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[5]")).click();
-            fifoCache.put(sendBetWs, "双");
-            log.info("fifoCache.get(" + sendBetWs + ")购买： -> {}", fifoCache.get(sendBetWs));
+            fifoCache.put(sendBetKey, "1,3,5,7,9");
+            log.info("fifoCache.get(" + sendBetKey + ")购买： -> {}", fifoCache.get(sendBetKey));
         }
         int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey)) + 1;
         fifoCache.put(sendBetNumberKey, numberKey + "");
