@@ -387,7 +387,7 @@ public class BetUtil {
             log.info(fifoCache.get(sendBetKey) + ".contains("+ws+") -> {}", fifoCache.get(sendBetKey).contains(ws));
             if (fifoCache.get(sendBetKey).contains(ws)) {
                 log.info("该比赛黑单，走加倍逻辑0000000000");
-                if (numberKey >= 2) {
+                if (numberKey >= 3) {
                     // 走单双下注逻辑
                     sendOddAndEven(driver,div,sendBetKey,sendBetNumberKey,JB);
                 } else {
@@ -417,13 +417,14 @@ public class BetUtil {
     public void sendBetOk(String sendBetNumberKey,WebDriver driver,String JB) throws InterruptedException {
         // 倍率
         List<String> rl = new ArrayList<>();
-        rl.add("5");
+        rl.add("1");
+        rl.add("6");
         rl.add("30");
-        rl.add("165");
-        rl.add("330");
-        rl.add("660");
-        rl.add("1340");
-        rl.add("2710");
+        rl.add("220");
+        rl.add("430");
+        rl.add("870");
+        rl.add("1760");
+        rl.add("3600");
         // 将倍率取出
         int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
         String amount = rl.get(numberKey);
@@ -441,23 +442,28 @@ public class BetUtil {
         } else if (addbs > 200 && addbs < 400) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("30");
-            addbs = addbs - 301;
-        } else if (addbs > 500 && addbs < 700) {
+            element.sendKeys("20");
+            addbs = addbs - 201;
+        } else if (addbs > 400 && addbs < 700) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("60");
-            addbs = addbs - 601;
-        } else if (addbs > 1000 && addbs < 1400) {
+            element.sendKeys("40");
+            addbs = addbs - 401;
+        } else if (addbs > 800 && addbs < 1000) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("130");
-            addbs = addbs - 1301;
-        } else if (addbs > 2000 && addbs < 2800) {
+            element.sendKeys("85");
+            addbs = addbs - 851;
+        } else if (addbs > 1000 && addbs < 2000) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("270");
-            addbs = addbs - 2701;
+            element.sendKeys("174");
+            addbs = addbs - 1741;
+        } else if (addbs > 3000 && addbs < 4000) {
+            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+            Thread.sleep(500);
+            element.sendKeys("358");
+            addbs = addbs - 3581;
         } else {
             addbs = addbs - 1;
         }
@@ -556,17 +562,26 @@ public class BetUtil {
     public void sendOddAndEven(WebDriver driver,int div,String sendBetKey,String sendBetNumberKey,String JB){
         log.info("走单双判断逻辑");
         if (random() == 1) {
-            // 单
-            driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
-            fifoCache.put(sendBetKey, "0,2,4,6,8");
+            // 大 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[2]
+            driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[2]")).click();
+            fifoCache.put(sendBetKey, "5,6,7,8,9");
             log.info("fifoCache.get(" + sendBetKey + ")购买： -> {}", fifoCache.get(sendBetKey));
         } else {
-            // 双
-            driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[5]")).click();
-            fifoCache.put(sendBetKey, "1,3,5,7,9");
+            // 小 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[3]
+            driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[3]")).click();
+            fifoCache.put(sendBetKey, "0,1,2,3,4");
             log.info("fifoCache.get(" + sendBetKey + ")购买： -> {}", fifoCache.get(sendBetKey));
         }
-        int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey)) + 1;
+        int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
+        if(numberKey == 8){
+            DingUtil d = new DingUtil();
+            d.sendMassage("[ " + sendBetKey + " ]比赛黑6场，重新开始下");
+            String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+            d.sendMassage("我是航行者,前来汇报 : " + text);
+            numberKey = 0;
+        }else{
+            numberKey = numberKey + 1;
+        }
         fifoCache.put(sendBetNumberKey, numberKey + "");
         log.info("我是重新设置的购买次数[sendBetNumberKey] -> {}", fifoCache.get(sendBetNumberKey));
     }
