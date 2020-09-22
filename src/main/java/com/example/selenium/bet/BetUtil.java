@@ -424,38 +424,16 @@ public class BetUtil {
         int addbs = Integer.parseInt(amount);
         log.info("&&&&&&&&&&我是开始addbs参数&&&&&&&&&& -> {}", addbs);
         // 根据比例扣减循环数
-        if (addbs > 50 && addbs < 70) {
+        if (addbs > 100 && addbs < 200) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("6");
-            addbs = addbs - 61;
-        }else if (addbs > 100 && addbs < 200) {
+            element.sendKeys("12");
+            addbs = addbs - 121;
+        } else if (addbs > 1000 && addbs < 2000) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("15");
-            addbs = addbs - 151;
-        } else if (addbs > 200 && addbs < 400) {
-            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(500);
-            element.sendKeys("30");
-            addbs = addbs - 301;
-        } else if (addbs > 500 && addbs <900) {
-            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(500);
-            element.sendKeys("81");
-            addbs = addbs - 811;
-        } else if (addbs > 1000 && addbs < 1400) {
-            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(500);
-            element.sendKeys("130");
-            addbs = addbs - 1301;
-        } else if (addbs > 2000 && addbs < 2800) {
-            WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-            Thread.sleep(500);
-            element.sendKeys("270");
-            addbs = addbs - 2701;
-        } else {
-            addbs = addbs - 1;
+            element.sendKeys("164");
+            addbs = addbs - 1641;
         }
         log.info("&&&&&&&&&&我是最终addbs参数&&&&&&&&&& -> {}", addbs);
         for (int i = 0; i < addbs; i++) {
@@ -471,9 +449,9 @@ public class BetUtil {
         Thread.sleep(2000);
         // 点击下一个参数
         List<String> r2 = new ArrayList<>();
-        rl.add("20");
-        rl.add("260");
-        rl.add("3300");
+        rl.add("10");
+        rl.add("130");
+        rl.add("1650");
         String[] split = fifoCache.get(sendBetKey).split(",");
         // 点击
         driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[2]/table/tbody/tr/td[" + split[0] + "]")).click();
@@ -488,16 +466,16 @@ public class BetUtil {
         log.info("---------------------------------");
         int addbs2 = Integer.parseInt(amount);
         log.info("&&&&&&&&&&我是开始addbs2参数&&&&&&&&&& -> {}", addbs2);
-        if (addbs2 > 200 && addbs2 < 400) {
+        if (addbs2 > 100 && addbs2 < 200) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("25");
-            addbs2 = addbs2 - 251;
-        } else if (addbs2 > 3000 && addbs2 < 4000) {
+            element.sendKeys("12");
+            addbs2 = addbs2 - 121;
+        } else if (addbs2 > 1000 && addbs2 < 2000) {
             WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
             Thread.sleep(500);
-            element.sendKeys("329");
-            addbs2 = addbs2 - 3291;
+            element.sendKeys("164");
+            addbs2 = addbs2 - 1641;
         }
         for (int i = 0; i < addbs2; i++) {
             driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
@@ -576,7 +554,12 @@ public class BetUtil {
             // 点击
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[2]/table/tbody/tr/td[" + (i + 1) + "]")).click();
         }
-        int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey)) + 1;
+        int numberKey = Integer.parseInt(fifoCache.get(sendBetNumberKey));
+        if(numberKey == 2){
+            numberKey = 0;
+        }else{
+            numberKey = numberKey + 1;
+        }
         fifoCache.put(sendBetNumberKey, numberKey + "");
         fifoCache.put(sendBetKey, jzws);
     }
