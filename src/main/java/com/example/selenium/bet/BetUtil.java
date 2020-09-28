@@ -259,7 +259,7 @@ public class BetUtil {
             log.info("下注场次[" + sendBetKey + "] -> {}", fifoCache.get(sendBetKey));
             log.info("***********");
             // 判断是否红[fifoCache.get("sendBet")]
-            log.info("fifoCache.get("+sendBetKey+").contains("+ws+") -> {}",fifoCache.get(sendBetKey).contains(ws));
+            log.info("["+fifoCache.get(sendBetKey)+"].contains("+ws+") -> {}",fifoCache.get(sendBetKey).contains(ws));
             if (fifoCache.get(sendBetKey).contains(ws)) {
                 // 上期比赛结果为单
                 log.info("比赛单【fifoCache.get(sendBetKey).contains("+ws+")】 -> " + "单".equals(fifoCache.get(sendBetKey)));
@@ -271,6 +271,22 @@ public class BetUtil {
                 log.info("ww -> :" + ws + " -> " + fifoCache.get(sendBetKey));
                 flag = false;
                 if (null != fifoCache.get(sendBetNumberKey)) {
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 10) {
+                        log.info("[ " + sendBetKey + " ]比赛黑10场，从第0场开始购开始购买");
+                        Thread.sleep(2000);
+                        DingUtil d = new DingUtil();
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
+                        String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                        d.sendMassage("黑12场了，航行者,前来汇报 : " + text);
+                    }
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 11) {
+                        log.info("[ " + sendBetKey + " ]比赛黑11场，从第0场开始购开始购买");
+                        Thread.sleep(2000);
+                        DingUtil d = new DingUtil();
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
+                        String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                        d.sendMassage("黑12场了，航行者,前来汇报 : " + text);
+                    }
                     if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 12) {
                         log.info("[ " + sendBetKey + " ]比赛黑12场，从第0场开始购开始购买");
                         Thread.sleep(2000);
@@ -288,7 +304,6 @@ public class BetUtil {
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑13场了，航行者,前来汇报 : " + text);
                     }
-
                     if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 14) {
                         log.info("[ " + sendBetKey + " ]比赛黑12场，从第0场开始购开始购买");
                         Thread.sleep(2000);
