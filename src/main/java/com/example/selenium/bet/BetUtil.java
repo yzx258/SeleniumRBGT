@@ -130,15 +130,15 @@ public class BetUtil {
             rl.add("4");
             rl.add("8");
             rl.add("17");
-            rl.add("33");
-            rl.add("68");
-            rl.add("132");
-            rl.add("274");
-            rl.add("555");
-            rl.add("1110");
-            rl.add("2258");
+            rl.add("34");
+            rl.add("69");
+            rl.add("140");
+            rl.add("282");
+            rl.add("564");
+            rl.add("1134");
+            rl.add("2281");
             rl.add("2003");
-            rl.add("4000");
+            rl.add("4010");
             // 循环调用即可
             do {
                 // 判断当前时间是否在这个事件段
@@ -274,6 +274,24 @@ public class BetUtil {
                         d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑12场了，航行者,前来汇报 : " + text);
+                    }
+
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 13) {
+                        log.info("[ " + sendBetKey + " ]比赛黑12场，从第0场开始购开始购买");
+                        Thread.sleep(2000);
+                        DingUtil d = new DingUtil();
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
+                        String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                        d.sendMassage("黑12场了，航行者,前来汇报 : " + text);
+                    }
+
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 14) {
+                        log.info("[ " + sendBetKey + " ]比赛黑12场，从第0场开始购开始购买");
+                        Thread.sleep(2000);
+                        DingUtil d = new DingUtil();
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
+                        String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                        d.sendMassage("黑12场了，航行者,前来汇报 : " + text);
                         fifoCache.remove(sendBetNumberKey);
                     }
                 }
@@ -366,11 +384,11 @@ public class BetUtil {
                 }
             }
             // 确认下注
-            Thread.sleep(100);
-            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
-            Thread.sleep(100);
-            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
-            Thread.sleep(200);
+//            Thread.sleep(100);
+//            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
+//            Thread.sleep(100);
+//            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
+//            Thread.sleep(200);
             log.info("====================================================================");
         } catch (Exception e) {
             log.info("====================== 下注报错了，跳过此次购买[购买单位：" + sendBetKey + "] ======================");
