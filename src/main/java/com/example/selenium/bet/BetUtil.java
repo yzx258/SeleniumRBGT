@@ -171,35 +171,35 @@ public class BetUtil {
                 log.info("*******************************");
                 Thread.sleep(200);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(2000);
+                Thread.sleep(3500);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
                 log.info("万位数据 -> {}", wws);
                 sendBet(wws, driver, JB, qs, rl, "sendBetWw", "sendBetAmountWw", "sendBetNumberWw", 1);
                 //sendBetDob(wws, driver, JB, "WW_BD", "WW_CS", "WW", 1);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(2000);
+                Thread.sleep(3500);
                 // 下注千位
                 String qws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[2]")).getText();
                 log.info("千位数据 -> {}", qws);
                 sendBet(qws, driver, JB, qs, rl, "sendBetQw", "sendBetAmountQw", "sendBetNumberQw", 2);
                 //sendBetDob(qws, driver, JB, "QW_BD", "QW_CS", "QW", 2);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(2000);
+                Thread.sleep(3500);
                 // 下注百位
                 String bws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[3]")).getText();
                 log.info("百位数据 -> {}", bws);
                 sendBet(bws, driver, JB, qs, rl, "sendBetBw", "sendBetAmountBw", "sendBetNumberBw", 3);
                 //sendBetDob(bws, driver, JB, "BW_BD", "BW_CS", "BW", 3);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(2000);
+                Thread.sleep(3500);
                 // 下注十位
                 String sws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[4]")).getText();
                 log.info("十位数据 -> {}", sws);
                 sendBet(sws, driver, JB, qs, rl, "sendBetSw", "sendBetAmountSw", "sendBetNumberSw", 4);
                 //sendBetDob(sws, driver, JB, "SW_BD", "SW_CS", "SW", 4);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(2000);
+                Thread.sleep(3500);
                 // 下注个位
                 String gws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[5]")).getText();
                 log.info("个位数据 -> {}", gws);
