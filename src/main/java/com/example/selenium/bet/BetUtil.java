@@ -339,12 +339,10 @@ public class BetUtil {
                 // 填写金额
                 fifoCache.put(sendBetAmountKey, "1");
                 fifoCache.put(sendBetNumberKey, "0");
-                driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
             } else {
                 if (fifoCache.get(sendBetNumberKey) == null) {
                     fifoCache.put(sendBetNumberKey, "0");
                     fifoCache.put(sendBetAmountKey, "1");
-                    driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"addbs\"]")).click();
                 } else {
                     int sendBetNumber = Integer.parseInt(fifoCache.get(sendBetNumberKey)) + 1;
                     fifoCache.put(sendBetNumberKey, sendBetNumber + "");
