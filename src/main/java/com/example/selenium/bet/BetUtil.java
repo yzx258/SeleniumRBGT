@@ -174,35 +174,35 @@ public class BetUtil {
                 Thread.sleep(2000);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
-                // log.info("万位数据 -> {}", wws);
+                log.info("万位数据 -> {}", wws);
                 sendBet(wws, driver, JB, qs, rl, "sendBetWw", "sendBetAmountWw", "sendBetNumberWw", 1);
                 //sendBetDob(wws, driver, JB, "WW_BD", "WW_CS", "WW", 1);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注千位
                 String qws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[2]")).getText();
-                // log.info("千位数据 -> {}", qws);
+                log.info("千位数据 -> {}", qws);
                 sendBet(qws, driver, JB, qs, rl, "sendBetQw", "sendBetAmountQw", "sendBetNumberQw", 2);
                 //sendBetDob(qws, driver, JB, "QW_BD", "QW_CS", "QW", 2);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注百位
                 String bws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[3]")).getText();
-                //  log.info("百位数据 -> {}", bws);
+                log.info("百位数据 -> {}", bws);
                 sendBet(bws, driver, JB, qs, rl, "sendBetBw", "sendBetAmountBw", "sendBetNumberBw", 3);
                 //sendBetDob(bws, driver, JB, "BW_BD", "BW_CS", "BW", 3);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注十位
                 String sws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[4]")).getText();
-                // log.info("十位数据 -> {}", sws);
+                log.info("十位数据 -> {}", sws);
                 sendBet(sws, driver, JB, qs, rl, "sendBetSw", "sendBetAmountSw", "sendBetNumberSw", 4);
                 //sendBetDob(sws, driver, JB, "SW_BD", "SW_CS", "SW", 4);
                 driver.switchTo().window(JB).navigate().refresh();
                 Thread.sleep(2000);
                 // 下注个位
                 String gws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[5]")).getText();
-                // log.info("个位数据 -> {}", gws);
+                log.info("个位数据 -> {}", gws);
                 sendBet(gws, driver, JB, qs, rl, "sendBetGw", "sendBetAmountGw", "sendBetNumberGw", 5);
                 //sendBetDob(gws, driver, JB, "GW_BD", "GW_CS", "GW", 5);
                 driver.switchTo().window(JB).navigate().refresh();
@@ -251,11 +251,15 @@ public class BetUtil {
     public void sendBet(String ws, WebDriver driver, String JB, String qs, List<String> rl, String sendBetKey, String sendBetAmountKey, String sendBetNumberKey, int div) {
         try {
             Boolean flag = true;
+            if(null == fifoCache.get(sendBetKey)){
+                fifoCache.put(sendBetKey,"0,1,2,3,4,5,6,7,8,9");
+            }
             log.info("====================================================================");
             log.info("***********");
             log.info("下注场次[" + sendBetKey + "] -> {}", fifoCache.get(sendBetKey));
             log.info("***********");
             // 判断是否红[fifoCache.get("sendBet")]
+            log.info("fifoCache.get("+sendBetKey+").contains("+ws+") -> {}",fifoCache.get(sendBetKey).contains(ws));
             if (fifoCache.get(sendBetKey).contains(ws)) {
                 // 上期比赛结果为单
                 log.info("比赛单【fifoCache.get(sendBetKey).contains("+ws+")】 -> " + "单".equals(fifoCache.get(sendBetKey)));
@@ -296,6 +300,7 @@ public class BetUtil {
                     }
                 }
             }
+            log.info("________点击选择分________");
             // 点击选择分
             Thread.sleep(500);
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
