@@ -387,13 +387,13 @@ public class BetUtil {
                     } else if (addbs > 2000 && addbs < 2050) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
-                        element.sendKeys("200");
+                        element.sendKeys("220");
                         addbs = addbs - 2001;
-                    } else if (addbs > 3000 && addbs < 4050) {
+                    } else if (addbs > 3000 && addbs < 4250) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
-                        element.sendKeys("399");
-                        addbs = addbs - 3991;
+                        element.sendKeys("420");
+                        addbs = addbs - 4201;
                     } else {
                         addbs = addbs - 1;
                     }
@@ -404,11 +404,11 @@ public class BetUtil {
                 }
             }
             // 确认下注
-//            Thread.sleep(100);
-//            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
-//            Thread.sleep(100);
-//            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
-//            Thread.sleep(200);
+            Thread.sleep(100);
+            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
+            Thread.sleep(100);
+            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
+            Thread.sleep(200);
             log.info("====================================================================");
         } catch (Exception e) {
             log.info("====================== 下注报错了，跳过此次购买[购买单位：" + sendBetKey + "] ======================");
