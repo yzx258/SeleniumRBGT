@@ -283,15 +283,15 @@ public class BetUtil {
                         log.info("[ " + sendBetKey + " ]比赛黑11场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
-                        d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑11场，重新开始下");
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                        d.sendMassage("黑12场了，航行者,前来汇报 : " + text);
+                        d.sendMassage("黑11场了，航行者,前来汇报 : " + text);
                     }
                     if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 12) {
                         log.info("[ " + sendBetKey + " ]比赛黑12场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
-                        d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑12场，重新开始下");
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑12场了，航行者,前来汇报 : " + text);
                     }
@@ -300,15 +300,15 @@ public class BetUtil {
                         log.info("[ " + sendBetKey + " ]比赛黑13场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
-                        d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑13场，重新开始下");
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑13场了，航行者,前来汇报 : " + text);
                     }
                     if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 14) {
-                        log.info("[ " + sendBetKey + " ]比赛黑12场，从第0场开始购开始购买");
+                        log.info("[ " + sendBetKey + " ]比赛黑14场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
-                        d.sendMassage("[ " + sendBetKey + " ]比赛黑10场，重新开始下");
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑14场，重新开始下");
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑14场了，航行者,前来汇报 : " + text);
                         fifoCache.remove(sendBetNumberKey);
