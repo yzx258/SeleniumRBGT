@@ -380,8 +380,8 @@ public class BetUtil {
                     } else if (addbs > 1000 && addbs < 2000) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
-                        element.sendKeys("110");
-                        addbs = addbs - 1101;
+                        element.sendKeys("113");
+                        addbs = addbs - 1131;
                     } else if (addbs > 2000 && addbs < 2050) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
