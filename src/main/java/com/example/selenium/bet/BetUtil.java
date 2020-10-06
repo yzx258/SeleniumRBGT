@@ -95,8 +95,8 @@ public class BetUtil {
             //点击确定按钮
             driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[3]/button")).click();
             Thread.sleep(1000);
-            // 点击体育赛制界面
-            driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
+            // 点击体育赛制界面 /html/body/div[5]/div[1]/div[2]/div/div/ul/li/a/div/div
+            driver.findElement(By.xpath("/html/body/div[5]/div[1]/div[2]/div/div/ul/li/a/div/div")).click();
             Thread.sleep(2000);
             // 点击彩票界面
             driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]/a")).click();
