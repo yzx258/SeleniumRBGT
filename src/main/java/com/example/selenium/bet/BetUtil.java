@@ -417,6 +417,9 @@ public class BetUtil {
             log.info("====================================================================");
         } catch (Exception e) {
             log.info("====================== 下注报错了，跳过此次购买[购买单位：" + sendBetKey + "] ======================");
+            DingUtil d = new DingUtil();
+            String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+            d.sendMassage("下注报错了，可能应为国庆活动问题，请尽快解决，航行者,前来汇报 : " + text);
         }
     }
 
