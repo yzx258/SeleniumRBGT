@@ -330,15 +330,17 @@ public class BetUtil {
             Thread.sleep(500);
             if (random() == 1) {
                 // 单
-                driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
-                fifoCache.put(sendBetKey, "1,3,5,7,9");
+                // 大 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[2]
+                // 大 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[2]/ul/li[3]/dl/dd[2]
+                driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[2]")).click();
+                fifoCache.put(sendBetKey, "5,6,7,8,9");
                 // log.info("期数 ：" + qs + ",购买：单");
             } else {
                 // 双
                 //driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[5]")).click();
                 //fifoCache.put(sendBetKey, "2,4,6,8,0");
-                driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
-                fifoCache.put(sendBetKey, "1,3,5,7,9");
+                driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[3]")).click();
+                fifoCache.put(sendBetKey, "0,1,2,3,4");
                 // log.info("期数 ：" + qs + ",购买：双");
             }
             log.info("==================");
