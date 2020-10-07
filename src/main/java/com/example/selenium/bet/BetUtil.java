@@ -339,7 +339,6 @@ public class BetUtil {
                 //fifoCache.put(sendBetKey, "2,4,6,8,0");
                 driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
                 fifoCache.put(sendBetKey, "1,3,5,7,9");
-
                 // log.info("期数 ：" + qs + ",购买：双");
             }
             log.info("==================");
@@ -362,46 +361,56 @@ public class BetUtil {
                     int addbs = Integer.parseInt(s);
                     log.info("&&&&&&&&&&我是开始addbs参数&&&&&&&&&& -> {}", addbs);
                     // 根据比例扣减循环数
-                    if (addbs > 30 && addbs < 40) {
+                    if (addbs == 17) {
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        Thread.sleep(500);
+                        element.sendKeys("1");
+                        addbs = addbs - 11;
+                    } else if (addbs == 34) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
                         element.sendKeys("3");
                         addbs = addbs - 31;
-                    } else if (addbs > 60 && addbs < 80) {
+                    } else if (addbs == 69) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
                         element.sendKeys("6");
                         addbs = addbs - 61;
-                    } else if (addbs > 100 && addbs < 140) {
+                    } else if (addbs == 140) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
                         element.sendKeys("13");
                         addbs = addbs - 131;
-                    } else if (addbs > 250 && addbs < 300) {
+                    } else if (addbs == 282) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
-                        element.sendKeys("27");
-                        addbs = addbs - 271;
-                    } else if (addbs > 500 && addbs < 600) {
+                        element.sendKeys("28");
+                        addbs = addbs - 281;
+                    } else if (addbs == 564) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
-                        element.sendKeys("55");
-                        addbs = addbs - 551;
-                    } else if (addbs > 1000 && addbs < 2000) {
+                        element.sendKeys("56");
+                        addbs = addbs - 561;
+                    } else if (addbs == 1134) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
                         element.sendKeys("113");
                         addbs = addbs - 1131;
-                    } else if (addbs > 2000 && addbs < 2050) {
+                    } else if (addbs == 2281) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
-                        element.sendKeys("220");
+                        element.sendKeys("227");
+                        addbs = addbs - 2271;
+                    } else if (addbs == 2003) {
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        Thread.sleep(500);
+                        element.sendKeys("200");
                         addbs = addbs - 2001;
-                    } else if (addbs > 3000 && addbs < 4250) {
+                    } else if (addbs == 4010) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
                         Thread.sleep(500);
-                        element.sendKeys("420");
-                        addbs = addbs - 4201;
+                        element.sendKeys("400");
+                        addbs = addbs - 4001;
                     } else {
                         addbs = addbs - 1;
                     }
