@@ -278,7 +278,7 @@ public class BetUtil {
                 log.info("ww -> :" + ws + " -> " + fifoCache.get(sendBetKey));
                 flag = false;
                 if (null != fifoCache.get(sendBetNumberKey)) {
-                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 10) {
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 9) {
                         log.info("[ " + sendBetKey + " ]比赛黑10场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
@@ -286,7 +286,7 @@ public class BetUtil {
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑10场了，航行者,前来汇报 : " + text);
                     }
-                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 11) {
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 10) {
                         log.info("[ " + sendBetKey + " ]比赛黑11场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
@@ -294,7 +294,7 @@ public class BetUtil {
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑11场了，航行者,前来汇报 : " + text);
                     }
-                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 12) {
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 11) {
                         log.info("[ " + sendBetKey + " ]比赛黑12场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
@@ -303,7 +303,7 @@ public class BetUtil {
                         d.sendMassage("黑12场了，航行者,前来汇报 : " + text);
                     }
 
-                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 13) {
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 12) {
                         log.info("[ " + sendBetKey + " ]比赛黑13场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
@@ -311,13 +311,22 @@ public class BetUtil {
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑13场了，航行者,前来汇报 : " + text);
                     }
-                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 14) {
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 13) {
                         log.info("[ " + sendBetKey + " ]比赛黑14场，从第0场开始购开始购买");
                         Thread.sleep(2000);
                         DingUtil d = new DingUtil();
                         d.sendMassage("[ " + sendBetKey + " ]比赛黑14场，重新开始下");
                         String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                         d.sendMassage("黑14场了，航行者,前来汇报 : " + text);
+                        fifoCache.remove(sendBetNumberKey);
+                    }
+                    if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 14) {
+                        log.info("[ " + sendBetKey + " ]比赛黑15场，从第0场开始购开始购买");
+                        Thread.sleep(2000);
+                        DingUtil d = new DingUtil();
+                        d.sendMassage("[ " + sendBetKey + " ]比赛黑14场，重新开始下");
+                        String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                        d.sendMassage("黑15场了，航行者,前来汇报 : " + text);
                         fifoCache.remove(sendBetNumberKey);
                     }
                 }
