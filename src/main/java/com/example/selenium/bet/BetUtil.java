@@ -146,6 +146,9 @@ public class BetUtil {
             rl.add("2281");
             rl.add("2003");
             rl.add("4010");
+            rl.add("2003");
+            rl.add("4010");
+            rl.add("6050");
             // 循环调用即可
             do {
                 // 判断当前时间是否在这个事件段
@@ -318,7 +321,24 @@ public class BetUtil {
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                     d.sendMassage("[ " + sendBetKey + " ]比赛第14场【"+fl+"】,航行者,前来汇报 : " + text);
-                    fifoCache.remove(sendBetNumberKey);
+                }
+                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 14) {
+                    Thread.sleep(2000);
+                    DingUtil d = new DingUtil();
+                    String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第15场【"+fl+"】,航行者,前来汇报 : " + text);
+                }
+                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 15) {
+                    Thread.sleep(2000);
+                    DingUtil d = new DingUtil();
+                    String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第16场【"+fl+"】,航行者,前来汇报 : " + text);
+                }
+                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 16) {
+                    Thread.sleep(2000);
+                    DingUtil d = new DingUtil();
+                    String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第17场【"+fl+"】,航行者,前来汇报 : " + text);
                 }
             }
             log.info("________点击选择分________");
@@ -424,6 +444,11 @@ public class BetUtil {
                         Thread.sleep(500);
                         element.sendKeys("400");
                         addbs = addbs - 4001;
+                    } else if (addbs == 6050) {
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        Thread.sleep(500);
+                        element.sendKeys("604");
+                        addbs = addbs - 6041;
                     } else {
                         addbs = addbs - 1;
                     }
