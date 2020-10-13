@@ -29,7 +29,7 @@ import java.util.Set;
  * 描述：188下注平台
  */
 @Slf4j
-public class BetUtil {
+public class BetLotteryUtil {
 
     private static String URL_ERROR = "http://47.106.143.218:8081/instruction/update/error/";
     private static String URL_SUCCESS = "http://47.106.143.218:8081/instruction/update/success/";

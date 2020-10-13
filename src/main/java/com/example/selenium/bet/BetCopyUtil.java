@@ -67,7 +67,7 @@ public class BetCopyUtil {
      *
      * @param driver
      */
-    private void login(WebDriver driver) {
+    public void login(WebDriver driver) {
         // 目标URL
         driver.get("https://www.52365v.com");
         driver.manage().window().maximize();
@@ -80,7 +80,7 @@ public class BetCopyUtil {
         // 清空输入框
         elementMm.clear();
         elementZh.sendKeys("dhxm2376");
-        elementMm.sendKeys("dhxm2376");
+        elementMm.sendKeys("ycw15659512376");
         //点击确定按钮
         driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[3]/button")).click();
     }
@@ -90,14 +90,25 @@ public class BetCopyUtil {
      *
      * @param driver
      */
-    private void btnSend(WebDriver driver) {
+    public void btnSend(WebDriver driver) throws InterruptedException {
+        Thread.sleep(1000);
+        try {
+            driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div/i"));
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            System.out.println("获取不到，不报错");
+        }
+        Thread.sleep(2000);
         // 点击体育赛事
         driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
-        // 点击188赛事
-        driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/a[3]/img")).click();
+        Thread.sleep(4000);
+        // 点击BBIT赛事
+        driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[5]/img")).click();
+        Thread.sleep(4000);
         //存在iframe,首先需要进到iframe
         ((JavascriptExecutor) driver).executeScript("document.getElementsByTagName(\"iframe\").item(0).setAttribute(\"sportframe\",\"sportframe\")");
-        driver.switchTo().frame("sportframe");
+        driver.switchTo().frame("iframe");
+        Thread.sleep(4000);
     }
 
     /**

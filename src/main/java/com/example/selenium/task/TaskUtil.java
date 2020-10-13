@@ -6,7 +6,7 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.example.selenium.bet.BetCopyUtil;
-import com.example.selenium.bet.BetUtil;
+import com.example.selenium.bet.BetLotteryUtil;
 import com.example.selenium.dto.InstructionDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -67,7 +67,7 @@ public class TaskUtil {
      */
     @Async("myTaskAsyncPool")
     public void getBasketballTournament1() {
-        BetUtil bet = new BetUtil();
+        BetLotteryUtil bet = new BetLotteryUtil();
         bet.sz();
     }
 }
