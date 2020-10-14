@@ -96,42 +96,48 @@ public class BetBasketballUtil {
             // 循环判断最近的篮球赛事
             for (WebElement e : table) {
                 Thread.sleep(2000);
+                driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
+                Thread.sleep(4000);
                 // 判断不为空的篮球赛事
                 List<WebElement> trs = e.findElements(By.tagName("tr"));
                 if (trs.size() >= 2) {
                     List<WebElement> td1 = trs.get(1).findElements(By.tagName("td"));
                     List<WebElement> td2 = trs.get(2).findElements(By.tagName("td"));
                     if (td1.size() > 2 && td2.size() > 2) {
-                        // 比赛第几节/时间
-                        String[] split = td1.get(0).getText().replaceAll("\r|\n", "P").split("P");
-                        // 第几节
-                        String djj = split[0];
-                        // 比赛剩余时间
-                        String sysj = split[1];
                         // 比赛队伍名称
                         String zd = td1.get(1).getText();
                         zd = zd.replaceAll("\r|\n", "P").split("P")[0];
                         String kd = td2.get(0).getText();
                         kd = kd.replaceAll("\r|\n", "P").split("P")[0];
-                        if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && !djj.contains("即将开赛")) {
+                        if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && !td1.get(0).getText().contains("即将开赛")) {
+                            // 比赛第几节/时间
+                            String[] split = td1.get(0).getText().replaceAll("\r|\n", "P").split("P");
+                            // 第几节
+                            String djj = split[0];
+                            // 比赛剩余时间
+                            String sysj = split[1];
                             // 点击下注
-                            // String text = td2.get(5).getText();
-                            // System.out.println("我是获取的数据：" + text);
-                            td2.get(5).findElement(By.tagName("p")).click();
                             // 判断是否支持下注，或者获取比分
                             int check = checkBet(zd, djj, sysj);
                             if (check == 0) {
                                 // 无需下注
                                 System.out.println("&&&&&&&&&&&&&&&&");
                                 System.out.println("无需下注....");
+                                System.out.println("比赛进行中:" + djj);
+                                System.out.println(zd + " VS " + kd);
                                 System.out.println("&&&&&&&&&&&&&&&&");
-                                continue;
                             } else if (check == 1) {
                                 // 获取比分，判断是否需要下注
+                                // String text = td2.get(5).getText();
+                                // System.out.println("我是获取的数据：" + text);
+                                td2.get(5).findElement(By.tagName("p")).click();
+                                Thread.sleep(2000);
                                 if (checkScore(driver, zd, djj) == 1) {
                                     // 红单不需要下注
                                     System.out.println("&&&&&&&&&&&&&&&&");
                                     System.out.println("红单，无需下注....");
+                                    System.out.println("比赛进行中:" + djj);
+                                    System.out.println(zd + " VS " + kd);
                                     System.out.println("&&&&&&&&&&&&&&&&");
                                     driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[2]/div/p")).click();
                                     break;
@@ -168,7 +174,7 @@ public class BetBasketballUtil {
         String cache = fifoCache.get(zd);
         if (StrUtil.isBlank(cache)) {
             // 不存在,且比赛时间不能小于4分钟，则允许下注
-            if (FIRST.equals(djj) && Integer.parseInt(sysj.split(";")[0]) >= 4) {
+            if (FIRST.equals(djj) && Integer.parseInt(sysj.split(":")[0]) >= 4) {
                 return 2;
             }
         } else {

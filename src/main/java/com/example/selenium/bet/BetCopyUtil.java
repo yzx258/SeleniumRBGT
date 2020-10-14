@@ -101,13 +101,21 @@ public class BetCopyUtil {
         Thread.sleep(2000);
         // 点击体育赛事
         driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
-        Thread.sleep(4000);
+        Thread.sleep(2000);
         // 点击BBIT赛事
-        driver.findElement(By.xpath("//*[@id=\"bet-sport-wrap\"]/div[2]/div[6]/img")).click();
+        List<WebElement> elements = driver.findElements(By.className("sport-list"));
+        for(WebElement e : elements){
+            WebElement img = e.findElement(By.tagName("img"));
+            String src = img.getAttribute("src");
+            if(src.contains("3149")){
+                img.click();
+                break;
+            }
+        }
         Thread.sleep(4000);
         //存在iframe,首先需要进到iframe
         driver.switchTo().frame("iframe");
-        Thread.sleep(4000);
+        Thread.sleep(8000);
     }
 
     /**
