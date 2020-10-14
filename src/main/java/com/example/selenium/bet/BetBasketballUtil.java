@@ -114,12 +114,9 @@ public class BetBasketballUtil {
                         String kd = td2.get(0).getText();
                         kd = kd.replaceAll("\r|\n", "P").split("P")[0];
                         if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && !djj.contains("即将开赛")) {
-                            System.out.println("====================================");
-                            System.out.println("比赛进行中:" + djj);
-                            System.out.println(zd + " VS " + kd);
                             // 点击下注
-                            String text = td2.get(5).getText();
-                            System.out.println("我是获取的数据：" + text);
+                            // String text = td2.get(5).getText();
+                            // System.out.println("我是获取的数据：" + text);
                             td2.get(5).findElement(By.tagName("p")).click();
                             // 判断是否支持下注，或者获取比分
                             int check = checkBet(zd, djj, sysj);
@@ -142,9 +139,11 @@ public class BetBasketballUtil {
                             } else if (check == 2) {
                                 // 支持下注
                                 System.out.println("=================");
+                                System.out.println("比赛进行中:" + djj);
+                                System.out.println(zd + " VS " + kd);
                                 Thread.sleep(4000);
                                 System.out.println("下注完成....");
-                                System.out.println("=================");
+                                sendBet(driver,zd,djj);
                             }
                             System.out.println("正在点击退出......");
                             Thread.sleep(4000);
