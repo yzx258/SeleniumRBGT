@@ -103,10 +103,9 @@ public class BetCopyUtil {
         driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
         Thread.sleep(4000);
         // 点击BBIT赛事
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[5]/img")).click();
+        driver.findElement(By.xpath("//*[@id=\"bet-sport-wrap\"]/div[2]/div[6]/img")).click();
         Thread.sleep(4000);
         //存在iframe,首先需要进到iframe
-        ((JavascriptExecutor) driver).executeScript("document.getElementsByTagName(\"iframe\").item(0).setAttribute(\"sportframe\",\"sportframe\")");
         driver.switchTo().frame("iframe");
         Thread.sleep(4000);
     }

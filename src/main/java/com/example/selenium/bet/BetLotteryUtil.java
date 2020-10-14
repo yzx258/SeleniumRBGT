@@ -348,32 +348,35 @@ public class BetLotteryUtil {
             // 点击单
             Thread.sleep(500);
             int number = Integer.parseInt(fifoCache.get(sendBetNumberKey));
-            if (random() == 1) {
-                // 万位
-                // 大 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[2]
-                // 小 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[3]
-                // 单 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[4]
-                // 双 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[5]
-                if (number <= 8) {
-                    // 大
-                    driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[2]")).click();
-                    fifoCache.put(sendBetKey, "5,6,7,8,9");
-                } else {
-                    // 单 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[4]
-                    driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
-                    fifoCache.put(sendBetKey, "1,3,5,7,9");
-                }
-            } else {
-                if (number <= 8) {
-                    // 小
-                    driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[3]")).click();
-                    fifoCache.put(sendBetKey, "0,1,2,3,4");
-                } else {
-                    // 双
-                    driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[5]")).click();
-                    fifoCache.put(sendBetKey, "2,4,6,8,0");
-                }
-            }
+            // 一直选择大
+            driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[2]")).click();
+            fifoCache.put(sendBetKey, "5,6,7,8,9");
+//            if (random() == 1) {
+//                // 万位
+//                // 大 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[2]
+//                // 小 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[3]
+//                // 单 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[4]
+//                // 双 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[5]
+//                if (number <= 8) {
+//                    // 大
+//                    driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[2]")).click();
+//                    fifoCache.put(sendBetKey, "5,6,7,8,9");
+//                } else {
+//                    // 单 /html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[1]/ul/li[3]/dl/dd[4]
+//                    driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[4]")).click();
+//                    fifoCache.put(sendBetKey, "1,3,5,7,9");
+//                }
+//            } else {
+//                if (number <= 8) {
+//                    // 小
+//                    driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[3]")).click();
+//                    fifoCache.put(sendBetKey, "0,1,2,3,4");
+//                } else {
+//                    // 双
+//                    driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[5]")).click();
+//                    fifoCache.put(sendBetKey, "2,4,6,8,0");
+//                }
+//            }
             log.info("==================");
             log.info("获取缓存值 -> {}", fifoCache.get(sendBetKey));
             log.info("==================");
@@ -458,13 +461,13 @@ public class BetLotteryUtil {
                     }
                 }
             }
-            // 确认下注
-            Thread.sleep(100);
-            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
-            Thread.sleep(100);
-            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
-            Thread.sleep(200);
-            log.info("====================================================================");
+//            // 确认下注
+//            Thread.sleep(100);
+//            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"sure\"]/input")).click();
+//            Thread.sleep(100);
+//            driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"msgDiv\"]/div[3]/div[1]")).click();
+//            Thread.sleep(200);
+//            log.info("====================================================================");
         } catch (Exception e) {
             log.info("====================== 下注报错了，跳过此次购买[购买单位：" + sendBetKey + "] ======================");
             DingUtil d = new DingUtil();
