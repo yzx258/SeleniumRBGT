@@ -69,6 +69,9 @@ public class BetBasketballUtil {
         System.out.println("获取新的ifram...");
         Thread.sleep(4000);
         do {
+            Thread.sleep(2000);
+            // 点击刷新按钮，确保正常连接
+            driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
             // 点击篮球 sport-name-asia
             System.out.println("开始新操作....");
             List<WebElement> pl = driver.findElements(By.className("sport-name-asia"));
@@ -95,7 +98,7 @@ public class BetBasketballUtil {
             log.info("table头部数据 -> {}", table.size());
             // 循环判断最近的篮球赛事
             for (WebElement e : table) {
-                Thread.sleep(2000);
+                Thread.sleep(4000);
                 driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
                 Thread.sleep(4000);
                 // 判断不为空的篮球赛事
@@ -116,7 +119,20 @@ public class BetBasketballUtil {
                             String djj = split[0];
                             // 比赛剩余时间
                             String sysj = split[1];
+
+                            System.out.println("=======================================");
+                            System.out.println("比赛进行中:" + djj);
+                            System.out.println(zd + " VS " + kd);
                             // 点击下注
+                            List<WebElement> td0 = trs.get(0).findElements(By.tagName("th"));
+                            // 获取点击的数据
+                            List<WebElement> li = td0.get(1).findElements(By.tagName("li"));
+                            for(WebElement w : li){
+                                System.out.println("我是查询出来的滚球节数：" + w.getText());
+                            }
+                            System.out.println("=======================================");
+                            // 看看是否存在第几节
+                            //*[@id="asianView"]/div/div[3]/div[6]/div/ng-include/div[2]/div[4]/div/table/tbody/tr[1]/th[2]/div/ul
                             // 判断是否支持下注，或者获取比分
                             int check = checkBet(zd, djj, sysj);
                             if (check == 0) {
