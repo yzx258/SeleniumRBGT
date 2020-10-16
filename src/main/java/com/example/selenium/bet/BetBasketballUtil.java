@@ -85,24 +85,24 @@ public class BetBasketballUtil {
             betCopyUtil.login(driver);
             // 点击新BBIT赛事信息
             betCopyUtil.btnSend(driver);
-            driver.navigate().refresh();
-            System.out.println("走刷新逻辑....");
-            SleepUtil.sleepUtil(8000);
-
-            // 存在iframe,首先需要进到iframe
-            driver.switchTo().frame("iframe");
-            SleepUtil.sleepUtil(4000);
-
-            // 点击滚球按钮
-            driver.findElement(By.xpath("//*[@id=\"nav\"]/a[1]")).click();
-            System.out.println("点击滚球按钮...");
-            SleepUtil.sleepUtil(4000);
-
-            // 获取新的ifram
-            driver.switchTo().frame("bcsportsbookiframe");
-            System.out.println("获取新的ifram...");
-            SleepUtil.sleepUtil(4000);
             do {
+                driver.navigate().refresh();
+                System.out.println("走刷新逻辑....");
+                SleepUtil.sleepUtil(8000);
+
+                // 存在iframe,首先需要进到iframe
+                driver.switchTo().frame("iframe");
+                SleepUtil.sleepUtil(4000);
+
+                // 点击滚球按钮
+                driver.findElement(By.xpath("//*[@id=\"nav\"]/a[1]")).click();
+                System.out.println("点击滚球按钮...");
+                SleepUtil.sleepUtil(4000);
+
+                // 获取新的ifram
+                driver.switchTo().frame("bcsportsbookiframe");
+                System.out.println("获取新的ifram...");
+                SleepUtil.sleepUtil(4000);
                 SleepUtil.sleepUtil(2000);
                 // 点击刷新按钮，确保正常连接
                 driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
@@ -198,7 +198,7 @@ public class BetBasketballUtil {
             } while (true);
         } catch (Exception e) {
             d.sendMassage("遇到未知错误，关闭浏览器，重新打开");
-            d.sendMassage(JSON.toJSONString(e));
+            System.out.println(e);
             S_W = 0;
             driver.quit();
         }
@@ -360,7 +360,7 @@ public class BetBasketballUtil {
             if (djj.equals(w.getText())) {
                 System.out.println("我是查询出来的滚球节数：" + w.getText());
                 w.click();
-                SleepUtil.sleepUtil(2000);
+                SleepUtil.sleepUtil(1000);
                 break;
             }
         }
@@ -391,33 +391,43 @@ public class BetBasketballUtil {
                     }
                 }
             }
+            Boolean flag_1 = false;
             if (map.size() > 0) {
                 BetCacheSpec betCacheSpec1 = map.get(0);
                 betCacheSpec.setMagnification(betCacheSpec1.getMagnification());
-                // 清空已设置倍率的数据
-                map.remove(0);
-                HttpUtil.get(DEL_URL);
+                flag_1 = true;
             }
             // 购买第一场比赛
             betCacheSpec.setIsRed(0);
             betCacheSpec.setNumber(1);
-            sendBetOk(driver, td1, betCacheSpec.getMagnification());
-            fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
-            System.out.println("第一节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
+            if (flag) {
+                fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
+                System.out.println("第一节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+                if (flag_1) {
+                    // 清空已设置倍率的数据
+                    map.remove(0);
+                    HttpUtil.get(DEL_URL);
+                }
+            }
         } else if (betCacheSpec.getNumber() == 1) {
             // 购买第二场比赛
             betCacheSpec.setIsRed(0);
             betCacheSpec.setNumber(2);
-            sendBetOk(driver, td1, betCacheSpec.getMagnification());
-            fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
-            System.out.println("第二节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
+            if (flag) {
+                fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
+                System.out.println("第二节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+            }
         } else if (betCacheSpec.getNumber() == 2) {
             // 购买第三场比赛
             betCacheSpec.setIsRed(0);
             betCacheSpec.setNumber(3);
-            sendBetOk(driver, td1, betCacheSpec.getMagnification());
-            fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
-            System.out.println("第三节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
+            if (flag) {
+                fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
+                System.out.println("第三节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+            }
         }
     }
 
@@ -428,18 +438,22 @@ public class BetBasketballUtil {
      * @param td1
      * @param magnification
      */
-    public static void sendBetOk(WebDriver driver, List<WebElement> td1, int magnification) {
+    public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1, int magnification) {
         // 点击下注
         System.out.println("我点击购买单：" + td1.get(5).getText());
-        td1.get(5).click();
-        SleepUtil.sleepUtil(2000);
-        WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
-        // 清空输入框
-        elementZh.clear();
-        elementZh.sendKeys(bl[magnification]);
-        SleepUtil.sleepUtil(4000);
-        // 点击确认按钮
-        driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
-        SleepUtil.sleepUtil(8000);
+        if ("单".equals(td1.get(5).getText())) {
+            td1.get(5).click();
+            SleepUtil.sleepUtil(2000);
+            WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
+            // 清空输入框
+            elementZh.clear();
+            elementZh.sendKeys(bl[magnification]);
+            SleepUtil.sleepUtil(4000);
+            // 点击确认按钮
+            driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+            SleepUtil.sleepUtil(8000);
+            return true;
+        }
+        return false;
     }
 }
