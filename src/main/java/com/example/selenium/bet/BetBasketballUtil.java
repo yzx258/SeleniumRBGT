@@ -441,7 +441,7 @@ public class BetBasketballUtil {
     public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1, int magnification) {
         // 点击下注
         System.out.println("我点击购买单：" + td1.get(5).getText());
-        if ("单".equals(td1.get(5).getText())) {
+        if (StrUtil.isNotBlank(td1.get(5).getText()) && "单".equals(td1.get(5).getText())) {
             td1.get(5).click();
             SleepUtil.sleepUtil(2000);
             WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
