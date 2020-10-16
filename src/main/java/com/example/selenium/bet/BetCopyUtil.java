@@ -70,7 +70,6 @@ public class BetCopyUtil {
      */
     public void login(WebDriver driver) {
         // 目标URL
-        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         driver.get("https://www.52365l.com");
         driver.manage().window().maximize();
         // 获取用户输入框
