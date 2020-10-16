@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.example.selenium.dto.InstructionDTO;
 import com.example.selenium.util.DingUtil;
+import com.example.selenium.util.SleepUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -94,18 +95,19 @@ public class BetCopyUtil {
      *
      * @param driver
      */
-    public void btnSend(WebDriver driver) throws InterruptedException {
-        Thread.sleep(1000);
+    public void btnSend(WebDriver driver) {
+        SleepUtil.sleepUtil(1000);
         try {
             driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div/i"));
             Thread.sleep(1000);
         } catch (Exception e) {
             System.out.println("获取不到，不报错");
         }
-        Thread.sleep(2000);
+        SleepUtil.sleepUtil(2000);
         // 点击体育赛事
         driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
-        Thread.sleep(2000);
+        SleepUtil.sleepUtil(2000);
+
         // 点击BBIT赛事
         List<WebElement> elements = driver.findElements(By.className("sport-list"));
         for (WebElement e : elements) {
@@ -116,7 +118,7 @@ public class BetCopyUtil {
                 break;
             }
         }
-        Thread.sleep(4000);
+        SleepUtil.sleepUtil(4000);
     }
 
     /**

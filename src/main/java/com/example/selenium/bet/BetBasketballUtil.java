@@ -5,6 +5,7 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.example.selenium.spec.BetCacheSpec;
+import com.example.selenium.util.SleepUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -43,7 +44,7 @@ public class BetBasketballUtil {
     // 第四节
     private static String FOURTH = "第4节";
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         // chromeDriver服务地址，需要手动下载
         // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
@@ -63,21 +64,24 @@ public class BetBasketballUtil {
 
         driver.navigate().refresh();
         System.out.println("走刷新逻辑....");
-        Thread.sleep(8000);
+        SleepUtil.sleepUtil(8000);
+
 
         //存在iframe,首先需要进到iframe
         driver.switchTo().frame("iframe");
-        Thread.sleep(4000);
+        SleepUtil.sleepUtil(4000);
+
         // 点击滚球按钮
         driver.findElement(By.xpath("//*[@id=\"nav\"]/a[1]")).click();
         System.out.println("点击滚球按钮...");
-        Thread.sleep(4000);
+        SleepUtil.sleepUtil(4000);
+
         // 获取新的ifram
         driver.switchTo().frame("bcsportsbookiframe");
         System.out.println("获取新的ifram...");
-        Thread.sleep(4000);
+        SleepUtil.sleepUtil(4000);
         do {
-            Thread.sleep(2000);
+            SleepUtil.sleepUtil(2000);
             // 点击刷新按钮，确保正常连接
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
             // 点击篮球 sport-name-asia
@@ -95,20 +99,21 @@ public class BetBasketballUtil {
             // 判断是否存在篮球按钮
             if (!flag) {
                 System.out.println("结束此次do循环.....");
-                Thread.sleep(15000);
+                SleepUtil.sleepUtil(15000);
                 continue;
             }
             System.out.println("正常操作开始.....");
-            Thread.sleep(4000);
+            SleepUtil.sleepUtil(4000);
+
             // 点击刷新按钮，确保正常连接
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
             List<WebElement> table = driver.findElements(By.tagName("table"));
             log.info("table头部数据 -> {}", table.size());
             // 循环判断最近的篮球赛事
             for (WebElement e : table) {
-                Thread.sleep(1000);
+                SleepUtil.sleepUtil(2000);
                 driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
-                Thread.sleep(2000);
+                SleepUtil.sleepUtil(2000);
                 // 判断不为空的篮球赛事
                 List<WebElement> trs = e.findElements(By.tagName("tr"));
                 if (trs.size() >= 2) {
@@ -127,32 +132,30 @@ public class BetBasketballUtil {
                             String djj = split[0];
                             // 比赛剩余时间
                             String sysj = split[1];
-
                             // 点击下注
                             List<WebElement> td0 = trs.get(0).findElements(By.tagName("th"));
                             // 获取点击的数据
                             List<WebElement> li = td0.get(1).findElements(By.tagName("li"));
-                            for(WebElement w : li){
-                                if(djj.equals(w.getText())){
+                            for (WebElement w : li) {
+                                if (djj.equals(w.getText())) {
                                     System.out.println("我是查询出来的滚球节数：" + w.getText());
                                     w.click();
-                                    Thread.sleep(2000);
+                                    SleepUtil.sleepUtil(2000);
                                     break;
                                 }
                             }
                             // 点击下注
                             System.out.println("我是下注单：" + td1.get(5).getText());
                             td1.get(5).click();
-                            Thread.sleep(2000);
-                            //
+                            SleepUtil.sleepUtil(2000);
                             WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
                             // 清空输入框
                             elementZh.clear();
                             elementZh.sendKeys("10");
-                            Thread.sleep(2000);
+                            SleepUtil.sleepUtil(2000);
                             // 点击确认按钮
                             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
-                            Thread.sleep(40000);
+                            SleepUtil.sleepUtil(40000);
 
                             // 看看是否存在第几节
                             //*[@id="asianView"]/div/div[3]/div[6]/div/ng-include/div[2]/div[4]/div/table/tbody/tr[1]/th[2]/div/ul
@@ -170,7 +173,7 @@ public class BetBasketballUtil {
                                 // String text = td2.get(5).getText();
                                 // System.out.println("我是获取的数据：" + text);
                                 td2.get(5).findElement(By.tagName("p")).click();
-                                Thread.sleep(2000);
+                                SleepUtil.sleepUtil(2000);
                                 if (checkScore(driver, zd, djj) == 1) {
                                     // 红单不需要下注
                                     System.out.println("&&&&&&&&&&&&&&&&");
@@ -186,12 +189,12 @@ public class BetBasketballUtil {
                                 System.out.println("=================");
                                 System.out.println("比赛进行中:" + djj);
                                 System.out.println(zd + " VS " + kd);
-                                Thread.sleep(2000);
+                                SleepUtil.sleepUtil(2000);
                                 System.out.println("下注完成....");
-                                sendBet(driver,zd,djj);
+                                sendBet(driver, zd, djj);
                             }
                             System.out.println("正在点击退出......");
-                            Thread.sleep(2000);
+                            SleepUtil.sleepUtil(2000);
                         }
                     }
                 }
