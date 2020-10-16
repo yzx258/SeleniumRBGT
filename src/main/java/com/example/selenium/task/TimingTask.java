@@ -22,20 +22,10 @@ public class TimingTask {
     @Autowired
     private TaskUtil taskService;
 
-//    /**
-//     * 每天3小时获取比赛，并入库
-//     */
-//    @Scheduled(cron = "0 0/1 * * * ? ")
-//    private void getStartGame() {
-//        System.out.println("异步线程开始");
-//        taskService.getBasketballTournament();
-//        System.out.println("异步线程结束");
-//    }
-
     @Scheduled(cron = "0 0/1 * * * ? ")
     private void getStartGame1() {
         System.out.println("异步线程开始");
-        taskService.getBasketballTournament1();
+        taskService.getBasketballTournament2();
         System.out.println("异步线程结束");
     }
 }

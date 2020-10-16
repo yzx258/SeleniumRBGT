@@ -5,6 +5,7 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.example.selenium.bet.BetBasketballUtil;
 import com.example.selenium.bet.BetCopyUtil;
 import com.example.selenium.bet.BetLotteryUtil;
 import com.example.selenium.dto.InstructionDTO;
@@ -69,5 +70,14 @@ public class TaskUtil {
     public void getBasketballTournament1() {
         BetLotteryUtil bet = new BetLotteryUtil();
         bet.sz();
+    }
+
+    /**
+     * 描述：发起下注
+     */
+    @Async("myTaskAsyncPool")
+    public void getBasketballTournament2() {
+        BetBasketballUtil betBasketballUtil = new BetBasketballUtil();
+        betBasketballUtil.bet();
     }
 }

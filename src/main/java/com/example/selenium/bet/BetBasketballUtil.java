@@ -55,8 +55,18 @@ public class BetBasketballUtil {
     private static String THIRD = "第3节";
     // 第四节
     private static String FOURTH = "第4节";
+    // 开关
+    private static int S_W = 0;
 
-    public static void main(String[] args) {
+    /**
+     * BBIT下注
+     */
+    public void bet() {
+        if (1 == S_W) {
+            System.out.println("比赛进行中,跳过");
+            return;
+        }
+        S_W = 1;
         // chromeDriver服务地址，需要手动下载
         // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
@@ -79,7 +89,7 @@ public class BetBasketballUtil {
             System.out.println("走刷新逻辑....");
             SleepUtil.sleepUtil(8000);
 
-            //存在iframe,首先需要进到iframe
+            // 存在iframe,首先需要进到iframe
             driver.switchTo().frame("iframe");
             SleepUtil.sleepUtil(4000);
 
@@ -187,6 +197,7 @@ public class BetBasketballUtil {
             } while (true);
         } catch (Exception e) {
             d.sendMassage("遇到未知错误，关闭浏览器，重新打开");
+            S_W = 0;
             driver.quit();
         }
     }
