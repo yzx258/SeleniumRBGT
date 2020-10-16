@@ -73,7 +73,7 @@ public class BetBasketballUtil {
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
-        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
+        System.setProperty("webdriver.chrome.driver", "D:\\00002YX\\chromedriver.exe");
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -187,8 +187,8 @@ public class BetBasketballUtil {
                                     SleepUtil.sleepUtil(2000);
                                     System.out.println("下注完成....");
                                     sendBet(driver, zd, kd, djj, trs, td1);
+                                    break;
                                 }
-                                SleepUtil.sleepUtil(2000);
                             }
                         }
                     }
@@ -197,6 +197,7 @@ public class BetBasketballUtil {
             } while (true);
         } catch (Exception e) {
             d.sendMassage("遇到未知错误，关闭浏览器，重新打开");
+            d.sendMassage(JSON.toJSONString(e));
             S_W = 0;
             driver.quit();
         }
