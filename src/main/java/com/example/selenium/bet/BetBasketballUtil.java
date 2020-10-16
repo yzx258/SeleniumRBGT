@@ -60,6 +60,14 @@ public class BetBasketballUtil {
         betCopyUtil.login(driver);
         // 点击新BBIT赛事信息
         betCopyUtil.btnSend(driver);
+
+        driver.navigate().refresh();
+        System.out.println("走刷新逻辑....");
+        Thread.sleep(8000);
+
+        //存在iframe,首先需要进到iframe
+        driver.switchTo().frame("iframe");
+        Thread.sleep(4000);
         // 点击滚球按钮
         driver.findElement(By.xpath("//*[@id=\"nav\"]/a[1]")).click();
         System.out.println("点击滚球按钮...");
@@ -98,9 +106,9 @@ public class BetBasketballUtil {
             log.info("table头部数据 -> {}", table.size());
             // 循环判断最近的篮球赛事
             for (WebElement e : table) {
-                Thread.sleep(4000);
+                Thread.sleep(1000);
                 driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
-                Thread.sleep(4000);
+                Thread.sleep(2000);
                 // 判断不为空的篮球赛事
                 List<WebElement> trs = e.findElements(By.tagName("tr"));
                 if (trs.size() >= 2) {
@@ -120,17 +128,32 @@ public class BetBasketballUtil {
                             // 比赛剩余时间
                             String sysj = split[1];
 
-                            System.out.println("=======================================");
-                            System.out.println("比赛进行中:" + djj);
-                            System.out.println(zd + " VS " + kd);
                             // 点击下注
                             List<WebElement> td0 = trs.get(0).findElements(By.tagName("th"));
                             // 获取点击的数据
                             List<WebElement> li = td0.get(1).findElements(By.tagName("li"));
                             for(WebElement w : li){
-                                System.out.println("我是查询出来的滚球节数：" + w.getText());
+                                if(djj.equals(w.getText())){
+                                    System.out.println("我是查询出来的滚球节数：" + w.getText());
+                                    w.click();
+                                    Thread.sleep(2000);
+                                    break;
+                                }
                             }
-                            System.out.println("=======================================");
+                            // 点击下注
+                            System.out.println("我是下注单：" + td1.get(5).getText());
+                            td1.get(5).click();
+                            Thread.sleep(2000);
+                            //
+                            WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
+                            // 清空输入框
+                            elementZh.clear();
+                            elementZh.sendKeys("10");
+                            Thread.sleep(2000);
+                            // 点击确认按钮
+                            driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+                            Thread.sleep(40000);
+
                             // 看看是否存在第几节
                             //*[@id="asianView"]/div/div[3]/div[6]/div/ng-include/div[2]/div[4]/div/table/tbody/tr[1]/th[2]/div/ul
                             // 判断是否支持下注，或者获取比分
@@ -163,12 +186,12 @@ public class BetBasketballUtil {
                                 System.out.println("=================");
                                 System.out.println("比赛进行中:" + djj);
                                 System.out.println(zd + " VS " + kd);
-                                Thread.sleep(4000);
+                                Thread.sleep(2000);
                                 System.out.println("下注完成....");
                                 sendBet(driver,zd,djj);
                             }
                             System.out.println("正在点击退出......");
-                            Thread.sleep(4000);
+                            Thread.sleep(2000);
                         }
                     }
                 }
