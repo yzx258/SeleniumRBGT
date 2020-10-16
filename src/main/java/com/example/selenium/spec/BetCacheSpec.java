@@ -1,6 +1,13 @@
 package com.example.selenium.spec;
 
+import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.example.selenium.dto.InstructionDTO;
+import com.example.selenium.util.DingUtil;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @company： laoyu
@@ -17,6 +24,11 @@ public class BetCacheSpec {
      * 主队名称
      */
     private String homeTeam;
+
+    /**
+     * 客队名称
+     */
+    private String awayTeam;
 
     /**
      * 比赛节点
@@ -44,4 +56,33 @@ public class BetCacheSpec {
      * 下注倍率
      */
     private int magnification = 0;
+
+    public static void main(String[] args) {
+        BetCacheSpec betCacheSpec = new BetCacheSpec();
+        betCacheSpec.setHomeTeam("湖人总冠军1");
+        betCacheSpec.setAwayTeam("快船总冠军2");
+        betCacheSpec.setNode("第一节");
+        betCacheSpec.setIsRed(0);
+        betCacheSpec.setOddAndEven(0);
+        betCacheSpec.setNumber(0);
+        betCacheSpec.setMagnification(0);
+        BuyRecordSpec b = new BuyRecordSpec();
+        b.setJson(JSON.toJSONString(betCacheSpec));
+        b.setType(1);
+        try {
+            HttpUtil.post("http://47.106.143.218:8081/buy/add", JSON.toJSONString(b));
+            String result = HttpUtil.get("http://47.106.143.218:8081/buy/get/1");
+            System.out.println("result:" + JSON.parseObject(result).get("data"));
+            List<BuyRecordJson> bls = JSON.parseArray(JSON.parseObject(result).get("data").toString(), BuyRecordJson.class);
+            System.out.println(bls.size());
+            BetCacheSpec betCacheSpec1 = JSON.parseObject(bls.get(0).getJson(), BetCacheSpec.class);
+            System.out.println("==============================");
+            System.out.println(betCacheSpec1);
+            System.out.println("==============================");
+        } catch (Exception e) {
+            DingUtil d = new DingUtil();
+            d.sendMassage("保存下注记录有问题，请关注该比赛：" + JSON.toJSONString(betCacheSpec));
+        }
+
+    }
 }
