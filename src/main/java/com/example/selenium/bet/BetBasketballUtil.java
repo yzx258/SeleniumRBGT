@@ -427,9 +427,9 @@ public class BetBasketballUtil {
         // 清空输入框
         elementZh.clear();
         elementZh.sendKeys(bl[magnification]);
-        SleepUtil.sleepUtil(2000);
+        SleepUtil.sleepUtil(4000);
         // 点击确认按钮
         driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
-        SleepUtil.sleepUtil(40000);
+        SleepUtil.sleepUtil(8000);
     }
 }
