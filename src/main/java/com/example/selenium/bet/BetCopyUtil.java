@@ -104,7 +104,7 @@ public class BetCopyUtil {
         SleepUtil.sleepUtil(2000);
         // 点击体育赛事
         driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
-        SleepUtil.sleepUtil(2000);
+        SleepUtil.sleepUtil(4000);
 
         // 点击BBIT赛事
         List<WebElement> elements = driver.findElements(By.className("sport-list"));
@@ -116,7 +116,7 @@ public class BetCopyUtil {
                 break;
             }
         }
-        SleepUtil.sleepUtil(4000);
+        SleepUtil.sleepUtil(8000);
     }
 
     /**

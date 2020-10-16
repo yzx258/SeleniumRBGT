@@ -160,7 +160,7 @@ public class BetBasketballUtil {
                                     // 无需下注
                                     System.out.println("&&&&&&&&&&&&&&&&");
                                     System.out.println("无需下注....");
-                                    System.out.println("比赛进行中:" + djj);
+                                    System.out.println("比赛进行中:" + djj + "/" + sysj);
                                     System.out.println(zd + " VS " + kd);
                                     System.out.println("&&&&&&&&&&&&&&&&");
                                 } else if (check == 1) {
@@ -173,16 +173,17 @@ public class BetBasketballUtil {
                                         // 红单不需要下注
                                         System.out.println("&&&&&&&&&&&&&&&&");
                                         System.out.println("红单，无需下注....");
-                                        System.out.println("比赛进行中:" + djj);
+                                        System.out.println("比赛进行中:" + djj + "/" + sysj);
                                         System.out.println(zd + " VS " + kd);
                                         System.out.println("&&&&&&&&&&&&&&&&");
                                         driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[2]/div/p")).click();
-                                        break;
                                     }
+                                    System.out.println("进入获取比分，需要重新刷新");
+                                    break;
                                 } else if (check == 2) {
                                     // 支持下注
                                     System.out.println("=================");
-                                    System.out.println("比赛进行中:" + djj);
+                                    System.out.println("比赛进行中:" + djj + "/" + sysj);
                                     System.out.println(zd + " VS " + kd);
                                     SleepUtil.sleepUtil(2000);
                                     System.out.println("下注完成....");
@@ -252,68 +253,76 @@ public class BetBasketballUtil {
      */
     public static int checkScore(WebDriver driver, String zd, String djj) {
         // 获取缓存数据
-        int check = 0;
-        String cache = fifoCache.get(zd);
-        BetCacheSpec betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
-        betCacheSpec.setNode(djj);
-        if (SECOND.equals(djj)) {
-            // 主队第一节比分
-            String zdtext1 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[2]/li[2]/span")).getText();
-            // 客队第一节比分
-            String kdtext1 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[2]/span")).getText();
-            System.out.println("我是获取比赛分数：" + zdtext1 + " : " + kdtext1);
-            if (Integer.parseInt(zdtext1) % Integer.parseInt(kdtext1) == 1) {
-                betCacheSpec.setIsRed(1);
-                check = 1;
-                addBuyRecord(betCacheSpec, 0);
-                fifoCache.remove(betCacheSpec.getHomeTeam());
-            } else {
-                betCacheSpec.setIsRed(2);
-                betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
-                check = 2;
-                addBuyRecord(betCacheSpec, 1);
-                fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
+        try {
+            int check = 0;
+            String cache = fifoCache.get(zd);
+            BetCacheSpec betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
+            betCacheSpec.setNode(djj);
+            if (SECOND.equals(djj)) {
+                // 主队第一节比分
+                String zdtext1 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[2]/li[2]/span")).getText();
+                // 客队第一节比分
+                String kdtext1 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[2]/span")).getText();
+                System.out.println("我是获取比赛分数：" + zdtext1 + " : " + kdtext1);
+                if (Integer.parseInt(zdtext1) % Integer.parseInt(kdtext1) == 1) {
+                    betCacheSpec.setIsRed(1);
+                    check = 1;
+                    addBuyRecord(betCacheSpec, 0);
+                    fifoCache.remove(betCacheSpec.getHomeTeam());
+                } else {
+                    betCacheSpec.setIsRed(2);
+                    betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
+                    check = 2;
+                    addBuyRecord(betCacheSpec, 1);
+                    fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
+                }
+            } else if (THIRD.equals(djj)) {
+                // 主队第二节比分
+                String zdtext2 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[2]/li[3]/span")).getText();
+                // 客队第二节比分
+                String kdtext2 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[3]/span")).getText();
+                System.out.println("我是获取比赛分数：" + zdtext2 + " : " + kdtext2);
+                if (Integer.parseInt(zdtext2) % Integer.parseInt(kdtext2) == 1) {
+                    betCacheSpec.setIsRed(1);
+                    check = 1;
+                    addBuyRecord(betCacheSpec, 0);
+                    fifoCache.remove(betCacheSpec.getHomeTeam());
+                } else {
+                    betCacheSpec.setIsRed(2);
+                    betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
+                    check = 2;
+                    addBuyRecord(betCacheSpec, 1);
+                    fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
+                }
+            } else if (FOURTH.equals(djj)) {
+                // 主队第三节比分
+                String zdtext3 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[2]/li[4]/span")).getText();
+                // 客队第三节比分
+                String kdtext3 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[4]/span")).getText();
+                System.out.println("我是获取比赛分数：" + zdtext3 + " : " + kdtext3);
+                if (Integer.parseInt(zdtext3) % Integer.parseInt(kdtext3) == 1) {
+                    betCacheSpec.setIsRed(1);
+                    check = 1;
+                    addBuyRecord(betCacheSpec, 0);
+                    fifoCache.remove(betCacheSpec.getHomeTeam());
+                } else {
+                    // 将三黑数据保存到黑集合中
+                    betCacheSpec.setIsRed(2);
+                    betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
+                    map.add(betCacheSpec);
+                    check = 2;
+                    addBuyRecord(betCacheSpec, 1);
+                    fifoCache.remove(betCacheSpec.getHomeTeam());
+                }
             }
-        } else if (THIRD.equals(djj)) {
-            // 主队第二节比分
-            String zdtext2 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[2]/li[3]/span")).getText();
-            // 客队第二节比分
-            String kdtext2 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[3]/span")).getText();
-            System.out.println("我是获取比赛分数：" + zdtext2 + " : " + kdtext2);
-            if (Integer.parseInt(zdtext2) % Integer.parseInt(kdtext2) == 1) {
-                betCacheSpec.setIsRed(1);
-                check = 1;
-                addBuyRecord(betCacheSpec, 0);
-                fifoCache.remove(betCacheSpec.getHomeTeam());
-            } else {
-                betCacheSpec.setIsRed(2);
-                betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
-                check = 2;
-                addBuyRecord(betCacheSpec, 1);
-                fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
-            }
-        } else if (FOURTH.equals(djj)) {
-            // 主队第三节比分
-            String zdtext3 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[2]/li[4]/span")).getText();
-            // 客队第三节比分
-            String kdtext3 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[4]/span")).getText();
-            System.out.println("我是获取比赛分数：" + zdtext3 + " : " + kdtext3);
-            if (Integer.parseInt(zdtext3) % Integer.parseInt(kdtext3) == 1) {
-                betCacheSpec.setIsRed(1);
-                check = 1;
-                addBuyRecord(betCacheSpec, 0);
-                fifoCache.remove(betCacheSpec.getHomeTeam());
-            } else {
-                // 将三黑数据保存到黑集合中
-                betCacheSpec.setIsRed(2);
-                betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
-                map.add(betCacheSpec);
-                check = 2;
-                addBuyRecord(betCacheSpec, 1);
-                fifoCache.remove(betCacheSpec.getHomeTeam());
-            }
+            return check;
+        } catch (Exception e) {
+            System.out.println("获取比赛分数报错");
+            System.out.println(e);
+            S_W = 0;
+            driver.quit();
         }
-        return check;
+        return 0;
     }
 
     /**
@@ -370,14 +379,14 @@ public class BetBasketballUtil {
         }
         // 开始下注买
         if (betCacheSpec.getNumber() == 0) {
-            if(map.size() == 0){
+            if (map.size() == 0) {
                 // 判断是否有三黑的数据
                 String result = HttpUtil.get(GET_URL);
                 System.out.println("result:" + JSON.parseObject(result).get("data"));
                 List<BuyRecordJson> bls = JSON.parseArray(JSON.parseObject(result).get("data").toString(), BuyRecordJson.class);
-                if(bls.size() > 0){
+                if (bls.size() > 0) {
                     System.out.println("将查询出来的黑单，设置在发送盒子上");
-                    for(BuyRecordJson br : bls){
+                    for (BuyRecordJson br : bls) {
                         map.add(JSON.parseObject(br.getJson(), BetCacheSpec.class));
                     }
                 }
