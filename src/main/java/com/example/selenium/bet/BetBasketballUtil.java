@@ -37,6 +37,10 @@ public class BetBasketballUtil {
     private static String ADD_URL = "http://47.106.143.218:8081/buy/add";
     // 删掉已下注黑单
     private static String DEL_URL = "http://47.106.143.218:8081/buy/del/1";
+    // 是否开始下注
+    private static String OFF_URL = "http://47.106.143.218:8081/instruction/get/switch";
+    // 是否开启下注 ON -> 开启
+    private static String IS_ON = "ON";
     // 系统缓存
     private static Cache<String, String> fifoCache = CacheUtil.newFIFOCache(1000);
     // 保存三黑的数据
@@ -62,6 +66,12 @@ public class BetBasketballUtil {
      * BBIT下注
      */
     public void bet() {
+        if(!HttpUtil.get(OFF_URL).contains(IS_ON)){
+            System.out.println("关闭下注，请注意...");
+            DingUtil dingUtil = new DingUtil();
+            dingUtil.sendMassage("下注通道已关闭，请时刻注意");
+            return;
+        }
         if (1 == S_W) {
             System.out.println("比赛进行中,跳过");
             return;
@@ -87,6 +97,11 @@ public class BetBasketballUtil {
             // 点击新BBIT赛事信息
             betCopyUtil.btnSend(driver);
             do {
+                if(!HttpUtil.get(OFF_URL).contains(IS_ON)){
+                    DingUtil dingUtil = new DingUtil();
+                    dingUtil.sendMassage("下注通道已关闭，请时刻注意");
+                    continue;
+                }
                 driver.navigate().refresh();
                 System.out.println("走刷新逻辑....");
                 SleepUtil.sleepUtil(8000);
