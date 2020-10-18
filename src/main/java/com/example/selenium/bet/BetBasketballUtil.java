@@ -71,6 +71,7 @@ public class BetBasketballUtil {
         // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
+        // 笔记本版本 D:\ChromeCoreDownloads\chromedriver.exe
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
         System.setProperty("webdriver.chrome.driver", "D:\\00002YX\\chromedriver.exe");
