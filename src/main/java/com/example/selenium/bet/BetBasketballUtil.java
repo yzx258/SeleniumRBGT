@@ -256,6 +256,7 @@ public class BetBasketballUtil {
         // 获取缓存数据
         try {
             int check = 0;
+            DingUtil d = new DingUtil();
             String cache = fifoCache.get(zd);
             BetCacheSpec betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
             betCacheSpec.setNode(djj);
@@ -272,6 +273,7 @@ public class BetBasketballUtil {
                     fifoCache.remove(betCacheSpec.getHomeTeam());
                 } else {
                     betCacheSpec.setIsRed(2);
+                    betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
                     betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                     check = 2;
                     addBuyRecord(betCacheSpec, 1);
@@ -290,10 +292,16 @@ public class BetBasketballUtil {
                     fifoCache.remove(betCacheSpec.getHomeTeam());
                 } else {
                     betCacheSpec.setIsRed(2);
-                    betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
-                    check = 2;
-                    addBuyRecord(betCacheSpec, 1);
-                    fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
+                    betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
+                    if(betCacheSpec.getNumber() == 7){
+                        d.sendMassage("该比赛已经八黑，请关注该比赛,是否有出入：["+betCacheSpec.getHomeTeam()+" VS "+betCacheSpec.getAwayTeam()+"]");
+                        d.sendMassage("该比赛已经八黑，重新开始下注");
+                    }else{
+                        betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
+                        check = 2;
+                        addBuyRecord(betCacheSpec, 1);
+                        fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
+                    }
                 }
             } else if (FOURTH.equals(djj)) {
                 // 主队第三节比分
@@ -307,13 +315,19 @@ public class BetBasketballUtil {
                     addBuyRecord(betCacheSpec, 0);
                     fifoCache.remove(betCacheSpec.getHomeTeam());
                 } else {
-                    // 将三黑数据保存到黑集合中
+                    // 将三/六黑数据保存到黑集合中
                     betCacheSpec.setIsRed(2);
+                    betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
                     betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                     map.add(betCacheSpec);
                     check = 2;
                     addBuyRecord(betCacheSpec, 1);
                     fifoCache.remove(betCacheSpec.getHomeTeam());
+                    if(betCacheSpec.getNumber() == 2){
+                        d.sendMassage("该比赛已经三黑，请关注该比赛,是否有出入：["+betCacheSpec.getHomeTeam()+" VS "+betCacheSpec.getAwayTeam()+"]");
+                    }else if(betCacheSpec.getNumber() == 5){
+                        d.sendMassage("该比赛已经六黑，请关注该比赛,是否有出入：["+betCacheSpec.getHomeTeam()+" VS "+betCacheSpec.getAwayTeam()+"]");
+                    }
                 }
             }
             return check;
