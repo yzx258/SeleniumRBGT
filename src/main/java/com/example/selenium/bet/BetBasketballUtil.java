@@ -172,15 +172,15 @@ public class BetBasketballUtil {
                                 String djj = split[0];
                                 // 比赛剩余时间
                                 String sysj = split[1];
-                                System.out.println("==============================");
-                                System.out.println("比赛进行中:" + djj + "/" + sysj);
-                                System.out.println(zd + " VS " + kd);
-                                System.out.println("==============================");
                                 // 判断是否支持下注，或者获取比分
                                 int check = checkBet(zd, djj, sysj);
                                 if (check == 0) {
                                     // 无需下注
-                                    System.out.println("无需下注....");
+                                    System.out.println("==============================");
+                                    System.out.println("比赛进行中[0 : 无需下注]:" + djj + "/" + sysj);
+                                    System.out.println(zd + " VS " + kd);
+                                    System.out.println("==============================");
+                                    System.out.println("|||||||||||||||||||||||||||||||");
                                 } else if (check == 1) {
                                     // 获取比分，判断是否需要下注
                                     // String text = td2.get(5).getText();
@@ -189,7 +189,11 @@ public class BetBasketballUtil {
                                     SleepUtil.sleepUtil(2000);
                                     if (checkScore(driver, zd, djj) == 1) {
                                         // 红单不需要下注
-                                        System.out.println("红单，无需下注....");
+                                        System.out.println("==============================");
+                                        System.out.println("比赛进行中[1 : 无需下注]:" + djj + "/" + sysj);
+                                        System.out.println(zd + " VS " + kd);
+                                        System.out.println("==============================");
+                                        System.out.println("|||||||||||||||||||||||||||||||");
                                         driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[2]/div/p")).click();
                                     }
                                     System.out.println("进入获取比分，需要重新刷新");
@@ -197,6 +201,11 @@ public class BetBasketballUtil {
                                 } else if (check == 2) {
                                     // 支持下注
                                     SleepUtil.sleepUtil(2000);
+                                    System.out.println("==============================");
+                                    System.out.println("比赛进行中[2 : 需下注]:" + djj + "/" + sysj);
+                                    System.out.println(zd + " VS " + kd);
+                                    System.out.println("==============================");
+                                    System.out.println("|||||||||||||||||||||||||||||||");
                                     sendBet(driver, zd, kd, djj, trs, td1);
                                     break;
                                 }
@@ -229,7 +238,7 @@ public class BetBasketballUtil {
             System.out.println("11111111111111111111");
             // 不存在,且比赛时间不能小于4分钟，则允许下注
             int size = Integer.parseInt(sysj.split(":")[0]);
-            if (SECOND.equals(djj) && (size >= 4 && size < 12)) {
+            if (FIRST.equals(djj) && (size >= 4 && size < 12)) {
                 System.out.println("21111111111111111111");
                 return 2;
             }
