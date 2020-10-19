@@ -483,6 +483,7 @@ public class BetBasketballUtil {
             elementZh.clear();
             // elementZh.sendKeys(bl[magnification]);
             // 调试下注使用，默认为10
+            elementZh.sendKeys("10");
             SleepUtil.sleepUtil(4000);
             // 点击确认按钮
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
