@@ -91,9 +91,7 @@ public class BetBasketballUtil {
         WebDriver driver = new ChromeDriver();
         DingUtil d = new DingUtil();
         BetCopyUtil betCopyUtil = new BetCopyUtil();
-
         try {
-
             // 登录信息
             betCopyUtil.login(driver);
             // 点击新BBIT赛事信息
@@ -105,7 +103,6 @@ public class BetBasketballUtil {
                     continue;
                 }
                 driver.navigate().refresh();
-                System.out.println("走刷新逻辑....");
                 SleepUtil.sleepUtil(8000);
 
                 // 存在iframe,首先需要进到iframe
@@ -114,18 +111,14 @@ public class BetBasketballUtil {
 
                 // 点击滚球按钮
                 driver.findElement(By.xpath("//*[@id=\"nav\"]/a[1]")).click();
-                System.out.println("点击滚球按钮...");
                 SleepUtil.sleepUtil(4000);
 
                 // 获取新的ifram
                 driver.switchTo().frame("bcsportsbookiframe");
-                System.out.println("获取新的ifram...");
                 SleepUtil.sleepUtil(4000);
-                SleepUtil.sleepUtil(2000);
                 // 点击刷新按钮，确保正常连接
                 driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
                 // 点击篮球 sport-name-asia
-                System.out.println("开始新操作....");
                 List<WebElement> pl = driver.findElements(By.className("sport-name-asia"));
                 Boolean flag = false;
                 for (WebElement wp : pl) {
