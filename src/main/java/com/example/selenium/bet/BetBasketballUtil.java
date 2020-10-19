@@ -91,8 +91,8 @@ public class BetBasketballUtil {
         WebDriver driver = new ChromeDriver();
         DingUtil d = new DingUtil();
         BetCopyUtil betCopyUtil = new BetCopyUtil();
-        try {
 
+        try {
 
             // 登录信息
             betCopyUtil.login(driver);
@@ -155,59 +155,69 @@ public class BetBasketballUtil {
                     driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
                     SleepUtil.sleepUtil(2000);
                     // 判断不为空的篮球赛事
-                    List<WebElement> trs = e.findElements(By.tagName("tr"));
-                    if (trs.size() >= 2) {
-                        List<WebElement> td1 = trs.get(1).findElements(By.tagName("td"));
-                        List<WebElement> td2 = trs.get(2).findElements(By.tagName("td"));
-                        if (td1.size() > 2 && td2.size() > 2) {
-                            // 比赛队伍名称
-                            String zd = td1.get(1).getText();
-                            zd = zd.replaceAll("\r|\n", "P").split("P")[0];
-                            String kd = td2.get(0).getText();
-                            kd = kd.replaceAll("\r|\n", "P").split("P")[0];
-                            if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && StrUtil.isNotBlank(td1.get(0).getText()) && !td1.get(0).getText().contains("即将开赛")) {
-                                // 比赛第几节/时间
-                                String[] split = td1.get(0).getText().replaceAll("\r|\n", "P").split("P");
-                                // 第几节
-                                String djj = split[0];
-                                // 比赛剩余时间
-                                String sysj = split[1];
-                                // 判断是否支持下注，或者获取比分
-                                int check = checkBet(zd, djj, sysj);
-                                if (check == 0) {
-                                    // 无需下注
-                                    System.out.println("==============================");
-                                    System.out.println("比赛进行中[0 : 无需下注]:" + djj + "/" + sysj);
-                                    System.out.println(zd + " VS " + kd);
-                                    System.out.println("==============================");
-                                    System.out.println("|||||||||||||||||||||||||||||||");
-                                } else if (check == 1) {
-                                    // 获取比分，判断是否需要下注
-                                    // String text = td2.get(5).getText();
-                                    // System.out.println("我是获取的数据：" + text);
-                                    td2.get(5).findElement(By.tagName("p")).click();
-                                    SleepUtil.sleepUtil(2000);
-                                    if (checkScore(driver, zd, djj) == 1) {
-                                        // 红单不需要下注
+                    List<WebElement> tbodys = new ArrayList<WebElement>();
+                    try {
+                        tbodys = e.findElements(By.tagName("tbody"));
+                    } catch (Exception e1) {
+                        System.out.println("获取不到该数据,跳过......");
+                        continue;
+                    }
+                    for (WebElement tb : tbodys) {
+                        SleepUtil.sleepUtil(2000);
+                        List<WebElement> trs = tb.findElements(By.tagName("tr"));
+                        if (trs.size() >= 2) {
+                            List<WebElement> td1 = trs.get(1).findElements(By.tagName("td"));
+                            List<WebElement> td2 = trs.get(2).findElements(By.tagName("td"));
+                            if (td1.size() > 2 && td2.size() > 2) {
+                                // 比赛队伍名称
+                                String zd = td1.get(1).getText();
+                                zd = zd.replaceAll("\r|\n", "P").split("P")[0];
+                                String kd = td2.get(0).getText();
+                                kd = kd.replaceAll("\r|\n", "P").split("P")[0];
+                                if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && StrUtil.isNotBlank(td1.get(0).getText()) && !td1.get(0).getText().contains("即将开赛")) {
+                                    // 比赛第几节/时间
+                                    String[] split = td1.get(0).getText().replaceAll("\r|\n", "P").split("P");
+                                    // 第几节
+                                    String djj = split[0];
+                                    // 比赛剩余时间
+                                    String sysj = split[1];
+                                    // 判断是否支持下注，或者获取比分
+                                    int check = checkBet(zd, djj, sysj);
+                                    if (check == 0) {
+                                        // 无需下注
                                         System.out.println("==============================");
-                                        System.out.println("比赛进行中[1 : 无需下注]:" + djj + "/" + sysj);
+                                        System.out.println("比赛进行中[0 : 无需下注]:" + djj + "/" + sysj);
                                         System.out.println(zd + " VS " + kd);
                                         System.out.println("==============================");
                                         System.out.println("|||||||||||||||||||||||||||||||");
-                                        driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[2]/div/p")).click();
+                                    } else if (check == 1) {
+                                        // 获取比分，判断是否需要下注
+                                        // String text = td2.get(5).getText();
+                                        // System.out.println("我是获取的数据：" + text);
+                                        td2.get(5).findElement(By.tagName("p")).click();
+                                        SleepUtil.sleepUtil(2000);
+                                        if (checkScore(driver, zd, djj) == 1) {
+                                            // 红单不需要下注
+                                            System.out.println("==============================");
+                                            System.out.println("比赛进行中[1 : 无需下注]:" + djj + "/" + sysj);
+                                            System.out.println(zd + " VS " + kd);
+                                            System.out.println("==============================");
+                                            System.out.println("|||||||||||||||||||||||||||||||");
+                                            driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[2]/div/p")).click();
+                                        }
+                                        System.out.println("进入获取比分，需要重新刷新");
+                                        break;
+                                    } else if (check == 2) {
+                                        // 支持下注
+                                        SleepUtil.sleepUtil(2000);
+                                        System.out.println("==============================");
+                                        System.out.println("比赛进行中[2 : 需下注]:" + djj + "/" + sysj);
+                                        System.out.println(zd + " VS " + kd);
+                                        System.out.println("==============================");
+                                        System.out.println("|||||||||||||||||||||||||||||||");
+                                        sendBet(driver, zd, kd, djj, trs, td1);
+                                        break;
                                     }
-                                    System.out.println("进入获取比分，需要重新刷新");
-                                    break;
-                                } else if (check == 2) {
-                                    // 支持下注
-                                    SleepUtil.sleepUtil(2000);
-                                    System.out.println("==============================");
-                                    System.out.println("比赛进行中[2 : 需下注]:" + djj + "/" + sysj);
-                                    System.out.println(zd + " VS " + kd);
-                                    System.out.println("==============================");
-                                    System.out.println("|||||||||||||||||||||||||||||||");
-                                    sendBet(driver, zd, kd, djj, trs, td1);
-                                    break;
                                 }
                             }
                         }
