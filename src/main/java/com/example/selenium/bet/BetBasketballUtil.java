@@ -91,11 +91,12 @@ public class BetBasketballUtil {
         WebDriver driver = new ChromeDriver();
         DingUtil d = new DingUtil();
         BetCopyUtil betCopyUtil = new BetCopyUtil();
-        try {
+
             // 登录信息
             betCopyUtil.login(driver);
             // 点击新BBIT赛事信息
             betCopyUtil.btnSend(driver);
+        try {
             do {
                 if (!HttpUtil.get(OFF_URL).contains(IS_ON)) {
                     DingUtil dingUtil = new DingUtil();
