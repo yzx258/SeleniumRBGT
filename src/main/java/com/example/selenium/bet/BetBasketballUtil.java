@@ -408,6 +408,7 @@ public class BetBasketballUtil {
             betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
         }
         // 开始下注买
+        DingUtil d = new DingUtil();
         if (betCacheSpec.getNumber() == 0) {
             if (map.size() == 0) {
                 // 判断是否有三黑的数据
@@ -434,6 +435,7 @@ public class BetBasketballUtil {
             if (flag) {
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第一节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+                d.sendMassage("第一节比赛已购买,下注比赛：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
                 if (flag_1) {
                     // 清空已设置倍率的数据
                     map.remove(0);
@@ -448,6 +450,7 @@ public class BetBasketballUtil {
             if (flag) {
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第二节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+                d.sendMassage("第二节比赛已购买,下注比赛：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
             }
         } else if (betCacheSpec.getNumber() == 2) {
             // 购买第三场比赛
@@ -457,6 +460,7 @@ public class BetBasketballUtil {
             if (flag) {
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第三节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+                d.sendMassage("第三节比赛已购买,下注比赛：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
             }
         }
     }
@@ -477,7 +481,8 @@ public class BetBasketballUtil {
             WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
             // 清空输入框
             elementZh.clear();
-            elementZh.sendKeys(bl[magnification]);
+            // elementZh.sendKeys(bl[magnification]);
+            // 调试下注使用，默认为10
             SleepUtil.sleepUtil(4000);
             // 点击确认按钮
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
