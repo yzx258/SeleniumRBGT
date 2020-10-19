@@ -66,7 +66,7 @@ public class BetBasketballUtil {
      * BBIT下注
      */
     public void bet() {
-        if(!HttpUtil.get(OFF_URL).contains(IS_ON)){
+        if (!HttpUtil.get(OFF_URL).contains(IS_ON)) {
             System.out.println("关闭下注，请注意...");
             DingUtil dingUtil = new DingUtil();
             dingUtil.sendMassage("下注通道已关闭，请时刻注意");
@@ -92,12 +92,14 @@ public class BetBasketballUtil {
         DingUtil d = new DingUtil();
         BetCopyUtil betCopyUtil = new BetCopyUtil();
         try {
+
+
             // 登录信息
             betCopyUtil.login(driver);
             // 点击新BBIT赛事信息
             betCopyUtil.btnSend(driver);
             do {
-                if(!HttpUtil.get(OFF_URL).contains(IS_ON)){
+                if (!HttpUtil.get(OFF_URL).contains(IS_ON)) {
                     DingUtil dingUtil = new DingUtil();
                     dingUtil.sendMassage("下注通道已关闭，请时刻注意");
                     continue;
@@ -163,22 +165,22 @@ public class BetBasketballUtil {
                             zd = zd.replaceAll("\r|\n", "P").split("P")[0];
                             String kd = td2.get(0).getText();
                             kd = kd.replaceAll("\r|\n", "P").split("P")[0];
-                            if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && !td1.get(0).getText().contains("即将开赛")) {
+                            if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && StrUtil.isNotBlank(td1.get(0).getText()) && !td1.get(0).getText().contains("即将开赛")) {
                                 // 比赛第几节/时间
                                 String[] split = td1.get(0).getText().replaceAll("\r|\n", "P").split("P");
                                 // 第几节
                                 String djj = split[0];
                                 // 比赛剩余时间
                                 String sysj = split[1];
+                                System.out.println("==============================");
+                                System.out.println("比赛进行中:" + djj + "/" + sysj);
+                                System.out.println(zd + " VS " + kd);
+                                System.out.println("==============================");
                                 // 判断是否支持下注，或者获取比分
                                 int check = checkBet(zd, djj, sysj);
                                 if (check == 0) {
                                     // 无需下注
-                                    System.out.println("&&&&&&&&&&&&&&&&");
                                     System.out.println("无需下注....");
-                                    System.out.println("比赛进行中:" + djj + "/" + sysj);
-                                    System.out.println(zd + " VS " + kd);
-                                    System.out.println("&&&&&&&&&&&&&&&&");
                                 } else if (check == 1) {
                                     // 获取比分，判断是否需要下注
                                     // String text = td2.get(5).getText();
@@ -187,22 +189,14 @@ public class BetBasketballUtil {
                                     SleepUtil.sleepUtil(2000);
                                     if (checkScore(driver, zd, djj) == 1) {
                                         // 红单不需要下注
-                                        System.out.println("&&&&&&&&&&&&&&&&");
                                         System.out.println("红单，无需下注....");
-                                        System.out.println("比赛进行中:" + djj + "/" + sysj);
-                                        System.out.println(zd + " VS " + kd);
-                                        System.out.println("&&&&&&&&&&&&&&&&");
                                         driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[2]/div/p")).click();
                                     }
                                     System.out.println("进入获取比分，需要重新刷新");
                                     break;
                                 } else if (check == 2) {
                                     // 支持下注
-                                    System.out.println("=================");
-                                    System.out.println("比赛进行中:" + djj + "/" + sysj);
-                                    System.out.println(zd + " VS " + kd);
                                     SleepUtil.sleepUtil(2000);
-                                    System.out.println("下注完成....");
                                     sendBet(driver, zd, kd, djj, trs, td1);
                                     break;
                                 }
@@ -232,8 +226,11 @@ public class BetBasketballUtil {
         // 判断该场比赛是否已经购买
         String cache = fifoCache.get(zd);
         if (StrUtil.isBlank(cache)) {
+            System.out.println("11111111111111111111");
             // 不存在,且比赛时间不能小于4分钟，则允许下注
-            if (FIRST.equals(djj) && Integer.parseInt(sysj.split(":")[0]) >= 4) {
+            int size = Integer.parseInt(sysj.split(":")[0]);
+            if (SECOND.equals(djj) && (size >= 4 && size < 12)) {
+                System.out.println("21111111111111111111");
                 return 2;
             }
         } else {
@@ -241,17 +238,22 @@ public class BetBasketballUtil {
             BetCacheSpec betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
             // 如果相等，则存在购买，则不需要下注
             if (betCacheSpec.getIsRed() == 0) {
+                System.out.println("2222222222222222222");
                 // 判断是否存在单节
                 if (betCacheSpec.getNode().equals(djj)) {
+                    System.out.println("3222222222222222222");
                     return 0;
                 } else {
                     // 判断是否需要获取篮球比分
+                    System.out.println("4222222222222222222");
                     return 1;
                 }
             } else if (betCacheSpec.getIsRed() == 1) {
+                System.out.println("33333333333333333333333");
                 // 不需要下注
                 return 0;
             } else if (betCacheSpec.getIsRed() == 2) {
+                System.out.println("44444444444444444");
                 // 需要下注
                 return 2;
             }
@@ -308,10 +310,10 @@ public class BetBasketballUtil {
                 } else {
                     betCacheSpec.setIsRed(2);
                     betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
-                    if(betCacheSpec.getNumber() == 7){
-                        d.sendMassage("该比赛已经八黑，请关注该比赛,是否有出入：["+betCacheSpec.getHomeTeam()+" VS "+betCacheSpec.getAwayTeam()+"]");
+                    if (betCacheSpec.getNumber() == 7) {
+                        d.sendMassage("该比赛已经八黑，请关注该比赛,是否有出入：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         d.sendMassage("该比赛已经八黑，重新开始下注");
-                    }else{
+                    } else {
                         betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                         check = 2;
                         addBuyRecord(betCacheSpec, 1);
@@ -338,10 +340,10 @@ public class BetBasketballUtil {
                     check = 2;
                     addBuyRecord(betCacheSpec, 1);
                     fifoCache.remove(betCacheSpec.getHomeTeam());
-                    if(betCacheSpec.getNumber() == 2){
-                        d.sendMassage("该比赛已经三黑，请关注该比赛,是否有出入：["+betCacheSpec.getHomeTeam()+" VS "+betCacheSpec.getAwayTeam()+"]");
-                    }else if(betCacheSpec.getNumber() == 5){
-                        d.sendMassage("该比赛已经六黑，请关注该比赛,是否有出入：["+betCacheSpec.getHomeTeam()+" VS "+betCacheSpec.getAwayTeam()+"]");
+                    if (betCacheSpec.getNumber() == 2) {
+                        d.sendMassage("该比赛已经三黑，请关注该比赛,是否有出入：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                    } else if (betCacheSpec.getNumber() == 5) {
+                        d.sendMassage("该比赛已经六黑，请关注该比赛,是否有出入：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                     }
                 }
             }
@@ -435,6 +437,7 @@ public class BetBasketballUtil {
             if (flag) {
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第一节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
+                System.out.println("第一节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
                 d.sendMassage("第一节比赛已购买,下注比赛：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
                 if (flag_1) {
                     // 清空已设置倍率的数据
@@ -474,11 +477,12 @@ public class BetBasketballUtil {
      */
     public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1, int magnification) {
         // 点击下注
-        System.out.println("我点击购买单：" + td1.get(5).getText());
-        if (StrUtil.isNotBlank(td1.get(5).getText()) && "单".equals(td1.get(5).getText())) {
+        System.out.println("td1.get(5).getText().contains(\"单\")：" + td1.get(5).getText().contains("单"));
+        if (StrUtil.isNotBlank(td1.get(5).getText()) && td1.get(5).getText().contains("单")) {
             td1.get(5).click();
-            SleepUtil.sleepUtil(2000);
+            SleepUtil.sleepUtil(3000);
             WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
+            SleepUtil.sleepUtil(3000);
             // 清空输入框
             elementZh.clear();
             // elementZh.sendKeys(bl[magnification]);
