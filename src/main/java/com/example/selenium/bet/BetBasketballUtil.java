@@ -307,7 +307,6 @@ public class BetBasketballUtil {
                     betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
                     betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                     check = 2;
-                    addBuyRecord(betCacheSpec, 1);
                     fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
                 }
             } else if (THIRD.equals(djj)) {
@@ -332,7 +331,6 @@ public class BetBasketballUtil {
                     } else {
                         betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                         check = 2;
-                        addBuyRecord(betCacheSpec, 1);
                         fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
                     }
                 }
