@@ -72,20 +72,20 @@ public class BetCopyUtil {
         // 目标URL
         driver.get("https://www.52365l.com");
         driver.manage().window().maximize();
-        // 获取用户输入框
-        WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[1]/input"));
-        // 清空输入框
-        elementZh.clear();
-        // 获取用户输入框
-        WebElement elementMm = driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[2]/input"));
-        // 清空输入框
-        elementMm.clear();
-//        elementZh.sendKeys("dhxm2376");
-//        elementMm.sendKeys("ycw15659512376");
-        elementZh.sendKeys("huangxr");
-        elementMm.sendKeys("hx8325554");
+        SleepUtil.sleepUtil(2000);
+        // 账号:dhxm2376
+        WebElement zh = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div/div[1]/div/input"));
+        System.out.println(zh.getAttribute("placeholder"));
+        SleepUtil.sleepUtil(2000);
+        zh.sendKeys("huangxr");
+        // 密码:ycw15659512376"
+        WebElement mm = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div/div[2]/div[1]/input"));
+        System.out.println(mm.getAttribute("placeholder"));
+        SleepUtil.sleepUtil(2000);
+        mm.sendKeys("hx8325554");
+        SleepUtil.sleepUtil(2000);
         //点击确定按钮
-        driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[3]/button")).click();
+        driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[2]/button")).click();
     }
 
     /**
