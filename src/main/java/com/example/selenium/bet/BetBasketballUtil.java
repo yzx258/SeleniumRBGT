@@ -45,8 +45,10 @@ public class BetBasketballUtil {
     private static Cache<String, String> fifoCache = CacheUtil.newFIFOCache(1000);
     // 保存三黑的数据
     private static List<BetCacheSpec> map = new ArrayList<>();
-    // 下注倍率
-    private static String[] bl = new String[]{"10", "20", "40", "80", "160", "320", "640", "1280"};
+    // 下注倍率:0.94倍率
+    private static String[] bl = new String[]{"10", "20", "40", "80", "165", "335", "250", "400"};
+    // 下注倍率:0.85倍率
+    private static String[] bl2 = new String[]{"10", "20", "40", "90", "200", "440", "250", "400"};
     // 是否需要
     private static String FLAG_OK = "YES";
     // 点击篮球
@@ -454,7 +456,7 @@ public class BetBasketballUtil {
                 }
             }
             Boolean flag_1 = false;
-            if (map.size() > 0) {
+            if (map.size() > 0 && !(zd.contains("电子") || kd.contains("电子"))) {
                 BetCacheSpec betCacheSpec1 = map.get(0);
                 betCacheSpec.setMagnification(betCacheSpec1.getMagnification());
                 flag_1 = true;
