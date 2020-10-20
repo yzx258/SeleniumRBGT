@@ -84,7 +84,7 @@ public class BetBasketballUtil {
         // 笔记本版本 D:\ChromeCoreDownloads\chromedriver.exe
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
-        System.setProperty("webdriver.chrome.driver", "D:\\00002YX\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -296,11 +296,11 @@ public class BetBasketballUtil {
                 String kdtext1 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[2]/span")).getText();
                 System.out.println("我是获取比赛分数：" + zdtext1 + " : " + kdtext1);
                 if (StrUtil.isNotBlank(zdtext1) && StrUtil.isNotBlank(kdtext1)) {
-                    if (Integer.parseInt(zdtext1) % Integer.parseInt(kdtext1) == 1) {
+                    if ((Integer.parseInt(zdtext1.trim()) + Integer.parseInt(kdtext1.trim())) % 2 == 1) {
                         betCacheSpec.setIsRed(1);
                         betCacheSpec.setScore(zdtext1 + ":" + kdtext1);
                         check = 1;
-                        d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "]["+betCacheSpec.getScore()+"]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
                     } else {
@@ -309,7 +309,7 @@ public class BetBasketballUtil {
                         betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
                         betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                         check = 2;
-                        d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "]["+betCacheSpec.getScore()+"]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
                     }
                 }
@@ -320,8 +320,8 @@ public class BetBasketballUtil {
                 String kdtext2 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[3]/span")).getText();
                 System.out.println("我是获取比赛分数：" + zdtext2 + " : " + kdtext2);
                 if (StrUtil.isNotBlank(zdtext2) && StrUtil.isNotBlank(kdtext2)) {
-                    if (Integer.parseInt(zdtext2) % Integer.parseInt(kdtext2) == 1) {
-                        d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "]["+betCacheSpec.getScore()+"]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                    if ((Integer.parseInt(zdtext2.trim()) + Integer.parseInt(kdtext2.trim())) % 2 == 1) {
+                        d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         betCacheSpec.setIsRed(1);
                         betCacheSpec.setScore(zdtext2 + ":" + kdtext2);
                         check = 1;
@@ -331,7 +331,7 @@ public class BetBasketballUtil {
                         betCacheSpec.setIsRed(2);
                         betCacheSpec.setScore(zdtext2 + ":" + kdtext2);
                         betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
-                        d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "]["+betCacheSpec.getScore()+"]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         if (betCacheSpec.getNumber() == 7) {
                             d.sendMassage("该比赛已经八黑，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                             d.sendMassage("该比赛已经八黑，重新开始下注");
@@ -351,11 +351,11 @@ public class BetBasketballUtil {
                 String kdtext3 = driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[5]/div/ng-include/live-game-scores/div[1]/div[1]/div/div/div/div/ng-include/div/div[1]/ul[3]/li[4]/span")).getText();
                 System.out.println("我是获取比赛分数：" + zdtext3 + " : " + kdtext3);
                 if (StrUtil.isNotBlank(zdtext3) && StrUtil.isNotBlank(kdtext3)) {
-                    if (Integer.parseInt(zdtext3) % Integer.parseInt(kdtext3) == 1) {
+                    if ((Integer.parseInt(zdtext3.trim()) + Integer.parseInt(kdtext3.trim())) % 2 == 1) {
                         betCacheSpec.setIsRed(1);
                         betCacheSpec.setScore(zdtext3 + ":" + kdtext3);
                         check = 1;
-                        d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "]["+betCacheSpec.getScore()+"]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
                     } else {
@@ -366,7 +366,7 @@ public class BetBasketballUtil {
                         betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                         map.add(betCacheSpec);
                         check = 2;
-                        d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "]["+betCacheSpec.getScore()+"]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         addBuyRecord(betCacheSpec, 1);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
                         if (betCacheSpec.getNumber() == 2) {
