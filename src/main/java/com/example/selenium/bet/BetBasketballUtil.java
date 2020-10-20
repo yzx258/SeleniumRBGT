@@ -306,8 +306,6 @@ public class BetBasketballUtil {
                     } else {
                         betCacheSpec.setIsRed(2);
                         betCacheSpec.setScore(zdtext1 + ":" + kdtext1);
-                        betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
-                        betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                         check = 2;
                         d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
@@ -331,14 +329,12 @@ public class BetBasketballUtil {
                     } else {
                         betCacheSpec.setIsRed(2);
                         betCacheSpec.setScore(zdtext2 + ":" + kdtext2);
-                        betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
                         d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         if (betCacheSpec.getNumber() == 7) {
                             d.sendMassage("该比赛已经八黑，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                             d.sendMassage("该比赛已经八黑，重新开始下注");
                             fifoCache.remove(betCacheSpec.getHomeTeam());
                         } else {
-                            betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                             check = 2;
                             betCacheSpec.setScore(zdtext2 + ":" + kdtext2);
                             fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
@@ -364,8 +360,6 @@ public class BetBasketballUtil {
                         // 将三/六黑数据保存到黑集合中
                         betCacheSpec.setIsRed(2);
                         betCacheSpec.setScore(zdtext3 + ":" + kdtext3);
-                        betCacheSpec.setNumber(betCacheSpec.getNumber() + 1);
-                        betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
                         map.add(betCacheSpec);
                         check = 2;
                         d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
@@ -467,11 +461,12 @@ public class BetBasketballUtil {
             Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
             if (flag) {
                 // 保存购买记录
+                betCacheSpec.setNumber(0);
                 addBuyRecord(betCacheSpec,2);
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第一节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第一节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
-                d.sendMassage("第一节比赛已购买,下注比赛：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
+                d.sendMassage("第一节比赛已购买,下注比赛[下注节点："+betCacheSpec.getNode()+"][下注金额："+bl[betCacheSpec.getMagnification()]+"]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
                 if (flag_1) {
                     // 清空已设置倍率的数据
                     map.remove(0);
@@ -481,26 +476,30 @@ public class BetBasketballUtil {
         } else if (betCacheSpec.getNumber() == 1) {
             // 购买第二场比赛
             betCacheSpec.setIsRed(0);
+            betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
             Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
             if (flag) {
                 // 保存购买记录
+                betCacheSpec.setNumber(1);
                 addBuyRecord(betCacheSpec,2);
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第二节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第二节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
-                d.sendMassage("第二节比赛已购买,下注比赛：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
+                d.sendMassage("第二节比赛已购买,下注比赛[下注节点："+betCacheSpec.getNode()+"][下注金额："+bl[betCacheSpec.getMagnification()]+"]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
             }
         } else if (betCacheSpec.getNumber() == 2) {
             // 购买第三场比赛
             betCacheSpec.setIsRed(0);
+            betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
             Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
             if (flag) {
                 // 保存购买记录
+                betCacheSpec.setNumber(2);
                 addBuyRecord(betCacheSpec,2);
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第三节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第三节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
-                d.sendMassage("第三节比赛已购买,下注比赛[" + betCacheSpec.getMagnification() + "]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
+                d.sendMassage("第三节比赛已购买,下注比赛[下注节点："+betCacheSpec.getNode()+"][下注金额："+bl[betCacheSpec.getMagnification()]+"]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
             }
         }
     }
