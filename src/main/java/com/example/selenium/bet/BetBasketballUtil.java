@@ -144,7 +144,7 @@ public class BetBasketballUtil {
                 log.info("table头部数据 -> {}", table.size());
                 // 循环判断最近的篮球赛事
                 for (WebElement e : table) {
-                    SleepUtil.sleepUtil(2000);
+                    SleepUtil.sleepUtil(1000);
                     driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
                     SleepUtil.sleepUtil(2000);
                     // 判断不为空的篮球赛事
@@ -188,7 +188,7 @@ public class BetBasketballUtil {
                                         // String text = td2.get(5).getText();
                                         // System.out.println("我是获取的数据：" + text);
                                         td2.get(5).findElement(By.tagName("p")).click();
-                                        SleepUtil.sleepUtil(2000);
+                                        SleepUtil.sleepUtil(3000);
                                         if (checkScore(driver, zd, djj) == 1) {
                                             // 红单不需要下注
                                             System.out.println("==============================");
@@ -202,7 +202,7 @@ public class BetBasketballUtil {
                                         break;
                                     } else if (check == 2) {
                                         // 支持下注
-                                        SleepUtil.sleepUtil(2000);
+                                        SleepUtil.sleepUtil(3000);
                                         System.out.println("==============================");
                                         System.out.println("比赛进行中[2 : 需下注]:" + djj + "/" + sysj);
                                         System.out.println(zd + " VS " + kd);
@@ -238,11 +238,9 @@ public class BetBasketballUtil {
         // 判断该场比赛是否已经购买
         String cache = fifoCache.get(zd);
         if (StrUtil.isBlank(cache)) {
-            System.out.println("11111111111111111111");
             // 不存在,且比赛时间不能小于4分钟，则允许下注
             int size = Integer.parseInt(sysj.split(":")[0]);
             if (FIRST.equals(djj) && (size >= 4 && size < 12)) {
-                System.out.println("21111111111111111111");
                 return 2;
             }
         } else {
@@ -250,22 +248,17 @@ public class BetBasketballUtil {
             BetCacheSpec betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
             // 如果相等，则存在购买，则不需要下注
             if (betCacheSpec.getIsRed() == 0) {
-                System.out.println("2222222222222222222");
                 // 判断是否存在单节
                 if (betCacheSpec.getNode().equals(djj)) {
-                    System.out.println("3222222222222222222");
                     return 0;
                 } else {
                     // 判断是否需要获取篮球比分
-                    System.out.println("4222222222222222222");
                     return 1;
                 }
             } else if (betCacheSpec.getIsRed() == 1) {
-                System.out.println("33333333333333333333333");
                 // 不需要下注
                 return 0;
             } else if (betCacheSpec.getIsRed() == 2) {
-                System.out.println("44444444444444444");
                 // 需要下注
                 return 2;
             }
@@ -283,11 +276,12 @@ public class BetBasketballUtil {
      */
     public static int checkScore(WebDriver driver, String zd, String djj) {
         // 获取缓存数据
+        DingUtil d = new DingUtil();
+        BetCacheSpec betCacheSpec = new BetCacheSpec();
         try {
             int check = 0;
-            DingUtil d = new DingUtil();
             String cache = fifoCache.get(zd);
-            BetCacheSpec betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
+            betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
             betCacheSpec.setNode(djj);
             if (SECOND.equals(djj)) {
                 // 主队第一节比分
@@ -321,10 +315,10 @@ public class BetBasketballUtil {
                 System.out.println("我是获取比赛分数：" + zdtext2 + " : " + kdtext2);
                 if (StrUtil.isNotBlank(zdtext2) && StrUtil.isNotBlank(kdtext2)) {
                     if ((Integer.parseInt(zdtext2.trim()) + Integer.parseInt(kdtext2.trim())) % 2 == 1) {
-                        d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         betCacheSpec.setIsRed(1);
                         betCacheSpec.setScore(zdtext2 + ":" + kdtext2);
                         check = 1;
+                        d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
                     } else {
@@ -380,7 +374,7 @@ public class BetBasketballUtil {
             return check;
         } catch (Exception e) {
             System.out.println("获取比赛分数报错");
-            System.out.println(e);
+            d.sendMassage("获取比赛分数报错,重新打开浏览器：" + JSON.toJSONString(betCacheSpec));
             S_W = 0;
             driver.quit();
         }
@@ -519,7 +513,7 @@ public class BetBasketballUtil {
             elementZh.sendKeys("10");
             SleepUtil.sleepUtil(4000);
             // 点击确认按钮
-            driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+            // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
             SleepUtil.sleepUtil(8000);
             return true;
         }
