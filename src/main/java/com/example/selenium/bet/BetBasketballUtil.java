@@ -299,6 +299,7 @@ public class BetBasketballUtil {
                         betCacheSpec.setIsRed(1);
                         betCacheSpec.setScore(zdtext1 + ":" + kdtext1);
                         check = 1;
+                        betCacheSpec.setNode(node);
                         d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getNode() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
@@ -323,6 +324,7 @@ public class BetBasketballUtil {
                         betCacheSpec.setIsRed(1);
                         betCacheSpec.setScore(zdtext2 + ":" + kdtext2);
                         check = 1;
+                        betCacheSpec.setNode(node);
                         d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
@@ -354,6 +356,7 @@ public class BetBasketballUtil {
                         betCacheSpec.setIsRed(1);
                         betCacheSpec.setScore(zdtext3 + ":" + kdtext3);
                         check = 1;
+                        betCacheSpec.setNode(node);
                         d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
