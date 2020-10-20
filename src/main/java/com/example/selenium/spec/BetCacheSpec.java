@@ -47,6 +47,11 @@ public class BetCacheSpec {
     private int oddAndEven = 0;
 
     /**
+     * 比赛分数
+     */
+    private String score;
+
+    /**
      * 是否红单
      * 0【已购买,等待出结果】;1【已红单】;2【已黑单】
      */
