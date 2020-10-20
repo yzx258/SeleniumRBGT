@@ -78,7 +78,7 @@ public class BetCopyUtil {
         zh.sendKeys("dhxm2376");
         // 密码:ycw15659512376"
         WebElement mm = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div/div[2]/div[1]/input"));
-        mm.sendKeys("ycw15659512376");
+        mm.sendKeys("ycw8324479");
         SleepUtil.sleepUtil(2000);
         //点击确定按钮
         driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[2]/button")).click();
