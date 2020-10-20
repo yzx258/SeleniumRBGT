@@ -463,6 +463,8 @@ public class BetBasketballUtil {
             betCacheSpec.setIsRed(0);
             Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
             if (flag) {
+                // 保存购买记录
+                addBuyRecord(betCacheSpec,2);
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第一节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第一节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
@@ -478,6 +480,8 @@ public class BetBasketballUtil {
             betCacheSpec.setIsRed(0);
             Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
             if (flag) {
+                // 保存购买记录
+                addBuyRecord(betCacheSpec,2);
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第二节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第二节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
@@ -488,6 +492,8 @@ public class BetBasketballUtil {
             betCacheSpec.setIsRed(0);
             Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
             if (flag) {
+                // 保存购买记录
+                addBuyRecord(betCacheSpec,2);
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
                 System.out.println("第三节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第三节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
