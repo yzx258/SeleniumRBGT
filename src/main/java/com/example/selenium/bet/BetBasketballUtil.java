@@ -222,7 +222,7 @@ public class BetBasketballUtil {
                 System.out.println("重新获取最新table.....");
             } while (true);
         } catch (Exception e) {
-            d.sendMassage("遇到未知错误，关闭浏览器，重新打开");
+            d.sendMassage("遇到未知错误，关闭浏览器，重新打开[错误信息："+e.getMessage()+"]");
             System.out.println(e);
             S_W = 0;
             driver.quit();
@@ -377,7 +377,7 @@ public class BetBasketballUtil {
             return check;
         } catch (Exception e) {
             System.out.println("获取比赛分数报错");
-            d.sendMassage("获取比赛分数报错,重新打开浏览器：" + JSON.toJSONString(betCacheSpec));
+            d.sendMassage("获取比赛分数报错,重新打开浏览器[错误信息："+e.getMessage()+"]：" + JSON.toJSONString(betCacheSpec));
             S_W = 0;
             driver.quit();
         }
