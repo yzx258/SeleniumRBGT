@@ -2,6 +2,7 @@ package com.example.selenium.bet;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
@@ -309,7 +310,8 @@ public class BetBasketballUtil {
                         betCacheSpec.setNumber(1);
                         check = 2;
                         d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
-                        fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
+                        // 设置四小时失效
+                        fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec),DateUnit.SECOND.getMillis() * 14400);
                     }
                 }
             } else if (THIRD.equals(djj)) {
@@ -339,7 +341,8 @@ public class BetBasketballUtil {
                         } else {
                             check = 2;
                             betCacheSpec.setScore(zdtext2 + ":" + kdtext2);
-                            fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec));
+                            // 设置四小时失效
+                            fifoCache.put(betCacheSpec.getHomeTeam(), JSON.toJSONString(betCacheSpec),DateUnit.SECOND.getMillis() * 14400);
                         }
                     }
                 }
@@ -466,7 +469,8 @@ public class BetBasketballUtil {
                 // 保存购买记录
                 betCacheSpec.setNumber(0);
                 addBuyRecord(betCacheSpec,2);
-                fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
+                // 设置四小时失效
+                fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
                 System.out.println("第一节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第一节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
                 d.sendMassage("第一节比赛已购买,下注比赛[下注节点："+betCacheSpec.getNode()+"][下注金额："+bl[betCacheSpec.getMagnification()]+"]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
@@ -485,7 +489,8 @@ public class BetBasketballUtil {
                 // 保存购买记录
                 betCacheSpec.setNumber(1);
                 addBuyRecord(betCacheSpec,2);
-                fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
+                // 设置四小时失效
+                fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
                 System.out.println("第二节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第二节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
                 d.sendMassage("第二节比赛已购买,下注比赛[下注节点："+betCacheSpec.getNode()+"][下注金额："+bl[betCacheSpec.getMagnification()]+"]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
@@ -499,7 +504,8 @@ public class BetBasketballUtil {
                 // 保存购买记录
                 betCacheSpec.setNumber(2);
                 addBuyRecord(betCacheSpec,2);
-                fifoCache.put(zd, JSON.toJSONString(betCacheSpec));
+                // 设置四小时失效
+                fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
                 System.out.println("第三节比赛已购买,下注金额[" + bl[betCacheSpec.getMagnification()] + "]....");
                 System.out.println("第三节比赛已购买,下注信息 : " + JSON.toJSONString(betCacheSpec));
                 d.sendMassage("第三节比赛已购买,下注比赛[下注节点："+betCacheSpec.getNode()+"][下注金额："+bl[betCacheSpec.getMagnification()]+"]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
