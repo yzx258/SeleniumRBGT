@@ -103,6 +103,7 @@ public class BetBasketballUtil {
                     dingUtil.sendMassage("下注通道已关闭，请时刻注意");
                     continue;
                 }
+                SleepUtil.sleepUtil(4000);
                 driver.navigate().refresh();
                 SleepUtil.sleepUtil(8000);
 
