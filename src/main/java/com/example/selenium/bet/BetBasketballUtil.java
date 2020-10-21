@@ -456,7 +456,7 @@ public class BetBasketballUtil {
             Boolean flag_1 = false;
             if (map.size() > 0 && !(zd.contains("电子") || kd.contains("电子"))) {
                 BetCacheSpec betCacheSpec1 = map.get(0);
-                betCacheSpec.setMagnification(betCacheSpec1.getMagnification());
+                betCacheSpec.setMagnification(betCacheSpec1.getMagnification() + 1);
                 flag_1 = true;
             }
             // 购买第一场比赛
