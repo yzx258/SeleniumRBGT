@@ -8,6 +8,7 @@ import com.example.selenium.util.DingUtil;
 import com.example.selenium.util.SleepUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -90,16 +91,16 @@ public class BetCopyUtil {
      * @param driver
      */
     public void btnSend(WebDriver driver) {
-        SleepUtil.sleepUtil(1000);
-        try {
-            driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div/i"));
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            System.out.println("获取不到，不报错");
+        SleepUtil.sleepUtil(4000);
+        try{
+            // //*[@id="indexann"]/h2/div
+            driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div")).click();
+        }catch (Exception e){
+            System.out.println("点击不到数据");
         }
         SleepUtil.sleepUtil(2000);
         // 点击体育赛事
-        driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
+        driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div")).click();
         SleepUtil.sleepUtil(4000);
 
         // 点击BBIT赛事
