@@ -91,10 +91,17 @@ public class BetCopyUtil {
      * @param driver
      */
     public void btnSend(WebDriver driver) {
-        SleepUtil.sleepUtil(4000);
+        SleepUtil.sleepUtil(2000);
         try{
             // //*[@id="indexann"]/h2/div
             driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div")).click();
+        }catch (Exception e){
+            System.out.println("点击不到数据");
+        }
+        SleepUtil.sleepUtil(2000);
+        try{
+            // //*[@id="indexann"]/h2/div
+            driver.findElement(By.xpath("//*[@id=\"indexinfo_msg\"]/div/div[3]/button[1]")).click();
         }catch (Exception e){
             System.out.println("点击不到数据");
         }
