@@ -486,7 +486,7 @@ public class BetBasketballUtil {
             }
             // 购买第一场比赛
             betCacheSpec.setIsRed(0);
-            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
+            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification(),zd, kd, djj);
             if (flag) {
                 // 保存购买记录
                 betCacheSpec.setNumber(0);
@@ -506,7 +506,7 @@ public class BetBasketballUtil {
             // 购买第二场比赛
             betCacheSpec.setIsRed(0);
             betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
-            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
+            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification(),zd, kd, djj);
             if (flag) {
                 // 保存购买记录
                 betCacheSpec.setNumber(1);
@@ -521,7 +521,7 @@ public class BetBasketballUtil {
             // 购买第三场比赛
             betCacheSpec.setIsRed(0);
             betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
-            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification());
+            Boolean flag = sendBetOk(driver, td1, betCacheSpec.getMagnification(),zd, kd, djj);
             if (flag) {
                 // 保存购买记录
                 betCacheSpec.setNumber(2);
@@ -542,8 +542,9 @@ public class BetBasketballUtil {
      * @param td1
      * @param magnification
      */
-    public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1, int magnification) {
+    public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1, int magnification,String zd, String kd, String djj) {
         // 点击下注
+        DingUtil d = new DingUtil();
         System.out.println("td1.get(5).getText().contains(\"单\")：" + td1.get(5).getText().contains("单"));
         if (StrUtil.isNotBlank(td1.get(5).getText()) && td1.get(5).getText().contains("单")) {
             td1.get(5).click();
@@ -562,10 +563,12 @@ public class BetBasketballUtil {
                 sfqc = driver.findElement(By.xpath("//*[@id=\"betEventsContainer\"]/ul/li[3]/p[1]/span")).getText();
                 System.out.println("下注前判断是否全场：" + sfqc);
                 if("全场总得分单双".equals(sfqc)){
+                   d.sendMassage("下注前判断是否点击全场[是]，禁止该节下注，请关注该比赛["+djj+"]：" + zd + " VS " + kd);
                    return false;
                 }
             }catch (Exception e){
-                System.out.println("下注前判断是否全场，出错，请悉知！");
+                System.out.println("下注前判断是否点击全场，出错，请关注该比赛");
+                d.sendMassage("下注前判断是否点击全场，出错，请关注该比赛["+djj+"]：" + zd + " VS " + kd);
             }
             // 点击确认按钮
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
