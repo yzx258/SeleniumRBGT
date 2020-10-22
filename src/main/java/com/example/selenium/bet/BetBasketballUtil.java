@@ -67,7 +67,10 @@ public class BetBasketballUtil {
     /**
      * BBIT下注
      */
-    public void bet() {
+    public static void main(String[] args) {
+        bet();
+    }
+    public static void bet() {
         if (!HttpUtil.get(OFF_URL).contains(IS_ON)) {
             System.out.println("关闭下注，请注意...");
             DingUtil dingUtil = new DingUtil();
@@ -106,8 +109,10 @@ public class BetBasketballUtil {
                 }
                 SleepUtil.sleepUtil(4000);
                 driver.navigate().refresh();
-                SleepUtil.sleepUtil(8000);
-
+                SleepUtil.sleepUtil(4000);
+                // 滑动滚动条
+                ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 240)");
+                SleepUtil.sleepUtil(4000);
                 // 存在iframe,首先需要进到iframe
                 driver.switchTo().frame("iframe");
                 SleepUtil.sleepUtil(4000);
