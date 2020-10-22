@@ -448,7 +448,8 @@ public class BetBasketballUtil {
         // 查询不到对应节点数据，不下注
         DingUtil d = new DingUtil();
         if(!flag_2){
-            d.sendMassage("该比赛未获取滚球节数，请核对是否出入[下注节点："+djj+"]：" + zd + " VS " + kd);
+            System.out.println("该比赛未获取滚球节数，请核对是否出入[下注节点："+djj+"]：" + zd + " VS " + kd);
+            // d.sendMassage("该比赛未获取滚球节数，请核对是否出入[下注节点："+djj+"]：" + zd + " VS " + kd);
             return;
         }
         String cache = fifoCache.get(zd);
