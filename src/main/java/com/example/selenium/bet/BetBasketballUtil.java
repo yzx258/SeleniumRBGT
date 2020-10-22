@@ -47,7 +47,7 @@ public class BetBasketballUtil {
     // 保存三黑的数据
     private static List<BetCacheSpec> map = new ArrayList<>();
     // 下注倍率:0.94倍率
-    private static String[] bl = new String[]{"10", "20", "40", "80", "165", "335", "250", "400"};
+    private static String[] bl = new String[]{"20", "40", "80", "165", "335","670", "400", "800"};
     // 是否需要
     private static String FLAG_OK = "YES";
     // 点击篮球
@@ -533,10 +533,10 @@ public class BetBasketballUtil {
             elementZh.clear();
             // elementZh.sendKeys(bl[magnification]);
             // 调试下注使用，默认为10
-            elementZh.sendKeys("10");
+            elementZh.sendKeys(bl[magnification]);
             SleepUtil.sleepUtil(4000);
             // 点击确认按钮
-            // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+            driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
             SleepUtil.sleepUtil(8000);
             return true;
         }
