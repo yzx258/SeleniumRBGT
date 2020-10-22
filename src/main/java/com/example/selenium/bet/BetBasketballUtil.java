@@ -144,16 +144,17 @@ public class BetBasketballUtil {
                 // 点击刷新按钮，确保正常连接
                 driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
                 List<WebElement> table = driver.findElements(By.tagName("table"));
-                log.info("table头部数据 -> {}", table.size());
+                int size = table.size();
+                log.info("table头部数据 -> {}", size);
                 // 循环判断最近的篮球赛事
-                for (WebElement e : table) {
+                for (int i = 0;i < size ;i++) {
                     SleepUtil.sleepUtil(1000);
                     driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
                     SleepUtil.sleepUtil(2000);
                     // 判断不为空的篮球赛事
                     List<WebElement> tbodys = new ArrayList<WebElement>();
                     try {
-                        tbodys = e.findElements(By.tagName("tbody"));
+                        tbodys = table.get(i).findElements(By.tagName("tbody"));
                     } catch (Exception e1) {
                         System.out.println("获取不到该数据,跳过......");
                         continue;
@@ -229,6 +230,18 @@ public class BetBasketballUtil {
             System.out.println(e);
             S_W = 0;
             driver.quit();
+        }
+    }
+
+    /**
+     * 滑动滚动条
+     * @param size
+     * @param driver
+     */
+    public static void scroll(int size,WebDriver driver){
+        System.out.println("我是table -> 获取的大小：" + size);
+        if(size == 4){
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
         }
     }
 
@@ -422,13 +435,21 @@ public class BetBasketballUtil {
         List<WebElement> td0 = trs.get(0).findElements(By.tagName("th"));
         // 获取点击的数据
         List<WebElement> li = td0.get(1).findElements(By.tagName("li"));
+        Boolean flag_2 = false;
         for (WebElement w : li) {
             if (djj.equals(w.getText())) {
                 System.out.println("我是查询出来的滚球节数：" + w.getText());
                 w.click();
                 SleepUtil.sleepUtil(1000);
+                flag_2 = true;
                 break;
             }
+        }
+        // 查询不到对应节点数据，不下注
+        DingUtil d = new DingUtil();
+        if(!flag_2){
+            d.sendMassage("该比赛未获取滚球节数，请核对是否出入[下注节点："+djj+"]：" + zd + " VS " + kd);
+            return;
         }
         String cache = fifoCache.get(zd);
         BetCacheSpec betCacheSpec = new BetCacheSpec();
@@ -444,7 +465,6 @@ public class BetBasketballUtil {
             betCacheSpec = JSON.parseObject(cache, BetCacheSpec.class);
         }
         // 开始下注买
-        DingUtil d = new DingUtil();
         if (betCacheSpec.getNumber() == 0) {
             if (map.size() == 0) {
                 // 判断是否有三黑的数据
@@ -536,6 +556,17 @@ public class BetBasketballUtil {
             // 调试下注使用，默认为10
             elementZh.sendKeys(bl[magnification]);
             SleepUtil.sleepUtil(4000);
+            // //*[@id="betEventsContainer"]/ul/li[3]/p[1]/span
+            String sfqc = "";
+            try{
+                sfqc = driver.findElement(By.xpath("//*[@id=\"betEventsContainer\"]/ul/li[3]/p[1]/span")).getText();
+                System.out.println("下注前判断是否全场：" + sfqc);
+                if("全场总得分单双".equals(sfqc)){
+                   return false;
+                }
+            }catch (Exception e){
+                System.out.println("下注前判断是否全场，出错，请悉知！");
+            }
             // 点击确认按钮
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
             SleepUtil.sleepUtil(8000);
