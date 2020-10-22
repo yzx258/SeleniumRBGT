@@ -102,7 +102,7 @@ public class BetBasketballUtil {
                 if (!HttpUtil.get(OFF_URL).contains(IS_ON)) {
                     DingUtil dingUtil = new DingUtil();
                     dingUtil.sendMassage("下注通道已关闭，请时刻注意");
-                    continue;
+                    driver.quit();
                 }
                 SleepUtil.sleepUtil(4000);
                 driver.navigate().refresh();
