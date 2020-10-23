@@ -152,12 +152,10 @@ public class BetBasketballUtil {
                 SleepUtil.sleepUtil(2000);
                 // 选择联赛排序：all-filter-competitions
                 List<WebElement> element = driver.findElements(By.className("all-filter-competitions"));
-                System.out.println(element.get(0).getText());
                 SleepUtil.sleepUtil(1000);
                 List<WebElement> lis = element.get(0).findElements(By.tagName("li"));
                 Boolean flag_3 = false;
                 for (WebElement li : lis) {
-                    System.out.println("排序名称：" + li.getText());
                     if (li.getText().contains("电子")) {
                         li.click();
                         flag_3 = true;
