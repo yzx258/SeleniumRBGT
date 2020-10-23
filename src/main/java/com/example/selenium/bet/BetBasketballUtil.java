@@ -154,20 +154,21 @@ public class BetBasketballUtil {
                 List<WebElement> element = driver.findElements(By.className("all-filter-competitions"));
                 SleepUtil.sleepUtil(1000);
                 List<WebElement> lis = element.get(0).findElements(By.tagName("li"));
-                Boolean flag_3 = false;
                 for (WebElement li : lis) {
                     if (li.getText().contains("电子")) {
                         li.click();
-                        flag_3 = true;
                         SleepUtil.sleepUtil(1000);
                         break;
                     }
                 }
-                // 点击OK /html/body/div/div[2]/div/div/div/div/div/div[3]/div[8]/div/div/div/div[1]/div[2]/ul/li[3]/button
-                if (flag_3) {
+                try{
+                    // 点击OK /html/body/div/div[2]/div/div/div/div/div/div[3]/div[8]/div/div/div/div[1]/div[2]/ul/li[3]/button
                     driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[8]/div/div/div/div[1]/div[2]/ul/li[3]/button")).click();
                     SleepUtil.sleepUtil(1000);
+                }catch (Exception e){
+                    System.out.println("关闭筛选信息.....");
                 }
+
                 SleepUtil.sleepUtil(4000);
                 // 点击刷新按钮，确保正常连接
                 driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
