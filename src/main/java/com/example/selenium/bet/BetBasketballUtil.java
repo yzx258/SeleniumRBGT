@@ -48,7 +48,7 @@ public class BetBasketballUtil {
     private static List<BetCacheSpec> map = new ArrayList<>();
     // 下注倍率:0.94倍率
     //private static String[] bl = new String[]{"20", "40", "80", "165", "335","670", "400", "800"};
-    private static String[] bl = new String[]{"10", "20", "40", "80", "165", "335", "250", "400"};
+    private static String[] bl = new String[]{"10", "20", "40", "80", "165", "335", "600", "1200"};
     // 是否需要
     private static String FLAG_OK = "YES";
     // 点击篮球
