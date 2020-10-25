@@ -11,6 +11,7 @@ import com.example.selenium.spec.BuyRecordJson;
 import com.example.selenium.spec.BuyRecordSpec;
 import com.example.selenium.util.DingUtil;
 import com.example.selenium.util.SleepUtil;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -146,29 +147,44 @@ public class BetBasketballUtil {
                 }
                 System.out.println("正常操作开始.....");
                 SleepUtil.sleepUtil(4000);
-
-                // 选择联赛 /html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[4]
-                driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[4]")).click();
-                SleepUtil.sleepUtil(2000);
-                // 选择联赛排序：all-filter-competitions
-                List<WebElement> element = driver.findElements(By.className("all-filter-competitions"));
-                SleepUtil.sleepUtil(1000);
-                List<WebElement> lis = element.get(0).findElements(By.tagName("li"));
-                for (WebElement li : lis) {
-                    if (li.getText().contains("电子")) {
-                        li.click();
+                if (null == fifoCache.get("SXOK")) {
+                    try {
+                        // 选择联赛 /html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[4]
+                        driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[4]")).click();
+                        SleepUtil.sleepUtil(2000);
+                        // 选择联赛排序：all-filter-competitions
+                        List<WebElement> element = driver.findElements(By.className("all-filter-competitions"));
                         SleepUtil.sleepUtil(1000);
-                        break;
+                        List<WebElement> lis = element.get(0).findElements(By.tagName("li"));
+                        for (WebElement li : lis) {
+                            if (li.getText().contains("电子")) {
+                                li.click();
+                                SleepUtil.sleepUtil(1000);
+                                break;
+                            }
+                        }
+                        SleepUtil.sleepUtil(1000);
+                        // 点击OK /html/body/div/div[2]/div/div/div/div/div/div[3]/div[8]/div/div/div/div[1]/div[2]/ul/li[3]/button
+                        List<WebElement> elements = driver.findElement(By.className("filter-function-b")).findElements(By.tagName("li"));
+                        for (WebElement li : elements) {
+                            if("OK".equals(li.getText().trim())){
+                                li.click();
+                                SleepUtil.sleepUtil(1000);
+                            }
+                        }
+                        SleepUtil.sleepUtil(1000);
+                    } catch (Exception e) {
+                        System.out.println("筛选失败......");
+                        fifoCache.put("SXOK", "NOT");
+                        d.sendMassage("筛选电子比赛失败，请注意比赛！！！！！！");
+                        driver.quit();
+                    }
+                } else {
+                    if (null == fifoCache.get("SX_ERR")) {
+                        d.sendMassage("筛选电子比赛失败，请注意比赛！！！！！！");
+                        fifoCache.put("SX_ERR", "OK", DateUnit.SECOND.getMillis() * 3600);
                     }
                 }
-                try{
-                    // 点击OK /html/body/div/div[2]/div/div/div/div/div/div[3]/div[8]/div/div/div/div[1]/div[2]/ul/li[3]/button
-                    driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[8]/div/div/div/div[1]/div[2]/ul/li[3]/button")).click();
-                    SleepUtil.sleepUtil(1000);
-                }catch (Exception e){
-                    System.out.println("关闭筛选信息.....");
-                }
-
                 SleepUtil.sleepUtil(4000);
                 // 点击刷新按钮，确保正常连接
                 driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
