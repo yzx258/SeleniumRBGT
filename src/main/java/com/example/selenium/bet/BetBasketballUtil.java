@@ -156,11 +156,13 @@ public class BetBasketballUtil {
                         List<WebElement> element = driver.findElements(By.className("all-filter-competitions"));
                         SleepUtil.sleepUtil(1000);
                         List<WebElement> lis = element.get(0).findElements(By.tagName("li"));
-                        for (WebElement li : lis) {
-                            if (li.getText().contains("电子")) {
-                                li.click();
-                                SleepUtil.sleepUtil(1000);
-                                break;
+                        if(lis.size() > 1){
+                            for (WebElement li : lis) {
+                                if (li.getText().contains("电子")) {
+                                    li.click();
+                                    SleepUtil.sleepUtil(1000);
+                                    break;
+                                }
                             }
                         }
                         SleepUtil.sleepUtil(1000);
