@@ -371,6 +371,7 @@ public class BetBasketballUtil {
                         check = 1;
                         betCacheSpec.setNode(node);
                         d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        d.sendMassage("[账户剩余金额：" + getAmount(driver) + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
                     } else {
@@ -396,6 +397,7 @@ public class BetBasketballUtil {
                         check = 1;
                         betCacheSpec.setNode(node);
                         d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        d.sendMassage("[账户剩余金额：" + getAmount(driver) + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
                     } else {
@@ -428,6 +430,7 @@ public class BetBasketballUtil {
                         check = 1;
                         betCacheSpec.setNode(node);
                         d.sendMassage("该比赛已经红单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        d.sendMassage("[账户剩余金额：" + getAmount(driver) + "]");
                         addBuyRecord(betCacheSpec, 0);
                         fifoCache.remove(betCacheSpec.getHomeTeam());
                     } else {
@@ -547,8 +550,7 @@ public class BetBasketballUtil {
                 // 设置四小时失效
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
                 d.sendMassage("第一节比赛已购买,下注比赛[下注节点：" + betCacheSpec.getNode() + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
-                d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "[账户原金额：" + getAmount(driver) + "]");
-                if (flag_1) {
+                d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()]+"]" + "[账户剩余金额：" + getAmount(driver) + "]");                if (flag_1) {
                     // 清空已设置倍率的数据
                     map.remove(0);
                     HttpUtil.get(DEL_URL);
@@ -566,8 +568,7 @@ public class BetBasketballUtil {
                 // 设置四小时失效
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
                 d.sendMassage("第二节比赛已购买,下注比赛[下注节点：" + betCacheSpec.getNode() + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
-                d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "[账户原金额：" + getAmount(driver) + "]");
-            }
+                d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()]+"]" + "[账户剩余金额：" + getAmount(driver) + "]");            }
         } else if (betCacheSpec.getNumber() == 2) {
             // 购买第三场比赛
             betCacheSpec.setIsRed(0);
@@ -580,7 +581,7 @@ public class BetBasketballUtil {
                 // 设置四小时失效
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
                 d.sendMassage("第三节比赛已购买,下注比赛[下注节点：" + betCacheSpec.getNode() + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
-                d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "[账户原金额：" + getAmount(driver) + "]");
+                d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()]+"]" + "[账户剩余金额：" + getAmount(driver) + "]");
             }
         }
     }
