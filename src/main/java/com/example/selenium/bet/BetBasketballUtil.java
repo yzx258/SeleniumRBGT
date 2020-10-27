@@ -403,8 +403,8 @@ public class BetBasketballUtil {
                         betCacheSpec.setScore(zdtext2 + ":" + kdtext2);
                         betCacheSpec.setNumber(2);
                         d.sendMassage("该比赛已经黑单，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "][" + betCacheSpec.getScore() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
-                        if (betCacheSpec.getMagnification() == 8) {
-                            d.sendMassage("该比赛已经九黑，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
+                        if (betCacheSpec.getMagnification() == 7) {
+                            d.sendMassage("该比赛已经八黑，请关注该比赛,是否有出入[" + node + "][" + betCacheSpec.getMagnification() + "]：[" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam() + "]");
                             d.sendMassage("兄弟，很遗憾，江湖难免受阻，大势已去，一炮回到解放前，下次投注请慎重");
                             fifoCache.remove(betCacheSpec.getHomeTeam());
                         } else {
