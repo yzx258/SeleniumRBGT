@@ -208,7 +208,7 @@ public class BetBasketballUtil {
                                 String kd = td2.get(0).getText();
                                 kd = kd.replaceAll("\r|\n", "P").split("P")[0];
                                 // 添加不购买电子的比赛
-                                if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && StrUtil.isNotBlank(td1.get(0).getText()) && !td1.get(0).getText().contains("即将开赛") && !(zd.contains("电子") || kd.contains("电子"))) {
+                                if (StrUtil.isNotBlank(kd) && StrUtil.isNotBlank(zd) && StrUtil.isNotBlank(td1.get(0).getText()) && (td1.get(0).getText().contains(FIRST) || td1.get(0).getText().contains(SECOND) || td1.get(0).getText().contains(THIRD) || td1.get(0).getText().contains(FOURTH)) && !(zd.contains("电子") || kd.contains("电子"))) {
                                     // 比赛第几节/时间
                                     String[] split = td1.get(0).getText().replaceAll("\r|\n", "P").split("P");
                                     // 防止数组溢出
