@@ -85,7 +85,7 @@ public class BetBasketballUtil {
         }
         S_W = 1;
         // chromeDriver服务地址，需要手动下载
-        // 测试环境：[D:\00002YX\chromedriver.exe]地址需要自己给
+        // 测试环境：[D:\00002YX\123\chromedriver.exe]地址需要自己给
         // String chromeDriverUrl = "C:\\software\\chrome\\chromedriver.exe";
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         // 笔记本版本 D:\ChromeCoreDownloads\chromedriver.exe
@@ -177,14 +177,9 @@ public class BetBasketballUtil {
                         SleepUtil.sleepUtil(1000);
                     } catch (Exception e) {
                         System.out.println("筛选失败......");
-                        fifoCache.put("SXOK", "NOT");
+                        fifoCache.put("SXOK", "NOT",DateUnit.SECOND.getMillis() * 900);
                         d.sendMassage("筛选电子比赛失败，请注意比赛！！！！！！");
                         driver.quit();
-                    }
-                } else {
-                    if (null == fifoCache.get("SX_ERR")) {
-                        d.sendMassage("筛选电子比赛失败，请注意比赛！！！！！！");
-                        fifoCache.put("SX_ERR", "OK", DateUnit.SECOND.getMillis() * 3600);
                     }
                 }
                 SleepUtil.sleepUtil(4000);
