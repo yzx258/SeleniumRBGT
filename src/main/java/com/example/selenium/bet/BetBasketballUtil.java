@@ -628,7 +628,7 @@ public class BetBasketballUtil {
             SleepUtil.sleepUtil(4000);
             // 点击刷新按钮，确保正常连接
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
-            SleepUtil.sleepUtil(1000);
+            SleepUtil.sleepUtil(4000);
             String amount1 = getAmount(driver);
             if (amount.equals(amount1)) {
                 d.sendMassage("下注前判断是否正常扣减账户信息【不正确：" + amount + ".equals(" + amount1 + ") = " + amount.equals(amount1) + "】，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
