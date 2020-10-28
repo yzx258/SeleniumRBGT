@@ -196,7 +196,6 @@ public class BetBasketballUtil {
                         continue;
                     }
                     for (WebElement tb : tbodys) {
-                        SleepUtil.sleepUtil(2000);
                         List<WebElement> trs = tb.findElements(By.tagName("tr"));
                         if (trs.size() >= 2) {
                             List<WebElement> td1 = trs.get(1).findElements(By.tagName("td"));
@@ -549,6 +548,9 @@ public class BetBasketballUtil {
                 addBuyRecord(betCacheSpec, 2);
                 // 设置四小时失效
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
+                // 点击刷新按钮，确保正常连接
+                driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
+                SleepUtil.sleepUtil(3000);
                 d.sendMassage("第一节比赛已购买,下注比赛[下注节点：" + betCacheSpec.getNode() + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
                 d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]" + "[账户剩余金额：" + getAmount(driver) + "]");
                 if (flag_1) {
@@ -568,6 +570,9 @@ public class BetBasketballUtil {
                 addBuyRecord(betCacheSpec, 2);
                 // 设置四小时失效
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
+                // 刷新数据
+                driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
+                SleepUtil.sleepUtil(3000);
                 d.sendMassage("第二节比赛已购买,下注比赛[下注节点：" + betCacheSpec.getNode() + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
                 d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]" + "[账户剩余金额：" + getAmount(driver) + "]");
             }
@@ -582,6 +587,9 @@ public class BetBasketballUtil {
                 addBuyRecord(betCacheSpec, 2);
                 // 设置四小时失效
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
+                // 刷新数据
+                driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
+                SleepUtil.sleepUtil(3000);
                 d.sendMassage("第三节比赛已购买,下注比赛[下注节点：" + betCacheSpec.getNode() + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]：" + betCacheSpec.getHomeTeam() + " VS " + betCacheSpec.getAwayTeam());
                 d.sendMassage("[账户原金额：" + amount + "][下注金额：" + bl[betCacheSpec.getMagnification()] + "]" + "[账户剩余金额：" + getAmount(driver) + "]");
             }
@@ -621,19 +629,9 @@ public class BetBasketballUtil {
                 d.sendMassage("下注前判断是否点击全场，出错，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
                 return false;
             }
-            // 获取账户金额
-            String amount = getAmount(driver);
             // 点击确认按钮
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
             SleepUtil.sleepUtil(5000);
-            // 点击刷新按钮，确保正常连接
-            driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
-            SleepUtil.sleepUtil(3000);
-            String amount1 = getAmount(driver);
-            if (amount.equals(amount1)) {
-                d.sendMassage("下注前判断是否正常扣减账户信息【不正确：" + amount + ".equals(" + amount1 + ") = " + amount.equals(amount1) + "】，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
-                return false;
-            }
             return true;
         }
         return false;
