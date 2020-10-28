@@ -600,13 +600,13 @@ public class BetBasketballUtil {
             td1.get(5).click();
             SleepUtil.sleepUtil(3000);
             WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
-            SleepUtil.sleepUtil(3000);
+            SleepUtil.sleepUtil(4000);
             // 清空输入框
             elementZh.clear();
             // elementZh.sendKeys(bl[magnification]);
             // 调试下注使用，默认为10
             elementZh.sendKeys(bl[magnification]);
-            SleepUtil.sleepUtil(4000);
+            SleepUtil.sleepUtil(2000);
             // //*[@id="betEventsContainer"]/ul/li[3]/p[1]/span
             String sfqc = "";
             try {
@@ -619,9 +619,18 @@ public class BetBasketballUtil {
                 d.sendMassage("下注前判断是否点击全场，出错，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
                 return false;
             }
+            // 获取账户金额
+            String amount = getAmount(driver);
             // 点击确认按钮
             driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
-            SleepUtil.sleepUtil(8000);
+            SleepUtil.sleepUtil(4000);
+            // 点击刷新按钮，确保正常连接
+            driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[3]/div[1]/div[2]/button")).click();
+            SleepUtil.sleepUtil(1000);
+            if(amount.equals(getAmount(driver))){
+                d.sendMassage("下注前判断是否正常扣减账户信息【不正确】，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
+                return false;
+            }
             return true;
         }
         return false;
