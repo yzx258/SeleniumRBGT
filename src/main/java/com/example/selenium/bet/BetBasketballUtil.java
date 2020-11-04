@@ -43,7 +43,7 @@ public class BetBasketballUtil {
     private static String OFF_URL = "http://47.106.143.218:8081/instruction/get/switch";
     // 是否开启下注 ON -> 开启
     private static String IS_ON = "ON";
-    // 系统缓存
+    // 系统缓存 TimedCache<String, String> timedCache = CacheUtil.newTimedCache(4);
     private static Cache<String, String> fifoCache = CacheUtil.newFIFOCache(1000);
     // 保存三黑的数据
     private static List<BetCacheSpec> map = new ArrayList<>();
@@ -143,6 +143,9 @@ public class BetBasketballUtil {
                     continue;
                 }
                 SleepUtil.sleepUtil(4000);
+                System.out.println("=================================");
+                System.out.println("我是获取电子失败保存的缓存信息" + fifoCache.get("SXOK"));
+                System.out.println("=================================");
                 if (null == fifoCache.get("SXOK")) {
                     try {
                         // 选择联赛 /html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[4]
