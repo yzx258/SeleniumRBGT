@@ -2,6 +2,7 @@ package com.example.selenium.bet;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.CacheObj;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
@@ -43,8 +44,10 @@ public class BetBasketballUtil {
     private static String OFF_URL = "http://47.106.143.218:8081/instruction/get/switch";
     // 是否开启下注 ON -> 开启
     private static String IS_ON = "ON";
-    // 系统缓存 TimedCache<String, String> timedCache = CacheUtil.newTimedCache(4);
-    private static Cache<String, String> fifoCache = CacheUtil.newFIFOCache(1000);
+    // 系统缓存 TimedCache<String, String> timedCache = CacheUtil.newTimedCache(14400);
+    public static Cache<String, String> fifoCache = CacheUtil.newFIFOCache(1000);
+    // 电子超时标识
+    private static int K_G = 0;
     // 保存三黑的数据
     private static List<BetCacheSpec> map = new ArrayList<>();
     // 下注倍率:0.94倍率
@@ -69,7 +72,12 @@ public class BetBasketballUtil {
      * BBIT下注
      */
     public static void main(String[] args) {
-        bet();
+        //bet();
+        fifoCache.put("k", "2321", DateUnit.SECOND.getMillis() * 3);
+        System.out.println("缓存信息：" + fifoCache.get("k"));
+        SleepUtil.sleepUtil(4000);
+        System.out.println("超时缓存信息：" + fifoCache.get("k"));
+        Iterator<CacheObj<String, String>> cacheObjIterator = fifoCache.cacheObjIterator();
     }
 
     public static void bet() {
@@ -143,10 +151,10 @@ public class BetBasketballUtil {
                     continue;
                 }
                 SleepUtil.sleepUtil(4000);
-                System.out.println("=================================");
-                System.out.println("我是获取电子失败保存的缓存信息" + fifoCache.get("SXOK"));
-                System.out.println("=================================");
-                if (null == fifoCache.get("SXOK")) {
+                System.out.println("====================");
+                System.out.println("我是判断电子筛选：" + K_G);
+                System.out.println("====================");
+                if (K_G == 0) {
                     try {
                         // 选择联赛 /html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[4]
                         driver.findElement(By.xpath("/html/body/div/div[2]/div/div/div/div/div/div[3]/div[1]/ul/li[4]")).click();
@@ -175,9 +183,16 @@ public class BetBasketballUtil {
                         }
                         SleepUtil.sleepUtil(1000);
                     } catch (Exception e) {
-                        fifoCache.put("SXOK", "NOT", DateUnit.SECOND.getMillis() * 900);
+                        // fifoCache.put("SXOK", "NOT", DateUnit.SECOND.getMillis() * 900);
+                        ++K_G;
                         d.sendMassage("筛选电子比赛失败，请注意比赛！！！！！！");
                         driver.quit();
+                    }
+                } else {
+                    ++K_G;
+                    // 判断获取电子筛选失败，等于10，重置
+                    if (K_G == 10) {
+                        K_G = 0;
                     }
                 }
                 SleepUtil.sleepUtil(4000);
