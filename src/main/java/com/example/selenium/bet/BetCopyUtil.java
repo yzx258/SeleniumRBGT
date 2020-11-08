@@ -8,10 +8,7 @@ import com.example.selenium.util.DingUtil;
 import com.example.selenium.util.ImageRecognitionUtil;
 import com.example.selenium.util.SleepUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -66,6 +63,25 @@ public class BetCopyUtil {
     }
 
     /**
+     * 判断是否存在
+     *
+     * @param driver
+     * @param content
+     * @return
+     */
+    public boolean isContentAppeared(WebDriver driver, String content) {
+        boolean status = false;
+        try {
+            driver.findElement(By.xpath("//*[contains(.,'" + content + "')]"));
+            status = true;
+        } catch (NoSuchElementException e) {
+            status = false;
+            System.out.println("'" + content + "' doesn't exist!");
+        }
+        return status;
+    }
+
+    /**
      * 描述：登录网站
      *
      * @param driver
@@ -82,12 +98,13 @@ public class BetCopyUtil {
         WebElement mm = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div/div[2]/div[1]/input"));
         mm.sendKeys("ycw8324479");
         SleepUtil.sleepUtil(2000);
+        // 验证码
+        String yzm_con = "//*[@id=\"header-wrap\"]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input";
+        if (isContentAppeared(driver, yzm_con)) {
         // 输入验证码
-        try{
-            WebElement yzm = driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input"));
-            System.out.println();
+            WebElement yzm = driver.findElement(By.xpath(""));
             String placeholder = yzm.getAttribute("placeholder").trim();
-            if(StrUtil.isNotBlank(placeholder) && "验证码".equals(placeholder)){
+            if (StrUtil.isNotBlank(placeholder) && "验证码".equals(placeholder)) {
                 // 验证图片验证码
                 // 点击输入框，显示验证码
                 yzm.click();
@@ -95,26 +112,21 @@ public class BetCopyUtil {
                 // 获取验证码图片
                 WebElement yzm_img = driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[2]/img"));
                 String src = yzm_img.getAttribute("src");
-                if(StrUtil.isNotBlank(src) && src.contains(",")){
+                if (StrUtil.isNotBlank(src) && src.contains(",")) {
                     // 最终验证码
                     String zz_yzm = ImageRecognitionUtil.imageRecognition(src.split(",")[1]);
-                    System.out.println("最终验证码:"+zz_yzm);
+                    System.out.println("最终验证码:" + zz_yzm);
                     SleepUtil.sleepUtil(1000);
                     zh.click();
                     SleepUtil.sleepUtil(1000);
                     yzm.sendKeys(zz_yzm);
-                }else{
+                } else {
                     DingUtil d = new DingUtil();
                     d.sendMassage("获取图片验证码失败登录失败，请注意！");
                     driver.quit();
                 }
             }
             SleepUtil.sleepUtil(1000);
-        }catch (Exception e){
-            DingUtil d = new DingUtil();
-            d.sendMassage("获取图片验证码失败登录失败，请注意，失败信息："+e.getMessage());
-            System.out.println(e);
-            driver.quit();
         }
         //点击确定按钮
         driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[2]/button")).click();
@@ -127,17 +139,17 @@ public class BetCopyUtil {
      */
     public void btnSend(WebDriver driver) {
         SleepUtil.sleepUtil(2000);
-        try{
+        try {
             // //*[@id="indexann"]/h2/div
             driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div")).click();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("点击不到数据");
         }
         SleepUtil.sleepUtil(2000);
-        try{
+        try {
             // //*[@id="indexann"]/h2/div
             driver.findElement(By.xpath("//*[@id=\"indexinfo_msg\"]/div/div[3]/button[1]")).click();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("点击不到数据");
         }
         SleepUtil.sleepUtil(2000);
