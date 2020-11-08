@@ -72,12 +72,7 @@ public class BetBasketballUtil {
      * BBIT下注
      */
     public static void main(String[] args) {
-        //bet();
-        fifoCache.put("k", "2321", DateUnit.SECOND.getMillis() * 3);
-        System.out.println("缓存信息：" + fifoCache.get("k"));
-        SleepUtil.sleepUtil(4000);
-        System.out.println("超时缓存信息：" + fifoCache.get("k"));
-        Iterator<CacheObj<String, String>> cacheObjIterator = fifoCache.cacheObjIterator();
+        bet();
     }
 
     public static void bet() {
@@ -96,7 +91,7 @@ public class BetBasketballUtil {
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         // 笔记本版本 D:\ChromeCoreDownloads\chromedriver.exe
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
-        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
+        System.setProperty("webdriver.chrome.driver", "D:\\ChromeCoreDownloads\\chromedriver.exe");
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");

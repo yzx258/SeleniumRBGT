@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.example.selenium.dto.InstructionDTO;
 import com.example.selenium.util.DingUtil;
+import com.example.selenium.util.ImageRecognitionUtil;
 import com.example.selenium.util.SleepUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -81,6 +82,40 @@ public class BetCopyUtil {
         WebElement mm = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div/div[2]/div[1]/input"));
         mm.sendKeys("ycw8324479");
         SleepUtil.sleepUtil(2000);
+        // 输入验证码
+        try{
+            WebElement yzm = driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input"));
+            System.out.println();
+            String placeholder = yzm.getAttribute("placeholder").trim();
+            if(StrUtil.isNotBlank(placeholder) && "验证码".equals(placeholder)){
+                // 验证图片验证码
+                // 点击输入框，显示验证码
+                yzm.click();
+                SleepUtil.sleepUtil(2000);
+                // 获取验证码图片
+                WebElement yzm_img = driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[2]/img"));
+                String src = yzm_img.getAttribute("src");
+                if(StrUtil.isNotBlank(src) && src.contains(",")){
+                    // 最终验证码
+                    String zz_yzm = ImageRecognitionUtil.imageRecognition(src.split(",")[1]);
+                    System.out.println("最终验证码:"+zz_yzm);
+                    SleepUtil.sleepUtil(1000);
+                    zh.click();
+                    SleepUtil.sleepUtil(1000);
+                    yzm.sendKeys(zz_yzm);
+                }else{
+                    DingUtil d = new DingUtil();
+                    d.sendMassage("获取图片验证码失败登录失败，请注意！");
+                    driver.quit();
+                }
+            }
+            SleepUtil.sleepUtil(1000);
+        }catch (Exception e){
+            DingUtil d = new DingUtil();
+            d.sendMassage("获取图片验证码失败登录失败，请注意，失败信息："+e.getMessage());
+            System.out.println(e);
+            driver.quit();
+        }
         //点击确定按钮
         driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[2]/button")).click();
     }
