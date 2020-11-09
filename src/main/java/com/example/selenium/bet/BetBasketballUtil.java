@@ -51,8 +51,8 @@ public class BetBasketballUtil {
     // 保存三黑的数据
     private static List<BetCacheSpec> map = new ArrayList<>();
     // 下注倍率:0.94倍率
-    //private static String[] bl = new String[]{"20", "40", "80", "165", "335","670", "400", "800"};
-    private static String[] bl = new String[]{"12", "24", "48", "97", "199", "405", "840", "1680"};
+    //private static String[] bl = new String[]{"2", "4", "8", "17", "35","73", "150", "292"};
+    private static String[] bl = new String[]{"14", "28", "56", "114", "234", "478", "990", "1972"};
     // 是否需要
     private static String FLAG_OK = "YES";
     // 点击篮球
