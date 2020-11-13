@@ -34,7 +34,7 @@ public class BetLotteryUtil {
 
     private static String URL_ERROR = "http://47.106.143.218:8081/instruction/update/error/";
     private static String URL_SUCCESS = "http://47.106.143.218:8081/instruction/update/success/";
-    private static Cache<String, String> fifoCache = CacheUtil.newFIFOCache(100);
+    private static Cache<String, String> fifoCache = CacheUtil.newFIFOCache(1000);
     private static int S_W = 0;
     // 单个倍率,万位
     private static final String WW = "0,9";
@@ -85,145 +85,143 @@ public class BetLotteryUtil {
         WebDriver driver = new ChromeDriver();
         BetCopyUtil betCopyUtil = new BetCopyUtil();
 //        try {
-            // 登录操作
-            betCopyUtil.login(driver);
-            SleepUtil.sleepUtil(2000);
-            try {
-                // //*[@id="indexann"]/h2/div
-                driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div")).click();
-            } catch (Exception e) {
-                System.out.println("点击不到数据");
-            }
-            SleepUtil.sleepUtil(2000);
-            try {
-                // //*[@id="indexann"]/h2/div
-                driver.findElement(By.xpath("//*[@id=\"indexinfo_msg\"]/div/div[3]/button[1]")).click();
-            } catch (Exception e) {
-                System.out.println("点击不到数据");
-            }
-            SleepUtil.sleepUtil(2000);
-            // 点击体育赛事
-            driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div")).click();
-            SleepUtil.sleepUtil(4000);
-            try {
-                driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]/a"));
-                SleepUtil.sleepUtil(1000);
-            } catch (Exception e) {
-                System.out.println("获取不到，不报错");
-            }
+        // 登录操作
+        betCopyUtil.login(driver);
+        SleepUtil.sleepUtil(2000);
+        try {
+            // //*[@id="indexann"]/h2/div
+            driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div")).click();
+        } catch (Exception e) {
+            System.out.println("点击不到数据");
+        }
+        SleepUtil.sleepUtil(2000);
+        try {
+            // //*[@id="indexann"]/h2/div
+            driver.findElement(By.xpath("//*[@id=\"indexinfo_msg\"]/div/div[3]/button[1]")).click();
+        } catch (Exception e) {
+            System.out.println("点击不到数据");
+        }
+        SleepUtil.sleepUtil(2000);
+        // 点击体育赛事
+        driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div")).click();
+        SleepUtil.sleepUtil(4000);
+        try {
+            driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]/a"));
             SleepUtil.sleepUtil(1000);
-            // 点击彩票界面
-            driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]")).click();
-            SleepUtil.sleepUtil(2000);
-            //滚动到最底端
-            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,document.body.scrollHeight)");
-            SleepUtil.sleepUtil(2000);
-            // 点击世博彩票
-            driver.findElement(By.xpath("//*[@id=\"lottery-wrap\"]/div[2]/div/div[20]")).click();
-            SleepUtil.sleepUtil(2000);
-            // 点击世博彩票
-            driver.findElement(By.xpath("//*[@id=\"lottery-wrap\"]/div[2]/div/div[20]")).click();
+        } catch (Exception e) {
+            System.out.println("获取不到，不报错");
+        }
+        SleepUtil.sleepUtil(1000);
+        // 点击彩票界面
+        driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]")).click();
+        SleepUtil.sleepUtil(2000);
+        //滚动到最底端
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,document.body.scrollHeight)");
+        SleepUtil.sleepUtil(2000);
+        // 点击世博彩票
+        driver.findElement(By.xpath("//*[@id=\"lottery-wrap\"]/div[2]/div/div[20]")).click();
+        SleepUtil.sleepUtil(2000);
+        // 点击世博彩票
+        driver.findElement(By.xpath("//*[@id=\"lottery-wrap\"]/div[2]/div/div[20]")).click();
 
-            SleepUtil.sleepUtil(2000);
-            // 获取新窗口句柄，才能操作新弹出的窗口
-            Set<String> allWindowsId = driver.getWindowHandles();
-            List<String> list = new ArrayList<>(allWindowsId);
-            String JB = "";
-            for (int i = 0; i < list.size(); i++) {
-                if (i == 1) {
-                    JB = list.get(i);
-                }
+        SleepUtil.sleepUtil(2000);
+        // 获取新窗口句柄，才能操作新弹出的窗口
+        Set<String> allWindowsId = driver.getWindowHandles();
+        List<String> list = new ArrayList<>(allWindowsId);
+        String JB = "";
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 1) {
+                JB = list.get(i);
             }
-            // 全屏操作
-            SleepUtil.sleepUtil(1000);
-            driver.switchTo().window(JB).manage().window().maximize();
-            // 倍率数据
-            List<String> rl = new ArrayList<>();
-            rl.add("1");
-            rl.add("2");
-            rl.add("4");
-            rl.add("8");
-            rl.add("17");
-            rl.add("34");
-            rl.add("69");
-            rl.add("140");
-            rl.add("282");
-            rl.add("564");
-            rl.add("1134");
-            rl.add("2281");
-            rl.add("2003");
-            rl.add("4010");
-            rl.add("2003");
-            rl.add("4010");
-            rl.add("6050");
-            // 循环调用即可
-            do {
-                // 判断当前时间是否在这个事件段
-                SleepUtil.sleepUtil(500);
-                if (checkTime() && null == fifoCache.get("sendMassage")) {
-                    String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    DingUtil dingUtil = new DingUtil();
-                    dingUtil.sendMassage("我是航行者,前来汇报 : " + text);
-                    fifoCache.put("sendMassage", "OK", DateUnit.SECOND.getMillis() * 70);
-                }
-                String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
-                String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
-                // 判断是否进行中
-                if (str.equals("准备开奖") || StrUtil.isEmpty(ww)) {
-                    // System.out.println("正在开奖，跳过");
-                    continue;
-                }
-                String qs = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"kjdates_mc_txt\"]")).getText();
-                // System.out.println("期数:" + qs);
-                if (null == fifoCache.get("QS")) {
-                    fifoCache.put("QS", qs);
-                }
-                if (qs.equals(fifoCache.get("QS"))) {
-                    // System.out.println("期数相同，跳过买卖 -> " + qs);
-                    continue;
-                }
+        }
+        // 全屏操作
+        SleepUtil.sleepUtil(1000);
+        driver.switchTo().window(JB).manage().window().maximize();
+        // 倍率数据
+        List<String> rl = new ArrayList<>();
+        rl.add("1");
+        rl.add("2");
+        rl.add("4");
+        rl.add("8");
+        rl.add("17");
+        rl.add("34");
+        rl.add("69");
+        rl.add("140");
+        rl.add("282");
+        rl.add("564");
+        rl.add("1134");
+        rl.add("2281");
+        rl.add("2003");
+        rl.add("4010");
+        rl.add("8050");
+        // 循环调用即可
+        do {
+            // 判断当前时间是否在这个事件段
+            SleepUtil.sleepUtil(500);
+            if (checkTime() && null == fifoCache.get("sendMassage")) {
+                String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
+                DingUtil dingUtil = new DingUtil();
+                dingUtil.sendMassage("我是航行者,前来汇报 : " + text);
+                fifoCache.put("sendMassage", "OK", DateUnit.SECOND.getMillis() * 70);
+            }
+            String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
+            String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
+            // 判断是否进行中
+            if (str.equals("准备开奖") || StrUtil.isEmpty(ww)) {
+                // System.out.println("正在开奖，跳过");
+                continue;
+            }
+            String qs = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"kjdates_mc_txt\"]")).getText();
+            // System.out.println("期数:" + qs);
+            if (null == fifoCache.get("QS")) {
                 fifoCache.put("QS", qs);
-                log.info("*******************************");
-                log.info("************* 开始下注期数 : " + qs + " *************");
-                log.info("*******************************");
-                SleepUtil.sleepUtil(200);
-                driver.switchTo().window(JB).navigate().refresh();
-                SleepUtil.sleepUtil(3500);
-                // 下注万位
-                String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
-                log.info("万位数据 -> {}", wws);
-                sendBet(wws, driver, JB, qs, rl, "sendBetWw", "sendBetAmountWw", "sendBetNumberWw", 1);
-                //sendBetDob(wws, driver, JB, "WW_BD", "WW_CS", "WW", 1);
-                driver.switchTo().window(JB).navigate().refresh();
-                SleepUtil.sleepUtil(3500);
-                // 下注千位
-                String qws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[2]")).getText();
-                log.info("千位数据 -> {}", qws);
-                sendBet(qws, driver, JB, qs, rl, "sendBetQw", "sendBetAmountQw", "sendBetNumberQw", 2);
-                //sendBetDob(qws, driver, JB, "QW_BD", "QW_CS", "QW", 2);
-                driver.switchTo().window(JB).navigate().refresh();
-                SleepUtil.sleepUtil(3500);
-                // 下注百位
-                String bws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[3]")).getText();
-                log.info("百位数据 -> {}", bws);
-                sendBet(bws, driver, JB, qs, rl, "sendBetBw", "sendBetAmountBw", "sendBetNumberBw", 3);
-                //sendBetDob(bws, driver, JB, "BW_BD", "BW_CS", "BW", 3);
-                driver.switchTo().window(JB).navigate().refresh();
-                SleepUtil.sleepUtil(3500);
-                // 下注十位
-                String sws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[4]")).getText();
-                log.info("十位数据 -> {}", sws);
-                sendBet(sws, driver, JB, qs, rl, "sendBetSw", "sendBetAmountSw", "sendBetNumberSw", 4);
-                //sendBetDob(sws, driver, JB, "SW_BD", "SW_CS", "SW", 4);
-                driver.switchTo().window(JB).navigate().refresh();
-                SleepUtil.sleepUtil(3500);
-                // 下注个位
-                String gws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[5]")).getText();
-                log.info("个位数据 -> {}", gws);
-                sendBet(gws, driver, JB, qs, rl, "sendBetGw", "sendBetAmountGw", "sendBetNumberGw", 5);
-                //sendBetDob(gws, driver, JB, "GW_BD", "GW_CS", "GW", 5);
-                driver.switchTo().window(JB).navigate().refresh();
-            } while (true);
+            }
+            if (qs.equals(fifoCache.get("QS"))) {
+                // System.out.println("期数相同，跳过买卖 -> " + qs);
+                continue;
+            }
+            fifoCache.put("QS", qs);
+            log.info("*******************************");
+            log.info("************* 开始下注期数 : " + qs + " *************");
+            log.info("*******************************");
+            SleepUtil.sleepUtil(200);
+            driver.switchTo().window(JB).navigate().refresh();
+            SleepUtil.sleepUtil(3500);
+            // 下注万位
+            String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
+            log.info("万位数据 -> {}", wws);
+            sendBet(wws, driver, JB, qs, rl, "sendBetWw", "sendBetAmountWw", "sendBetNumberWw", 1);
+            //sendBetDob(wws, driver, JB, "WW_BD", "WW_CS", "WW", 1);
+            driver.switchTo().window(JB).navigate().refresh();
+            SleepUtil.sleepUtil(3500);
+            // 下注千位
+            String qws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[2]")).getText();
+            log.info("千位数据 -> {}", qws);
+            sendBet(qws, driver, JB, qs, rl, "sendBetQw", "sendBetAmountQw", "sendBetNumberQw", 2);
+            //sendBetDob(qws, driver, JB, "QW_BD", "QW_CS", "QW", 2);
+            driver.switchTo().window(JB).navigate().refresh();
+            SleepUtil.sleepUtil(3500);
+            // 下注百位
+            String bws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[3]")).getText();
+            log.info("百位数据 -> {}", bws);
+            sendBet(bws, driver, JB, qs, rl, "sendBetBw", "sendBetAmountBw", "sendBetNumberBw", 3);
+            //sendBetDob(bws, driver, JB, "BW_BD", "BW_CS", "BW", 3);
+            driver.switchTo().window(JB).navigate().refresh();
+            SleepUtil.sleepUtil(3500);
+            // 下注十位
+            String sws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[4]")).getText();
+            log.info("十位数据 -> {}", sws);
+            sendBet(sws, driver, JB, qs, rl, "sendBetSw", "sendBetAmountSw", "sendBetNumberSw", 4);
+            //sendBetDob(sws, driver, JB, "SW_BD", "SW_CS", "SW", 4);
+            driver.switchTo().window(JB).navigate().refresh();
+            SleepUtil.sleepUtil(3500);
+            // 下注个位
+            String gws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[5]")).getText();
+            log.info("个位数据 -> {}", gws);
+            sendBet(gws, driver, JB, qs, rl, "sendBetGw", "sendBetAmountGw", "sendBetNumberGw", 5);
+            //sendBetDob(gws, driver, JB, "GW_BD", "GW_CS", "GW", 5);
+            driver.switchTo().window(JB).navigate().refresh();
+        } while (true);
 //        } catch (Exception e) {
 //            System.out.println("====================== 报错了 ======================");
 //            driver.quit();
@@ -268,6 +266,7 @@ public class BetLotteryUtil {
     public void sendBet(String ws, WebDriver driver, String JB, String qs, List<String> rl, String sendBetKey, String sendBetAmountKey, String sendBetNumberKey, int div) {
         try {
             Boolean flag = true;
+            int code = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             if (null == fifoCache.get(sendBetKey)) {
                 fifoCache.put(sendBetKey, "0,1,2,3,4,5,6,7,8,9");
             }
@@ -275,17 +274,43 @@ public class BetLotteryUtil {
                 fifoCache.put(sendBetNumberKey, "0");
                 fifoCache.put(sendBetAmountKey, "1");
             }
+            // 判断购买的金额是否停滞，等待几场在下注
+            if (code >= 11 && code <= 14 && null != fifoCache.get("TG_SEND")) {
+                log.info("跳过下注");
+                int tg_send = Integer.parseInt(fifoCache.get("TG_SEND"));
+                if (code == 11 && tg_send == 5) {
+                    fifoCache.put("TG_SEND", (tg_send + 1) + "");
+                    return;
+                }
+                if (code == 12 && tg_send == 1) {
+                    fifoCache.put("TG_SEND", (tg_send + 1) + "");
+                    return;
+                }
+                if (code == 13 && tg_send == 1) {
+                    fifoCache.put("TG_SEND", (tg_send + 1) + "");
+                    return;
+                }
+                if (code == 14 && tg_send == 1) {
+                    fifoCache.put("TG_SEND", (tg_send + 1) + "");
+                    return;
+                }
+                // 清除缓存
+                log.info("清除过滤下注缓存信息");
+                fifoCache.remove("TG_SEND");
+            }
             log.info("====================================================================");
             log.info("***********");
             log.info("下注场次[" + sendBetKey + "] -> {}", fifoCache.get(sendBetKey));
             log.info("***********");
             // 判断是否红[fifoCache.get("sendBet")]
             log.info("[" + fifoCache.get(sendBetKey) + "].contains(" + ws + ") -> {}", fifoCache.get(sendBetKey).contains(ws));
+            // TODO null != fifoCache.get("TG_SEND")说明有下注需要过滤
             if (fifoCache.get(sendBetKey).contains(ws)) {
                 // 上期比赛结果为单
                 log.info("比赛单【fifoCache.get(sendBetKey).contains(" + ws + ")】 -> " + "单".equals(fifoCache.get(sendBetKey)));
                 log.info("ws -> :" + ws + " -> " + fifoCache.get(sendBetKey));
                 flag = true;
+                fifoCache.remove("TG_SEND");
             } else {
                 // 黑了
                 log.info("比赛黑了");
@@ -294,66 +319,70 @@ public class BetLotteryUtil {
             }
             if (null != fifoCache.get(sendBetNumberKey)) {
                 String fl = "黑";
-                if(flag){
+                if (flag) {
                     fl = "红";
                 }
-                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 9) {
-                    Thread.sleep(2000);
+                if (code == 9) {
+                    SleepUtil.sleepUtil(2000);
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    d.sendMassage("[ " + sendBetKey + " ]比赛第10场【"+fl+"】,航行者,前来汇报 : " + text);
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第10场【" + fl + "】,航行者,前来汇报 : " + text);
                 }
-                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 10) {
-                    Thread.sleep(2000);
+                if (code == 10) {
+                    SleepUtil.sleepUtil(2000);
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    d.sendMassage("[ " + sendBetKey + " ]比赛第11场【"+fl+"】,航行者,前来汇报 : " + text);
-
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第11场【" + fl + "】,航行者,前来汇报 : " + text);
+                    fifoCache.put("TG_SEND", "0");
                 }
-                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 11) {
-                    Thread.sleep(2000);
+                if (code == 11) {
+                    SleepUtil.sleepUtil(2000);
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    d.sendMassage("[ " + sendBetKey + " ]比赛第12场【"+fl+"】,航行者,前来汇报 : " + text);
-
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第12场【" + fl + "】,航行者,前来汇报 : " + text);
+                    fifoCache.put("TG_SEND", "0");
                 }
-                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 12) {
-                    Thread.sleep(2000);
+                if (code == 12) {
+                    SleepUtil.sleepUtil(2000);
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    d.sendMassage("[ " + sendBetKey + " ]比赛第13场【"+fl+"】,航行者,前来汇报 : " + text);
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第13场【" + fl + "】,航行者,前来汇报 : " + text);
+                    fifoCache.put("TG_SEND", "0");
                 }
-                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 13) {
-                    Thread.sleep(2000);
+                if (code == 13) {
+                    SleepUtil.sleepUtil(2000);
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    d.sendMassage("[ " + sendBetKey + " ]比赛第14场【"+fl+"】,航行者,前来汇报 : " + text);
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第14场【" + fl + "】,航行者,前来汇报 : " + text);
+                    fifoCache.put("TG_SEND", "0");
                 }
-                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 14) {
-                    Thread.sleep(2000);
+                if (code == 14) {
+                    SleepUtil.sleepUtil(2000);
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    d.sendMassage("[ " + sendBetKey + " ]比赛第15场【"+fl+"】,航行者,前来汇报 : " + text);
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第15场【" + fl + "】,航行者,前来汇报 : " + text);
+                    fifoCache.put("TG_SEND", "0");
                 }
-                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 15) {
-                    Thread.sleep(2000);
+                if (code == 15) {
+                    SleepUtil.sleepUtil(2000);
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    d.sendMassage("[ " + sendBetKey + " ]比赛第16场【"+fl+"】,航行者,前来汇报 : " + text);
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第16场【" + fl + "】,航行者,前来汇报 : " + text);
                 }
-                if (Integer.parseInt(fifoCache.get(sendBetNumberKey)) == 16) {
-                    Thread.sleep(2000);
+                if (code == 16) {
+                    SleepUtil.sleepUtil(2000);
                     DingUtil d = new DingUtil();
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
-                    d.sendMassage("[ " + sendBetKey + " ]比赛第17场【"+fl+"】,航行者,前来汇报 : " + text);
+                    d.sendMassage("[ " + sendBetKey + " ]比赛第17场【" + fl + "】,航行者,前来汇报 : " + text);
+                    fifoCache.put("TG_SEND", "0");
                 }
             }
             log.info("________点击选择分________");
             // 点击选择分
-            Thread.sleep(500);
+            SleepUtil.sleepUtil(500);
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[4]/div[2]/div/div[2]/div[2]/div[3]/select/option[3]")).click();
             // 点击单
-            Thread.sleep(500);
+            SleepUtil.sleepUtil(500);
             int number = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             // 一直选择大
             driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[5]/div[2]/div[3]/div/div[" + div + "]/ul/li[3]/dl/dd[2]")).click();
@@ -406,58 +435,63 @@ public class BetLotteryUtil {
                     // 根据比例扣减循环数
                     if (addbs == 17) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("1");
                         addbs = addbs - 11;
                     } else if (addbs == 34) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("3");
                         addbs = addbs - 31;
                     } else if (addbs == 69) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("6");
                         addbs = addbs - 61;
                     } else if (addbs == 140) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("13");
                         addbs = addbs - 131;
                     } else if (addbs == 282) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("28");
                         addbs = addbs - 281;
                     } else if (addbs == 564) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("56");
                         addbs = addbs - 561;
                     } else if (addbs == 1134) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("113");
                         addbs = addbs - 1131;
                     } else if (addbs == 2281) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("227");
                         addbs = addbs - 2271;
                     } else if (addbs == 2003) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("200");
                         addbs = addbs - 2001;
                     } else if (addbs == 4010) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("400");
                         addbs = addbs - 4001;
                     } else if (addbs == 6050) {
                         WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
-                        Thread.sleep(500);
+                        SleepUtil.sleepUtil(500);
                         element.sendKeys("604");
+                        addbs = addbs - 6041;
+                    } else if (addbs == 8050) {
+                        WebElement element = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"multiple\"]"));
+                        SleepUtil.sleepUtil(500);
+                        element.sendKeys("804");
                         addbs = addbs - 6041;
                     } else {
                         addbs = addbs - 1;
