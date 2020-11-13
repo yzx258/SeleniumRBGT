@@ -57,6 +57,11 @@ public class BetLotteryUtil {
     private static final int GW_CS = 0;
 
 
+    public static void main(String[] args) {
+        BetLotteryUtil betLotteryUtil = new BetLotteryUtil();
+        betLotteryUtil.sz();
+    }
+
     /**
      * @throws InterruptedException
      */
@@ -73,13 +78,13 @@ public class BetLotteryUtil {
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
-        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
+        System.setProperty("webdriver.chrome.driver", "D:\\00002YX\\123\\chromedriver.exe");
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         WebDriver driver = new ChromeDriver();
         BetCopyUtil betCopyUtil = new BetCopyUtil();
-        try {
+//        try {
             // 登录操作
             betCopyUtil.login(driver);
             SleepUtil.sleepUtil(2000);
@@ -102,27 +107,24 @@ public class BetLotteryUtil {
             SleepUtil.sleepUtil(4000);
             try {
                 driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]/a"));
-                Thread.sleep(1000);
+                SleepUtil.sleepUtil(1000);
             } catch (Exception e) {
                 System.out.println("获取不到，不报错");
             }
-            Thread.sleep(1000);
-            // 点击体育赛制界面 /html/body/div[5]/div[1]/div[2]/div/div/ul/li/a/div/div
-            driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
-            Thread.sleep(2000);
+            SleepUtil.sleepUtil(1000);
             // 点击彩票界面
-            driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]/a")).click();
-            Thread.sleep(2000);
+            driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]")).click();
+            SleepUtil.sleepUtil(2000);
             //滚动到最底端
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,document.body.scrollHeight)");
-            Thread.sleep(2000);
+            SleepUtil.sleepUtil(2000);
             // 点击世博彩票
             driver.findElement(By.xpath("//*[@id=\"lottery-wrap\"]/div[2]/div/div[20]")).click();
-            Thread.sleep(3000);
+            SleepUtil.sleepUtil(2000);
             // 点击世博彩票
             driver.findElement(By.xpath("//*[@id=\"lottery-wrap\"]/div[2]/div/div[20]")).click();
 
-            Thread.sleep(2000);
+            SleepUtil.sleepUtil(2000);
             // 获取新窗口句柄，才能操作新弹出的窗口
             Set<String> allWindowsId = driver.getWindowHandles();
             List<String> list = new ArrayList<>(allWindowsId);
@@ -133,7 +135,7 @@ public class BetLotteryUtil {
                 }
             }
             // 全屏操作
-            Thread.sleep(1000);
+            SleepUtil.sleepUtil(1000);
             driver.switchTo().window(JB).manage().window().maximize();
             // 倍率数据
             List<String> rl = new ArrayList<>();
@@ -157,7 +159,7 @@ public class BetLotteryUtil {
             // 循环调用即可
             do {
                 // 判断当前时间是否在这个事件段
-                Thread.sleep(500);
+                SleepUtil.sleepUtil(500);
                 if (checkTime() && null == fifoCache.get("sendMassage")) {
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                     DingUtil dingUtil = new DingUtil();
@@ -184,37 +186,37 @@ public class BetLotteryUtil {
                 log.info("*******************************");
                 log.info("************* 开始下注期数 : " + qs + " *************");
                 log.info("*******************************");
-                Thread.sleep(200);
+                SleepUtil.sleepUtil(200);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(3500);
+                SleepUtil.sleepUtil(3500);
                 // 下注万位
                 String wws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[1]")).getText();
                 log.info("万位数据 -> {}", wws);
                 sendBet(wws, driver, JB, qs, rl, "sendBetWw", "sendBetAmountWw", "sendBetNumberWw", 1);
                 //sendBetDob(wws, driver, JB, "WW_BD", "WW_CS", "WW", 1);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(3500);
+                SleepUtil.sleepUtil(3500);
                 // 下注千位
                 String qws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[2]")).getText();
                 log.info("千位数据 -> {}", qws);
                 sendBet(qws, driver, JB, qs, rl, "sendBetQw", "sendBetAmountQw", "sendBetNumberQw", 2);
                 //sendBetDob(qws, driver, JB, "QW_BD", "QW_CS", "QW", 2);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(3500);
+                SleepUtil.sleepUtil(3500);
                 // 下注百位
                 String bws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[3]")).getText();
                 log.info("百位数据 -> {}", bws);
                 sendBet(bws, driver, JB, qs, rl, "sendBetBw", "sendBetAmountBw", "sendBetNumberBw", 3);
                 //sendBetDob(bws, driver, JB, "BW_BD", "BW_CS", "BW", 3);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(3500);
+                SleepUtil.sleepUtil(3500);
                 // 下注十位
                 String sws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[4]")).getText();
                 log.info("十位数据 -> {}", sws);
                 sendBet(sws, driver, JB, qs, rl, "sendBetSw", "sendBetAmountSw", "sendBetNumberSw", 4);
                 //sendBetDob(sws, driver, JB, "SW_BD", "SW_CS", "SW", 4);
                 driver.switchTo().window(JB).navigate().refresh();
-                Thread.sleep(3500);
+                SleepUtil.sleepUtil(3500);
                 // 下注个位
                 String gws = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/ul/li[5]")).getText();
                 log.info("个位数据 -> {}", gws);
@@ -222,12 +224,12 @@ public class BetLotteryUtil {
                 //sendBetDob(gws, driver, JB, "GW_BD", "GW_CS", "GW", 5);
                 driver.switchTo().window(JB).navigate().refresh();
             } while (true);
-        } catch (Exception e) {
-            System.out.println("====================== 报错了 ======================");
-            driver.quit();
-            S_W = 0;
-            fifoCache.clear();
-        }
+//        } catch (Exception e) {
+//            System.out.println("====================== 报错了 ======================");
+//            driver.quit();
+//            S_W = 0;
+//            fifoCache.clear();
+//        }
     }
 
     /**
