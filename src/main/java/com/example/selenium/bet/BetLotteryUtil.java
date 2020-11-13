@@ -97,8 +97,17 @@ public class BetLotteryUtil {
                 System.out.println("点击不到数据");
             }
             SleepUtil.sleepUtil(2000);
+            // 点击体育赛事
+            driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div")).click();
+            SleepUtil.sleepUtil(4000);
+            try {
+                driver.findElement(By.xpath("//*[@id=\"header-wrap\"]/div[1]/div[2]/ul/li[9]/a"));
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println("获取不到，不报错");
+            }
+            Thread.sleep(1000);
             // 点击体育赛制界面 /html/body/div[5]/div[1]/div[2]/div/div/ul/li/a/div/div
-            // 点击彩票信息
             driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
             Thread.sleep(2000);
             // 点击彩票界面
