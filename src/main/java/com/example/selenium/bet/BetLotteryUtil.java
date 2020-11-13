@@ -266,7 +266,6 @@ public class BetLotteryUtil {
     public void sendBet(String ws, WebDriver driver, String JB, String qs, List<String> rl, String sendBetKey, String sendBetAmountKey, String sendBetNumberKey, int div) {
         try {
             Boolean flag = true;
-            int code = Integer.parseInt(fifoCache.get(sendBetNumberKey));
             if (null == fifoCache.get(sendBetKey)) {
                 fifoCache.put(sendBetKey, "0,1,2,3,4,5,6,7,8,9");
             }
@@ -275,7 +274,8 @@ public class BetLotteryUtil {
                 fifoCache.put(sendBetAmountKey, "1");
             }
             // 判断购买的金额是否停滞，等待几场在下注
-            if (code >= 11 && code <= 14 && null != fifoCache.get("TG_SEND")) {
+            int code = Integer.parseInt(fifoCache.get(sendBetNumberKey));
+            if ((code >= 11 && code <= 14) && null != fifoCache.get("TG_SEND")) {
                 log.info("跳过下注");
                 int tg_send = Integer.parseInt(fifoCache.get("TG_SEND"));
                 if (code == 11 && tg_send == 5) {
@@ -511,6 +511,9 @@ public class BetLotteryUtil {
 //            log.info("====================================================================");
         } catch (Exception e) {
             log.info("====================== 下注报错了，跳过此次购买[购买单位：" + sendBetKey + "] ======================");
+            log.info("********************************");
+            log.info("下注报错了，错误信息" + e.getMessage() +"");
+            log.info("********************************");
             DingUtil d = new DingUtil();
             String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
             d.sendMassage("下注报错了，可能应为国庆活动问题，请尽快解决，航行者,前来汇报 : " + text);
