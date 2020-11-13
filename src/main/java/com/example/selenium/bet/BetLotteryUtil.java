@@ -123,9 +123,9 @@ public class BetLotteryUtil {
             SleepUtil.sleepUtil(2000);
             // 点击世博彩票
             driver.findElement(By.xpath("//*[@id=\"lottery-wrap\"]/div[2]/div/div[20]")).click();
-
-            SleepUtil.sleepUtil(2000);
+            SleepUtil.sleepUtil(5000);
             // 获取新窗口句柄，才能操作新弹出的窗口
+            System.out.println("1111111111111111111111111");
             Set<String> allWindowsId = driver.getWindowHandles();
             List<String> list = new ArrayList<>(allWindowsId);
             String JB = "";
@@ -134,9 +134,12 @@ public class BetLotteryUtil {
                     JB = list.get(i);
                 }
             }
+            SleepUtil.sleepUtil(5000);
+            System.out.println("222222222222222222222222222");
+            SleepUtil.sleepUtil(2000);
             // 全屏操作
-            SleepUtil.sleepUtil(1000);
             driver.switchTo().window(JB).manage().window().maximize();
+            SleepUtil.sleepUtil(1000);
             // 倍率数据
             List<String> rl = new ArrayList<>();
             rl.add("1");
@@ -151,7 +154,6 @@ public class BetLotteryUtil {
             rl.add("564");
             rl.add("1134");
             rl.add("2281");
-            rl.add("2003");
             rl.add("4010");
             rl.add("8050");
             // 循环调用即可
@@ -164,14 +166,8 @@ public class BetLotteryUtil {
                     dingUtil.sendMassage("我是航行者,前来汇报 : " + text);
                     fifoCache.put("sendMassage", "OK", DateUnit.SECOND.getMillis() * 70);
                 }
-                if (!betCopyUtil.isContentAppeared(driver, "/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")) {
-                    DingUtil dingUtil = new DingUtil();
-                    dingUtil.sendMassage("我是航行者,前来汇报 : 获取不到错误信息，请注意！！！！");
-                    driver.quit();
-                    S_W = 0;
-                    fifoCache.clear();
-                }
-                String str = driver.switchTo().window(JB).findElement(By.xpath("/html/body/div[1]/div[2]/div[1]/div/div[1]/div[3]/div/span[1]")).getText();
+                SleepUtil.sleepUtil(2000);
+                String str = driver.switchTo().window(JB).findElement(By.className("preparing")).getText();
                 String ww = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"num0\"]")).getText();
                 // 判断是否进行中
                 if (str.equals("准备开奖") || StrUtil.isEmpty(ww)) {
@@ -231,6 +227,7 @@ public class BetLotteryUtil {
             } while (true);
         } catch (Exception e) {
             System.out.println("====================== 报错了 ======================");
+            System.out.println(e);
             driver.quit();
             S_W = 0;
             fifoCache.clear();
