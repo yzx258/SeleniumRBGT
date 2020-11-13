@@ -8,6 +8,7 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.example.selenium.dto.InstructionDTO;
 import com.example.selenium.util.DingUtil;
+import com.example.selenium.util.SleepUtil;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -77,32 +78,27 @@ public class BetLotteryUtil {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         WebDriver driver = new ChromeDriver();
+        BetCopyUtil betCopyUtil = new BetCopyUtil();
         try {
             // 登录操作
-            driver.get("https://www.52365v.com");
-            driver.manage().window().maximize();
-            // 获取用户输入框
-            WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[1]/input"));
-            // 清空输入框
-            elementZh.clear();
-            // 获取用户输入框
-            WebElement elementMm = driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[2]/input"));
-            // 清空输入框
-            elementMm.clear();
-
-            elementZh.sendKeys("dhxm2376");
-            elementMm.sendKeys("ycw15659512376");
-            //点击确定按钮
-            driver.findElement(By.xpath("//*[@id=\"login\"]/div[1]/div[3]/button")).click();
-            Thread.sleep(1000);
+            betCopyUtil.login(driver);
+            SleepUtil.sleepUtil(2000);
             try {
-                driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div/i"));
-                Thread.sleep(1000);
+                // //*[@id="indexann"]/h2/div
+                driver.findElement(By.xpath("//*[@id=\"indexann\"]/h2/div")).click();
             } catch (Exception e) {
-                System.out.println("获取不到，不报错");
+                System.out.println("点击不到数据");
             }
-            Thread.sleep(1000);
+            SleepUtil.sleepUtil(2000);
+            try {
+                // //*[@id="indexann"]/h2/div
+                driver.findElement(By.xpath("//*[@id=\"indexinfo_msg\"]/div/div[3]/button[1]")).click();
+            } catch (Exception e) {
+                System.out.println("点击不到数据");
+            }
+            SleepUtil.sleepUtil(2000);
             // 点击体育赛制界面 /html/body/div[5]/div[1]/div[2]/div/div/ul/li/a/div/div
+            // 点击彩票信息
             driver.findElement(By.xpath("//*[@id=\"index\"]/div[2]/div/div/ul/li/a/div/div")).click();
             Thread.sleep(2000);
             // 点击彩票界面
