@@ -18,6 +18,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -163,7 +164,7 @@ public class BetLotteryUtil {
                 if (checkTime() && null == fifoCache.get("sendMassage")) {
                     String text = driver.switchTo().window(JB).findElement(By.xpath("//*[@id=\"content\"]/div[4]/div[1]/div[4]/span[2]")).getText();
                     DingUtil dingUtil = new DingUtil();
-                    dingUtil.sendMassage("我是航行者,前来汇报 : " + text);
+                    dingUtil.sendMassage("我是航行者,前来汇报 : " + fifoCache.get("ZHJE"));
                     fifoCache.put("sendMassage", "OK", DateUnit.SECOND.getMillis() * 70);
                 }
                 SleepUtil.sleepUtil(2000);
@@ -309,12 +310,19 @@ public class BetLotteryUtil {
             // 判断是否红[fifoCache.get("sendBet")]
             log.info("[" + fifoCache.get(sendBetKey) + "].contains(" + ws + ") -> {}", fifoCache.get(sendBetKey).contains(ws));
             // TODO null != fifoCache.get("TG_SEND")说明有下注需要过滤
-            if (fifoCache.get(sendBetKey).contains(ws)) {
+            if (fifoCache.get(sendBetKey).contains(ws) && null == fifoCache.get("TG_SEND")) {
                 // 上期比赛结果为单
                 log.info("比赛单【fifoCache.get(sendBetKey).contains(" + ws + ")】 -> " + "单".equals(fifoCache.get(sendBetKey)));
                 log.info("ws -> :" + ws + " -> " + fifoCache.get(sendBetKey));
                 flag = true;
                 fifoCache.remove("TG_SEND");
+                if(null == fifoCache.get("ZHJE")){
+                    fifoCache.put("ZHJE","0");
+                }
+                BigDecimal amo = new BigDecimal(fifoCache.get("ZHJE"));
+                BigDecimal amo1 = new BigDecimal(0.097);
+                amo.add(amo1);
+                fifoCache.put("ZHJE",amo + "");
             } else {
                 // 黑了
                 log.info("比赛黑了");
