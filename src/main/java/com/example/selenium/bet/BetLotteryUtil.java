@@ -186,7 +186,7 @@ public class BetLotteryUtil {
                 }
                 fifoCache.put("QS", qs);
                 log.info("*******************************");
-                log.info("************* 开始下注期数 : " + qs + " *************");
+                log.info("************* 开始下注期数["+fifoCache.get("ZHJE")+"] : " + qs + " *************");
                 log.info("*******************************");
                 SleepUtil.sleepUtil(200);
                 driver.switchTo().window(JB).navigate().refresh();
