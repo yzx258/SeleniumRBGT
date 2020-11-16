@@ -59,8 +59,8 @@ public class BetLotteryUtil {
 
 
     public static void main(String[] args) {
-        BetLotteryUtil betLotteryUtil = new BetLotteryUtil();
-        betLotteryUtil.sz();
+//        BetLotteryUtil betLotteryUtil = new BetLotteryUtil();
+//        betLotteryUtil.sz();
     }
 
     /**
@@ -186,7 +186,11 @@ public class BetLotteryUtil {
                 }
                 fifoCache.put("QS", qs);
                 log.info("*******************************");
-                log.info("************* 开始下注期数["+fifoCache.get("ZHJE")+"] : " + qs + " *************");
+                if(null == fifoCache.get("ZHJE")){
+                    log.info("************* 开始下注期数[0] : " + qs + " *************");
+                }else{
+                    log.info("************* 开始下注期数["+Double.valueOf(Integer.parseInt(fifoCache.get("ZHJE"))/100)+"] : " + qs + " *************");
+                }
                 log.info("*******************************");
                 SleepUtil.sleepUtil(200);
                 driver.switchTo().window(JB).navigate().refresh();
@@ -319,10 +323,9 @@ public class BetLotteryUtil {
                 if(null == fifoCache.get("ZHJE")){
                     fifoCache.put("ZHJE","0");
                 }
-                BigDecimal amo = new BigDecimal(fifoCache.get("ZHJE"));
-                BigDecimal amo1 = new BigDecimal(0.097);
-                amo.add(amo1);
-                fifoCache.put("ZHJE",amo + "");
+                int amount = Integer.parseInt(fifoCache.get("ZHJE"));
+                amount = amount + 97;
+                fifoCache.put("ZHJE",amount + "");
             } else {
                 // 黑了
                 log.info("比赛黑了");
