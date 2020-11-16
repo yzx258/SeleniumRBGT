@@ -128,6 +128,7 @@ public class BetCopyUtil {
             }
             SleepUtil.sleepUtil(1000);
         }
+        SleepUtil.sleepUtil(2000);
         //点击确定按钮
         driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[2]/button")).click();
     }
