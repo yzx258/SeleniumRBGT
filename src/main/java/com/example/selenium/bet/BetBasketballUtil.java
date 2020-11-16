@@ -643,7 +643,7 @@ public class BetBasketballUtil {
     public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1,List<WebElement> td2, BetCacheSpec betCacheSpec, String zd, String kd, String djj) {
         // 点击下注
         DingUtil d = new DingUtil();
-        if(0 == betCacheSpec.getOddAndEven()){
+        if(1 == betCacheSpec.getOddAndEven()){
             // 单购买记录
             if (StrUtil.isNotBlank(td1.get(5).getText()) && td1.get(5).getText().contains("单")) {
                 td1.get(5).click();
@@ -673,7 +673,7 @@ public class BetBasketballUtil {
                 SleepUtil.sleepUtil(5000);
                 return true;
             }
-        }else if(1 == betCacheSpec.getOddAndEven()){
+        }else if(0 == betCacheSpec.getOddAndEven()){
             // 双购买记录
             if (StrUtil.isNotBlank(td2.get(5).getText()) && td2.get(5).getText().contains("双")) {
                 td2.get(5).click();
