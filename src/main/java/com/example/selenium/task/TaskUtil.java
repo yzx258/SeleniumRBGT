@@ -77,7 +77,6 @@ public class TaskUtil {
      */
     @Async("myTaskAsyncPool")
     public void getBasketballTournament2() {
-        BetBasketballUtil betBasketballUtil = new BetBasketballUtil();
-        betBasketballUtil.bet();
+        BetBasketballUtil.bet();
     }
 }
