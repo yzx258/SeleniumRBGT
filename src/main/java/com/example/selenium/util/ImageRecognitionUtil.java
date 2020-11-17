@@ -82,7 +82,7 @@ public class ImageRecognitionUtil {
         obj.put("username", USER_NAME);
         obj.put("password", USER_POW);
         // typeId为可选参数 根据文档填写说明填写 1:纯数字 2:纯英文
-        obj.put("typeid", "3");
+        obj.put("typeid", "1");
         // 响应信息
         String result = "";
         obj.put("image", image);
