@@ -91,7 +91,7 @@ public class BetBasketballUtil {
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         // 笔记本版本 D:\ChromeCoreDownloads\chromedriver.exe
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
-        System.setProperty("webdriver.chrome.driver","D:\\ChromeCoreDownloads\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver",chromeDriverUrl);
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
