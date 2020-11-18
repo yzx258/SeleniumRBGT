@@ -491,6 +491,17 @@ public class BetBasketballUtil {
     }
 
     /**
+     * 单双随机数
+     *
+     * @return
+     */
+    public static int random() {
+        int max = 100, min = 1;
+        int ran2 = (int) (Math.random() * (max - min) + min);
+        return ran2 % 2;
+    }
+
+    /**
      * 描述 ： 下注
      *
      * @param driver 控制浏览器
@@ -554,6 +565,8 @@ public class BetBasketballUtil {
             }
             // 购买第一场比赛
             betCacheSpec.setIsRed(0);
+            // 设置单双
+            betCacheSpec.setOddAndEven(random());
             Boolean flag = sendBetOk(driver, td1,td2, betCacheSpec, zd, kd, djj);
             if (flag) {
                 // 保存购买记录
@@ -575,6 +588,8 @@ public class BetBasketballUtil {
         } else if (betCacheSpec.getNumber() == 1) {
             // 购买第二场比赛
             betCacheSpec.setIsRed(0);
+            // 设置单双
+            betCacheSpec.setOddAndEven(random());
             betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
             Boolean flag = sendBetOk(driver, td1,td2, betCacheSpec, zd, kd, djj);
             if (flag) {
@@ -592,6 +607,8 @@ public class BetBasketballUtil {
         } else if (betCacheSpec.getNumber() == 2) {
             // 购买第三场比赛
             betCacheSpec.setIsRed(0);
+            // 设置单双
+            betCacheSpec.setOddAndEven(random());
             betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
             Boolean flag = sendBetOk(driver, td1,td2, betCacheSpec, zd, kd, djj);
             if (flag) {
@@ -644,7 +661,7 @@ public class BetBasketballUtil {
                     return false;
                 }
                 // 点击确认按钮
-                driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+                // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
                 SleepUtil.sleepUtil(5000);
                 return true;
             }
@@ -673,7 +690,7 @@ public class BetBasketballUtil {
                     return false;
                 }
                 // 点击确认按钮
-                driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+                // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
                 SleepUtil.sleepUtil(5000);
                 return true;
             }
