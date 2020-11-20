@@ -119,36 +119,6 @@ public class BetCopyUtil {
             d.sendMassage("获取图片验证码失败登录失败，请注意！");
             driver.quit();
         }
-//        System.out.println(isContentAppeared(driver, "/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input"));
-//        String yzm_con = "/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input";
-//        if (isContentAppeared(driver, "/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input")) {
-//            // 输入验证码
-//            WebElement yzm = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input"));
-//            String placeholder = yzm.getAttribute("placeholder").trim();
-//            if (StrUtil.isNotBlank(placeholder) && "验证码".equals(placeholder)) {
-//                // 验证图片验证码
-//                // 点击输入框，显示验证码
-//                yzm.click();
-//                SleepUtil.sleepUtil(2000);
-//                // 获取验证码图片
-//                WebElement yzm_img = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[2]/img"));
-//                String src = yzm_img.getAttribute("src");
-//                if (StrUtil.isNotBlank(src) && src.contains(",")) {
-//                    // 最终验证码
-//                    String zz_yzm = ImageRecognitionUtil.imageRecognition(src.split(",")[1]);
-//                    System.out.println("最终验证码:" + zz_yzm);
-//                    SleepUtil.sleepUtil(1000);
-//                    zh.click();
-//                    SleepUtil.sleepUtil(1000);
-//                    yzm.sendKeys(zz_yzm);
-//                } else {
-//                    DingUtil d = new DingUtil();
-//                    d.sendMassage("获取图片验证码失败登录失败，请注意！");
-//                    driver.quit();
-//                }
-//            }
-//            SleepUtil.sleepUtil(1000);
-//        }
         SleepUtil.sleepUtil(2000);
         //点击确定按钮
         driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[2]/button")).click();
