@@ -91,7 +91,7 @@ public class BetBasketballUtil {
         // 正式环境：System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe";
         // 笔记本版本 D:\ChromeCoreDownloads\chromedriver.exe
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
-        System.setProperty("webdriver.chrome.driver",chromeDriverUrl);
+        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
         // 自己本地最新的charm版本，需要添加启动参数
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
@@ -262,7 +262,7 @@ public class BetBasketballUtil {
                                             System.out.println(zd + " VS " + kd);
                                             System.out.println("==============================");
                                             System.out.println("|||||||||||||||||||||||||||||||");
-                                            sendBet(driver, zd, kd, djj, trs, td1);
+                                            sendBet(driver, zd, kd, djj, trs, td1, td2);
                                             break;
                                         }
                                     }
@@ -510,7 +510,7 @@ public class BetBasketballUtil {
      * @param trs
      * @param td1
      */
-    public static void sendBet(WebDriver driver, String zd, String kd, String djj, List<WebElement> trs, List<WebElement> td1) {
+    public static void sendBet(WebDriver driver, String zd, String kd, String djj, List<WebElement> trs, List<WebElement> td1, List<WebElement> td2) {
         // 点击下注
         List<WebElement> td0 = trs.get(0).findElements(By.tagName("th"));
         // 获取点击的数据
@@ -567,7 +567,7 @@ public class BetBasketballUtil {
             betCacheSpec.setIsRed(0);
             // 设置单双
             betCacheSpec.setOddAndEven(random());
-            Boolean flag = sendBetOk(driver, td1, betCacheSpec, zd, kd, djj);
+            Boolean flag = sendBetOk(driver, td1, td2, betCacheSpec, zd, kd, djj);
             if (flag) {
                 // 保存购买记录
                 betCacheSpec.setNumber(0);
@@ -591,10 +591,12 @@ public class BetBasketballUtil {
             // 设置单双
             betCacheSpec.setOddAndEven(random());
             betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
-            Boolean flag = sendBetOk(driver, td1, betCacheSpec, zd, kd, djj);
+            Boolean flag = sendBetOk(driver, td1, td2, betCacheSpec, zd, kd, djj);
             if (flag) {
                 // 保存购买记录
                 betCacheSpec.setNumber(1);
+                // 设置单双
+                betCacheSpec.setOddAndEven(random());
                 addBuyRecord(betCacheSpec, 2);
                 // 设置四小时失效
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
@@ -610,7 +612,7 @@ public class BetBasketballUtil {
             // 设置单双
             betCacheSpec.setOddAndEven(random());
             betCacheSpec.setMagnification(betCacheSpec.getMagnification() + 1);
-            Boolean flag = sendBetOk(driver, td1, betCacheSpec, zd, kd, djj);
+            Boolean flag = sendBetOk(driver, td1, td2, betCacheSpec, zd, kd, djj);
             if (flag) {
                 // 保存购买记录
                 betCacheSpec.setNumber(2);
@@ -633,37 +635,70 @@ public class BetBasketballUtil {
      * @param td1
      * @param magnification
      */
-    public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1, BetCacheSpec betCacheSpec, String zd, String kd, String djj) {
+    public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1, List<WebElement> td2, BetCacheSpec betCacheSpec, String zd, String kd, String djj) {
         // 点击下注
         DingUtil d = new DingUtil();
         System.out.println("我是下注前报错的问题：" + JSON.toJSONString(betCacheSpec));
-        if (StrUtil.isNotBlank(td1.get(5).getText()) && td1.get(5).getText().contains("单")) {
-            td1.get(5).click();
-            SleepUtil.sleepUtil(3000);
-            WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
-            SleepUtil.sleepUtil(4000);
-            // 清空输入框
-            elementZh.clear();
-            // elementZh.sendKeys(bl[magnification]);
-            // 调试下注使用，默认为10
-            elementZh.sendKeys(bl[betCacheSpec.getMagnification()]);
-            SleepUtil.sleepUtil(2000);
-            // //*[@id="betEventsContainer"]/ul/li[3]/p[1]/span
-            String sfqc = "";
-            try {
-                sfqc = driver.findElement(By.xpath("//*[@id=\"betEventsContainer\"]/ul/li[3]/p[1]/span")).getText();
-                if ("全场总得分单双".equals(sfqc)) {
-                    d.sendMassage("下注前判断是否点击全场[是]，禁止该节下注，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
+        if (betCacheSpec.getOddAndEven() == 1) {
+            if (StrUtil.isNotBlank(td1.get(5).getText()) && td1.get(5).getText().contains("单")) {
+                td1.get(5).click();
+                SleepUtil.sleepUtil(3000);
+                WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
+                SleepUtil.sleepUtil(4000);
+                // 清空输入框
+                elementZh.clear();
+                // elementZh.sendKeys(bl[magnification]);
+                // 调试下注使用，默认为10
+                elementZh.sendKeys(bl[betCacheSpec.getMagnification()]);
+                SleepUtil.sleepUtil(2000);
+                // //*[@id="betEventsContainer"]/ul/li[3]/p[1]/span
+                String sfqc = "";
+                try {
+                    sfqc = driver.findElement(By.xpath("//*[@id=\"betEventsContainer\"]/ul/li[3]/p[1]/span")).getText();
+                    if ("全场总得分单双".equals(sfqc)) {
+                        d.sendMassage("下注前判断是否点击全场[是]，禁止该节下注，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
+                        return false;
+                    }
+                } catch (Exception e) {
+                    d.sendMassage("下注前判断是否点击全场，出错，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
                     return false;
                 }
-            } catch (Exception e) {
-                d.sendMassage("下注前判断是否点击全场，出错，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
-                return false;
+                // 点击确认按钮
+                // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+                SleepUtil.sleepUtil(5000);
+                System.out.println("下注完成：" + JSON.toJSONString(betCacheSpec));
+                return true;
             }
-            // 点击确认按钮
-            // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
-            SleepUtil.sleepUtil(5000);
-            return true;
+        } else {
+            if (StrUtil.isNotBlank(td2.get(5).getText()) && td2.get(5).getText().contains("单")) {
+                td2.get(5).click();
+                SleepUtil.sleepUtil(3000);
+                WebElement elementZh = driver.findElement(By.xpath("//*[@id=\"express-bet-input\"]"));
+                SleepUtil.sleepUtil(4000);
+                // 清空输入框
+                elementZh.clear();
+                // elementZh.sendKeys(bl[magnification]);
+                // 调试下注使用，默认为10
+                elementZh.sendKeys(bl[betCacheSpec.getMagnification()]);
+                SleepUtil.sleepUtil(2000);
+                // //*[@id="betEventsContainer"]/ul/li[3]/p[1]/span
+                String sfqc = "";
+                try {
+                    sfqc = driver.findElement(By.xpath("//*[@id=\"betEventsContainer\"]/ul/li[3]/p[1]/span")).getText();
+                    if ("全场总得分单双".equals(sfqc)) {
+                        d.sendMassage("下注前判断是否点击全场[是]，禁止该节下注，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
+                        return false;
+                    }
+                } catch (Exception e) {
+                    d.sendMassage("下注前判断是否点击全场，出错，请关注该比赛[" + djj + "]：" + zd + " VS " + kd);
+                    return false;
+                }
+                // 点击确认按钮
+                // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+                SleepUtil.sleepUtil(5000);
+                System.out.println("下注完成：" + JSON.toJSONString(betCacheSpec));
+                return true;
+            }
         }
         return false;
     }
