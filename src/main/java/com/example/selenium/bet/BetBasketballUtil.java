@@ -638,7 +638,6 @@ public class BetBasketballUtil {
     public static Boolean sendBetOk(WebDriver driver, List<WebElement> td1, List<WebElement> td2, BetCacheSpec betCacheSpec, String zd, String kd, String djj) {
         // 点击下注
         DingUtil d = new DingUtil();
-        System.out.println("我是下注前报错的问题：" + JSON.toJSONString(betCacheSpec));
         if (betCacheSpec.getOddAndEven() == 1) {
             if (StrUtil.isNotBlank(td1.get(5).getText()) && td1.get(5).getText().contains("单")) {
                 td1.get(5).click();
