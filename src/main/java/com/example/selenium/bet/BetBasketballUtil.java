@@ -51,8 +51,8 @@ public class BetBasketballUtil {
     // 保存三黑的数据
     private static List<BetCacheSpec> map = new ArrayList<>();
     // 下注倍率:0.94倍率
-    //private static String[] bl = new String[]{"20", "40", "80", "165", "335","670", "400", "800"};
-    private static String[] bl = new String[]{"12", "24", "48", "97", "199", "405", "840", "1680"};
+    //private static String[] bl = new String[]{"10","20","40","80","165","335","700"};
+    private static String[] bl = new String[]{"10","20","40","80","165","335","700"};
     // 是否需要
     private static String FLAG_OK = "YES";
     // 点击篮球
@@ -663,7 +663,7 @@ public class BetBasketballUtil {
                     return false;
                 }
                 // 点击确认按钮
-                // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+                driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
                 SleepUtil.sleepUtil(5000);
                 System.out.println("下注完成：" + JSON.toJSONString(betCacheSpec));
                 return true;
@@ -693,7 +693,7 @@ public class BetBasketballUtil {
                     return false;
                 }
                 // 点击确认按钮
-                // driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
+                driver.findElement(By.xpath("//*[@id=\"asianView\"]/div/div[1]/div/div/div[1]/div[2]/div/div[5]/div[2]/button[3]")).click();
                 SleepUtil.sleepUtil(5000);
                 System.out.println("下注完成：" + JSON.toJSONString(betCacheSpec));
                 return true;
