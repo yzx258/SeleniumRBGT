@@ -567,7 +567,7 @@ public class BetBasketballUtil {
             // 购买第一场比赛
             betCacheSpec.setIsRed(0);
             // 设置单双
-            betCacheSpec.setOddAndEven(random());
+            betCacheSpec.setOddAndEven(1);
             Boolean flag = sendBetOk(driver, td1, td2, betCacheSpec, zd, kd, djj);
             if (flag) {
                 // 保存购买记录
@@ -597,7 +597,7 @@ public class BetBasketballUtil {
                 // 保存购买记录
                 betCacheSpec.setNumber(1);
                 // 设置单双
-                betCacheSpec.setOddAndEven(random());
+                betCacheSpec.setOddAndEven(0);
                 addBuyRecord(betCacheSpec, 2);
                 // 设置四小时失效
                 fifoCache.put(zd, JSON.toJSONString(betCacheSpec), DateUnit.SECOND.getMillis() * 14400);
