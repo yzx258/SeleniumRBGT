@@ -59,8 +59,8 @@ public class BetLotteryUtil {
 
 
     public static void main(String[] args) {
-//        BetLotteryUtil betLotteryUtil = new BetLotteryUtil();
-//        betLotteryUtil.sz();
+        BetLotteryUtil betLotteryUtil = new BetLotteryUtil();
+        betLotteryUtil.sz();
     }
 
     /**
@@ -80,9 +80,6 @@ public class BetLotteryUtil {
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.out.println(chromeDriverUrl);
         System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
-        // 自己本地最新的charm版本，需要添加启动参数
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-sandbox");
         WebDriver driver = new ChromeDriver();
         BetCopyUtil betCopyUtil = new BetCopyUtil();
         try {
