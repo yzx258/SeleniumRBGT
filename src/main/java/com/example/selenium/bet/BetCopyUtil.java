@@ -100,24 +100,28 @@ public class BetCopyUtil {
         SleepUtil.sleepUtil(2000);
         // 验证码
         // 输入验证码
-        WebElement yzm = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input"));
-        System.out.println(isContentAppeared(driver, "/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input"));
-        yzm.click();
-        SleepUtil.sleepUtil(2000);
-        WebElement yzm_img = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[2]/img"));
-        String src = yzm_img.getAttribute("src");
-        if (StrUtil.isNotBlank(src) && src.contains(",")) {
-            // 最终验证码
-            String zz_yzm = ImageRecognitionUtil.imageRecognition(src.split(",")[1]);
-            System.out.println("最终验证码:" + zz_yzm);
-            SleepUtil.sleepUtil(1000);
-            zh.click();
-            SleepUtil.sleepUtil(1000);
-            yzm.sendKeys(zz_yzm);
-        } else {
-            DingUtil d = new DingUtil();
-            d.sendMassage("获取图片验证码失败登录失败，请注意！");
-            driver.quit();
+        try{
+            WebElement yzm = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input"));
+            System.out.println(isContentAppeared(driver, "/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[1]/input"));
+            yzm.click();
+            SleepUtil.sleepUtil(2000);
+            WebElement yzm_img = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/form/div[1]/div[2]/div/div/div/div[2]/img"));
+            String src = yzm_img.getAttribute("src");
+            if (StrUtil.isNotBlank(src) && src.contains(",")) {
+                // 最终验证码
+                String zz_yzm = ImageRecognitionUtil.imageRecognition(src.split(",")[1]);
+                System.out.println("最终验证码:" + zz_yzm);
+                SleepUtil.sleepUtil(1000);
+                zh.click();
+                SleepUtil.sleepUtil(1000);
+                yzm.sendKeys(zz_yzm);
+            } else {
+                DingUtil d = new DingUtil();
+                d.sendMassage("获取图片验证码失败登录失败，请注意！");
+                driver.quit();
+            }
+        }catch(WebDriverException e){
+            System.out.println("不存在验证码");
         }
         SleepUtil.sleepUtil(2000);
         //点击确定按钮
