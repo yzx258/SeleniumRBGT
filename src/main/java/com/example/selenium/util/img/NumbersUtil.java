@@ -7,7 +7,7 @@ import java.net.URLEncoder;
  * @author 俞春旺
  * @program: SeleniumRBGT
  * @date 2022-02-12 20:15:07
- * @description: 描述
+ * @description: 图片识别数字工具
  */
 public class NumbersUtil {
 
@@ -25,7 +25,7 @@ public class NumbersUtil {
         String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/numbers";
         try {
             // 本地文件路径
-            File file = new File("C:\\Users\\俞春旺\\Desktop\\345.png");
+            File file = new File("C:\\Users\\俞春旺\\Desktop\\调试文件\\234.png");
             String filePath = file.getPath();
             byte[] imgData = FileUtil.readFileByBytes(filePath);
             String imgStr = Base64Util.encode(imgData);
@@ -46,6 +46,7 @@ public class NumbersUtil {
     }
 
     public static void main(String[] args) {
+        // 调试图片数字
         NumbersUtil.numbers();
     }
 
