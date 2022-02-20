@@ -2,7 +2,6 @@ package com.example.selenium.bet;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.CacheObj;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
@@ -12,7 +11,6 @@ import com.example.selenium.spec.BuyRecordJson;
 import com.example.selenium.spec.BuyRecordSpec;
 import com.example.selenium.util.DingUtil;
 import com.example.selenium.util.SleepUtil;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,7 +19,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @company： 厦门宜车时代信息技术有限公司
@@ -53,7 +52,7 @@ public class BetBasketballUtil {
     // 下注倍率:0.94倍率
     // private static String[] bl = new String[]{"10","20","40","80","165","335","700"};
     // private static String[] bl = new String[]{"12", "24", "48", "97", "199", "405", "840", "1680"};
-    private static String[] bl = new String[]{"10","20","40","80","165","335","700"};
+    private static String[] bl = new String[]{"10", "20", "40", "80", "165", "335", "700"};
     // 是否需要
     private static String FLAG_OK = "YES";
     // 点击篮球
@@ -68,13 +67,6 @@ public class BetBasketballUtil {
     private static String FOURTH = "第4节";
     // 开关
     private static int S_W = 0;
-
-    /**
-     * BBIT下注
-     */
-    public static void main(String[] args) {
-        bet();
-    }
 
     public static void bet() {
         if (!HttpUtil.get(OFF_URL).contains(IS_ON)) {

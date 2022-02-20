@@ -2,6 +2,8 @@ package com.example.selenium.bo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author 俞春旺
  * @program: SeleniumRBGT
@@ -37,7 +39,17 @@ public class YaBoInfoBO {
     private Integer screenings;
 
     /**
+     * 原始金额
+     */
+    private BigDecimal originalAmount;
+
+    /**
+     * 剩余金额
+     */
+    private BigDecimal balanceAmount;
+
+    /**
      * 投注金额
      */
-    private String betAmount;
+    private BigDecimal betAmount;
 }

@@ -2,7 +2,6 @@ package com.example.selenium.task;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import cn.hutool.core.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,15 +16,15 @@ import org.springframework.stereotype.Component;
 @EnableScheduling
 public class TimingTask {
 
-    private static Cache<String,String> fifoCache = CacheUtil.newFIFOCache(10);
+    private static Cache<String, String> fifoCache = CacheUtil.newFIFOCache(10);
 
     @Autowired
     private TaskUtil taskService;
 
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "0/20 * * * * ? ")
     private void getStartGame1() {
-        System.out.println("异步线程开始");
+        System.out.println("异步线程开始 ============ YABO下注");
         taskService.getBasketballTournament2();
-        System.out.println("异步线程结束");
+        System.out.println("异步线程开始 ============ YABO下注");
     }
 }
