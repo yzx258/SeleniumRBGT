@@ -1,6 +1,7 @@
 package com.example.selenium.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.selenium.bet.BetYaBoUtil;
 import com.example.selenium.mapper.BetLockMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,8 @@ public class BetLockController {
 
     @GetMapping("/getLock")
     public String getTest() {
+        BetYaBoUtil bet = new BetYaBoUtil();
+        bet.bet();
         return JSON.toJSONString(betLockMapper.selectById(1));
     }
 

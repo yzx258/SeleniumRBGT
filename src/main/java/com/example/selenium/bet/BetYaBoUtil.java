@@ -6,13 +6,13 @@ import com.example.selenium.bo.YaBoInfoBO;
 import com.example.selenium.util.CacheMapUtil;
 import com.example.selenium.util.DingUtil;
 import com.example.selenium.util.SleepUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -26,16 +26,30 @@ import java.util.List;
  */
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class BetYaBoUtil {
 
-    private final CacheMapUtil cacheMapUtil;
+    @Autowired
+    private CacheMapUtil cacheMapUtil;
 
 
     /**
      * 启动下注
      */
     public void bet() {
+
+        // 定义 - 参数
+        DingUtil d = new DingUtil();
+        // competitionName-联赛名称;homeTeamName-主队;awayTeamName-客队;whichSection-第几节;screenings-场次;betAmount-下注金额
+        String competitionName = null;
+        String homeTeamName = null;
+        String awayTeamName = null;
+        String whichSection = null;
+        Integer screenings = 1;
+        BigDecimal betAmount = null;
+        BigDecimal originalAmount = null;
+        BigDecimal balanceAmount = null;
+        YaBoInfoBO yb = null;
+        YaBoAccountInfoBO ybc = null;
 
         Object bet_tag = cacheMapUtil.getMap("THREAD_EXECUTION");
         if (null != bet_tag) {
@@ -46,20 +60,6 @@ public class BetYaBoUtil {
         // 线程开始执行
         cacheMapUtil.putMap("THREAD_EXECUTION", "1");
 
-
-        // 定义 - 参数
-        DingUtil d = new DingUtil();
-        // competitionName-联赛名称;homeTeamName-主队;awayTeamName-客队;whichSection-第几节;screenings-场次;betAmount-下注金额
-        String competitionName = null;
-        String homeTeamName = null;
-        String awayTeamName = null;
-        String whichSection = null;
-        Integer screenings = null;
-        BigDecimal betAmount = null;
-        BigDecimal originalAmount = null;
-        BigDecimal balanceAmount = null;
-        YaBoInfoBO yb = null;
-        YaBoAccountInfoBO ybc = null;
         // 初始化 - 自动化浏览器
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
@@ -82,39 +82,42 @@ public class BetYaBoUtil {
             SleepUtil.sleepUtil(2000);
 
             if (cacheMapUtil.getMap("BET_A") != null) {
-                log.info("===========进入结算判断，是否走下一单操作============");
                 YaBoInfoBO bet_a = JSON.parseObject(cacheMapUtil.getMap("BET_A"), YaBoInfoBO.class);
                 System.out.println(JSON.toJSONString(bet_a));
-                System.out.println("已存在，不允许下注");
                 // 判断 - 是否结算
-                for (int ob = 0; ob > 10000000; ob++) {
-
+                for (int ob = 0; ob < 10000000; ob++) {
                     // 操作 - 账号刷新操作
                     clickRefreshAccount(driver);
                     SleepUtil.sleepUtil(5000);
 
                     // 获取 - 账户总金额
                     BigDecimal totalAmount = getTotalAmount(driver);
+                    log.info("总金额 - totalAmount：" + totalAmount);
                     // 获取 - 待结算金额
                     BigDecimal pendingSettlementAmount = getPendingSettlementAmount(driver);
-
+                    log.info("待结算金额 - pendingSettlementAmount：" + pendingSettlementAmount);
+                    log.info("结算金额是否为0.00 - pendingSettlementAmount.compareTo(new BigDecimal(0.00)) == 0 - {}", pendingSettlementAmount.compareTo(new BigDecimal(0.00)) == 0);
                     // 操作 - 结算金额为0，则项目结算完成
-                    if (pendingSettlementAmount.compareTo(new BigDecimal(0)) == 0) {
+                    if (pendingSettlementAmount.compareTo(new BigDecimal(0.00)) == 0) {
                         // 解析 - 赛事信息
                         BigDecimal cacheOriginalAmount = bet_a.getOriginalAmount();
-                        if (cacheOriginalAmount.compareTo(totalAmount) < 0) {
+                        log.info("下注前账户金额 - cacheOriginalAmount：" + cacheOriginalAmount);
+                        if (cacheOriginalAmount.compareTo(totalAmount) > 0) {
                             // 小于 - 说明上一局失败
-                            betAmount = getBetAmount(false, bet_a.getScreenings());
-                            d.sendMassage("[比赛结论：黑单" + "[比赛队伍：" + homeTeamName + " VS " + awayTeamName + "]" + "[比赛节数：" + whichSection + "]" + "[账户原金额：" + originalAmount + "][下注金额：" + betAmount + "]" + "[账户剩余金额：" + balanceAmount + "]");
-                        } else if (cacheOriginalAmount.compareTo(totalAmount) > 0) {
+                            screenings = bet_a.getScreenings() + 1;
+                            betAmount = getBetAmount(false, screenings);
+                            d.sendMassage("[比赛结论：黑单" + "[比赛队伍：" + bet_a.getHomeTeamName() + " VS " + bet_a.getAwayTeamName() + "]" + "[比赛节数：" + bet_a.getWhichSection() + "]" + "[账户原金额：" + bet_a.getOriginalAmount() + "][下注金额：" + bet_a.getBetAmount() + "]" + "[账户剩余金额：" + bet_a.getBalanceAmount() + "]");
+                        } else if (cacheOriginalAmount.compareTo(totalAmount) < 0) {
                             // 大于 - 说明上一局成功
                             betAmount = getBetAmount(true, bet_a.getScreenings());
-                            d.sendMassage("[比赛结论：红单" + "[比赛队伍：" + homeTeamName + " VS " + awayTeamName + "]" + "[比赛节数：" + whichSection + "]" + "[账户原金额：" + originalAmount + "][下注金额：" + betAmount + "]" + "[账户剩余金额：" + balanceAmount + "]");
+                            d.sendMassage("[比赛结论：红单" + "[比赛队伍：" + bet_a.getHomeTeamName() + " VS " + bet_a.getAwayTeamName() + "]" + "[比赛节数：" + bet_a.getWhichSection() + "]" + "[账户原金额：" + bet_a.getOriginalAmount() + "][下注金额：" + bet_a.getBetAmount() + "]" + "[账户剩余金额：" + cacheOriginalAmount + "]");
+                            cacheMapUtil.delMap("BET_A");
                         }
 
                         // 定义 - 全新的数据
                         originalAmount = totalAmount;
-                        balanceAmount = originalAmount.subtract(balanceAmount);
+                        balanceAmount = originalAmount.subtract(betAmount);
+                        break;
                     } else {
                         SleepUtil.sleepUtil(20000);
                     }
@@ -131,7 +134,13 @@ public class BetYaBoUtil {
                 originalAmount = totalAmount;
                 betAmount = new BigDecimal("5");
                 balanceAmount = totalAmount.subtract(betAmount);
+                screenings = 1;
             }
+
+
+            log.info("========================================");
+            log.info("账户金额 - originalAmount：{}；剩余金额 - balanceAmount：{}；下注金额 - betAmount：{}", originalAmount, balanceAmount, betAmount);
+            log.info("========================================");
 
             // 获取 - 联赛名称
             List<WebElement> competition_header = driver.findElements(By.className("competition_header"));
@@ -176,7 +185,7 @@ public class BetYaBoUtil {
 
                         // 获取 - 当前页面
                         driver = driver.switchTo().window(driver.getWindowHandle());
-                        SleepUtil.sleepUtil(3000);
+                        SleepUtil.sleepUtil(5000);
 
                         // 操作 - 点击已节为操作
                         WebElement sevmenu_tab_content = driver.findElement(By.className("sevmenu_tab_content"));
@@ -194,14 +203,13 @@ public class BetYaBoUtil {
                         SleepUtil.sleepUtil(2000);
 
                         // 获取 - 所有下注头节点
-                        List<WebElement> betList = driver.findElements(By.className("bet_type_wrap"));
+                        List<WebElement> betList = driver.findElement(By.className("group_wrap")).findElements(By.className("bet_type_wrap"));
                         for (WebElement bet : betList) {
                             WebElement betElement = bet.findElement(By.className("bet_type_row")).findElement(By.className("left"));
                             if (betElement.getText().contains("单/双")) {
-
                                 // 操作 - 将单双点开
                                 betElement.click();
-                                SleepUtil.sleepUtil(2000);
+                                SleepUtil.sleepUtil(3000);
 
                                 // 获取 - 最新一节单双选项
                                 List<WebElement> dsList = bet.findElement(By.className("ReactCollapse--collapse"))
@@ -225,7 +233,7 @@ public class BetYaBoUtil {
                                 } else {
                                     bet_odd.click();
                                 }
-                                SleepUtil.sleepUtil(5000);
+                                SleepUtil.sleepUtil(2000);
 
                                 // 下注 - 单
                                 WebElement bet_slip_wrap = driver.findElement(By.className("bet_slip_wrap"));
@@ -236,7 +244,7 @@ public class BetYaBoUtil {
                                             .findElement(By.className("input_wrap"))
                                             .findElement(By.className("placebet_input"));
 
-                                    // 下注 - 5元
+                                    // 操作 - 下注
                                     SleepUtil.sleepUtil(2000);
                                     input_wrap.sendKeys(betAmount + "");
 
@@ -278,13 +286,12 @@ public class BetYaBoUtil {
                                     }
                                 }
                             }
-                            break;
+                            continue;
                         }
                     }
                     break;
                 }
             }
-
             cacheMapUtil.delMap("THREAD_EXECUTION");
             // 结束 - 此次操作
             driver.close();
@@ -384,9 +391,7 @@ public class BetYaBoUtil {
         // 获取 - 总金额
         WebElement elementTotalAmount = elementTotalAmountElement.get(0).findElement(By.className("text-right"));
         String totalAmount = elementTotalAmount.getText();
-        log.info("========================================");
-        log.info("总金额 - totalAmount：{}}", totalAmount);
-        log.info("========================================");
+        log.info("总金额 - totalAmount：" + totalAmount);
         return new BigDecimal(totalAmount);
     }
 
@@ -404,9 +409,6 @@ public class BetYaBoUtil {
         // 获取 - 待结算金额
         WebElement elementPendingSettlement = elementPendingSettlementElement.get(1).findElement(By.className("text-right"));
         String pendingSettlementAmount = elementPendingSettlement.getText();
-        log.info("========================================");
-        log.info("待结算金额 - pendingSettlementAmount：{}", pendingSettlementAmount);
-        log.info("========================================");
         return new BigDecimal(pendingSettlementAmount);
     }
 }
