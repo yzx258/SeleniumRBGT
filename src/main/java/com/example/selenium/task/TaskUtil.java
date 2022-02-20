@@ -9,6 +9,7 @@ import com.example.selenium.bet.BetCopyUtil;
 import com.example.selenium.bet.BetLotteryUtil;
 import com.example.selenium.bet.BetYaBoUtil;
 import com.example.selenium.dto.InstructionDTO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,10 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TaskUtil {
+
+    private final BetYaBoUtil betYaBoUtil;
 
     /**
      * 响应码
@@ -76,6 +80,6 @@ public class TaskUtil {
      */
     @Async("myTaskAsyncPool")
     public void getBasketballTournament2() {
-        BetYaBoUtil.bet();
+        betYaBoUtil.bet();
     }
 }

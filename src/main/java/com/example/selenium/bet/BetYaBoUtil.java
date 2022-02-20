@@ -6,6 +6,7 @@ import com.example.selenium.bo.YaBoInfoBO;
 import com.example.selenium.util.CacheMapUtil;
 import com.example.selenium.util.DingUtil;
 import com.example.selenium.util.SleepUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -25,18 +26,26 @@ import java.util.List;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class BetYaBoUtil {
+
+    private final CacheMapUtil cacheMapUtil;
+
 
     /**
      * 启动下注
      */
-    public static void bet() {
+    public void bet() {
 
-        Object bet_tag = CacheMapUtil.getMap("BET_A");
+        Object bet_tag = cacheMapUtil.getMap("THREAD_EXECUTION");
         if (null != bet_tag) {
             System.out.println("正在执行，不允许新线程操作");
             return;
         }
+
+        // 线程开始执行
+        cacheMapUtil.putMap("THREAD_EXECUTION", "1");
+
 
         // 定义 - 参数
         DingUtil d = new DingUtil();
@@ -72,9 +81,9 @@ public class BetYaBoUtil {
             driver.findElement(By.xpath("//*[@id=\"left_panel\"]/div[5]/div/div[2]/div/div[3]/div/label/span")).click();
             SleepUtil.sleepUtil(2000);
 
-            if (CacheMapUtil.getMap("BET_A") != null) {
+            if (cacheMapUtil.getMap("BET_A") != null) {
                 log.info("===========进入结算判断，是否走下一单操作============");
-                YaBoInfoBO bet_a = JSON.parseObject(CacheMapUtil.getMap("BET_A"), YaBoInfoBO.class);
+                YaBoInfoBO bet_a = JSON.parseObject(cacheMapUtil.getMap("BET_A"), YaBoInfoBO.class);
                 System.out.println(JSON.toJSONString(bet_a));
                 System.out.println("已存在，不允许下注");
                 // 判断 - 是否结算
@@ -96,14 +105,18 @@ public class BetYaBoUtil {
                         if (cacheOriginalAmount.compareTo(totalAmount) < 0) {
                             // 小于 - 说明上一局失败
                             betAmount = getBetAmount(false, bet_a.getScreenings());
+                            d.sendMassage("[比赛结论：黑单" + "[比赛队伍：" + homeTeamName + " VS " + awayTeamName + "]" + "[比赛节数：" + whichSection + "]" + "[账户原金额：" + originalAmount + "][下注金额：" + betAmount + "]" + "[账户剩余金额：" + balanceAmount + "]");
                         } else if (cacheOriginalAmount.compareTo(totalAmount) > 0) {
                             // 大于 - 说明上一局成功
                             betAmount = getBetAmount(true, bet_a.getScreenings());
+                            d.sendMassage("[比赛结论：红单" + "[比赛队伍：" + homeTeamName + " VS " + awayTeamName + "]" + "[比赛节数：" + whichSection + "]" + "[账户原金额：" + originalAmount + "][下注金额：" + betAmount + "]" + "[账户剩余金额：" + balanceAmount + "]");
                         }
 
                         // 定义 - 全新的数据
                         originalAmount = totalAmount;
                         balanceAmount = originalAmount.subtract(balanceAmount);
+                    } else {
+                        SleepUtil.sleepUtil(20000);
                     }
                 }
             } else {
@@ -117,12 +130,9 @@ public class BetYaBoUtil {
                 BigDecimal totalAmount = getTotalAmount(driver);
                 originalAmount = totalAmount;
                 betAmount = new BigDecimal("5");
-                balanceAmount = totalAmount.subtract(balanceAmount);
+                balanceAmount = totalAmount.subtract(betAmount);
             }
 
-
-            // 开始 - 执行操作
-            CacheMapUtil.putMap("BET_A", "1");
             // 获取 - 联赛名称
             List<WebElement> competition_header = driver.findElements(By.className("competition_header"));
             WebElement competition_header_team = competition_header.get(0).findElement(By.className("competition_header_team"));
@@ -166,7 +176,7 @@ public class BetYaBoUtil {
 
                         // 获取 - 当前页面
                         driver = driver.switchTo().window(driver.getWindowHandle());
-                        SleepUtil.sleepUtil(2000);
+                        SleepUtil.sleepUtil(3000);
 
                         // 操作 - 点击已节为操作
                         WebElement sevmenu_tab_content = driver.findElement(By.className("sevmenu_tab_content"));
@@ -255,11 +265,11 @@ public class BetYaBoUtil {
                                             yb.setBalanceAmount(balanceAmount);
                                             yb.setOriginalAmount(originalAmount);
 
-                                            CacheMapUtil.putMap("BET_A", JSON.toJSONString(yb));
-                                            System.out.println(JSON.toJSONString(CacheMapUtil.getMap("BET_A")));
+                                            cacheMapUtil.putMap("BET_A", JSON.toJSONString(yb));
+                                            System.out.println(JSON.toJSONString(cacheMapUtil.getMap("BET_A")));
 
                                             // 消息 - 推送钉钉服务
-                                            d.sendMassage("[账户原金额：" + originalAmount + "][下注金额：" + betAmount + "]" + "[账户剩余金额：" + balanceAmount + "]");
+                                            d.sendMassage("[比赛队伍：" + homeTeamName + " VS " + awayTeamName + "]" + "[比赛节数：" + whichSection + "]" + "[账户原金额：" + originalAmount + "][下注金额：" + betAmount + "]" + "[账户剩余金额：" + balanceAmount + "]");
                                         }
                                     } else {
                                         // 操作 - 关闭失败下注
@@ -267,28 +277,23 @@ public class BetYaBoUtil {
                                         close.click();
                                     }
                                 }
-                                break;
                             }
+                            break;
                         }
-                        System.out.println("===============================投注界面======================================");
                     }
-                    continue;
+                    break;
                 }
             }
 
-            CacheMapUtil.delMap("BET_A");
+            cacheMapUtil.delMap("THREAD_EXECUTION");
             // 结束 - 此次操作
             driver.close();
             driver.quit();
-
-            if (1 == 1) return;
-
         } catch (Exception e) {
-            CacheMapUtil.delMap("BET_A");
+            cacheMapUtil.delMap("THREAD_EXECUTION");
             System.out.println(e);
             driver.close();
             driver.quit();
-            if (1 == 1) return;
         }
     }
 

@@ -1,9 +1,11 @@
 package com.example.selenium.util;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.example.selenium.entity.BetLock;
+import com.example.selenium.mapper.BetLockMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 俞春旺
@@ -11,10 +13,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2022-02-20 12:35:33
  * @description: 描述
  */
+@RequiredArgsConstructor
 @Component
 public class CacheMapUtil {
 
-    private static Map<String, String> map = new ConcurrentHashMap<>();
+    @Autowired
+    private final BetLockMapper betLockMapper;
 
     /**
      * 获取值
@@ -22,9 +26,11 @@ public class CacheMapUtil {
      * @param key
      * @return
      */
-    public static String getMap(String key) {
+    public String getMap(String key) {
         // 获取 - 缓存信息
-        return map.get(key);
+        BetLock betLock = betLockMapper.selectOne(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
+        if (betLock == null) return null;
+        return betLock.getLockValue();
     }
 
     /**
@@ -33,12 +39,20 @@ public class CacheMapUtil {
      * @param key
      * @param var
      */
-    public static void putMap(String key, String var) {
-        map.put(key, var);
+    public void putMap(String key, String var) {
+        BetLock betLock = new BetLock();
+        betLock.setLockKey(key);
+        betLock.setLockValue(var);
+        betLockMapper.insert(betLock);
     }
 
-    public static void delMap(String key) {
-        map.remove(key);
+    /**
+     * 清空锁
+     *
+     * @param key
+     */
+    public void delMap(String key) {
+        betLockMapper.delete(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
     }
 
 }
