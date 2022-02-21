@@ -40,10 +40,20 @@ public class CacheMapUtil {
      * @param var
      */
     public void putMap(String key, String var) {
-        BetLock betLock = new BetLock();
-        betLock.setLockKey(key);
-        betLock.setLockValue(var);
-        betLockMapper.insert(betLock);
+        // 操作 - 再一次清空数据
+        delMap(key);
+        // 操作 - 查询是否存在
+        BetLock betLock = betLockMapper.selectOne(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
+        if (null == betLock) {
+            // 操作 - 插入语句
+            BetLock saveBetLock = new BetLock();
+            saveBetLock.setLockKey(key);
+            saveBetLock.setLockValue(var);
+            betLockMapper.insert(saveBetLock);
+        } else {
+            betLock.setLockValue(var);
+            betLockMapper.updateById(betLock);
+        }
     }
 
     /**
@@ -52,7 +62,9 @@ public class CacheMapUtil {
      * @param key
      */
     public void delMap(String key) {
-        betLockMapper.delete(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
+        BetLock betLock = betLockMapper.selectOne(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
+        if (betLock != null) {
+            betLockMapper.deleteById(betLock);
+        }
     }
-
 }

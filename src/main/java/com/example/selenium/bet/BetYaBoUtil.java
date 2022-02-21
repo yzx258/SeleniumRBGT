@@ -1,7 +1,6 @@
 package com.example.selenium.bet;
 
 import com.alibaba.fastjson.JSON;
-import com.example.selenium.bo.YaBoAccountInfoBO;
 import com.example.selenium.bo.YaBoInfoBO;
 import com.example.selenium.util.CacheMapUtil;
 import com.example.selenium.util.DingUtil;
@@ -31,7 +30,6 @@ public class BetYaBoUtil {
     @Autowired
     private CacheMapUtil cacheMapUtil;
 
-
     /**
      * 启动下注
      */
@@ -49,7 +47,6 @@ public class BetYaBoUtil {
         BigDecimal originalAmount = null;
         BigDecimal balanceAmount = null;
         YaBoInfoBO yb = null;
-        YaBoAccountInfoBO ybc = null;
 
         Object bet_tag = cacheMapUtil.getMap("THREAD_EXECUTION");
         if (null != bet_tag) {
@@ -70,12 +67,12 @@ public class BetYaBoUtil {
 
         try {
             // 操作 - 打开浏览器
-            driver.get("https://im.1f873fef.com/?timestamp=ptNpCKdPZJsJwiRMww3Js8sJ1pmSMb//YbUF8z21Ceo=&token=d25b95674bc9ab9be21cff10356f5714&LanguageCode=CHS");
+            driver.get(
+                    "https://im.1f873fef.com/?timestamp=Y78ia93DakVAHXukNFYYkuSrnzsQDjf4RJZ7kMLeuiY=&token=d25b95674bc9ab9be21cff10356f5714&LanguageCode=CHS");
 
             // 操作 - 屏幕最大化
             SleepUtil.sleepUtil(2000);
             driver.manage().window().maximize();
-
 
             // 操作 - 赛选篮球联赛
             driver.findElement(By.xpath("//*[@id=\"left_panel\"]/div[5]/div/div[2]/div/div[3]/div/label/span")).click();
@@ -96,7 +93,8 @@ public class BetYaBoUtil {
                     // 获取 - 待结算金额
                     BigDecimal pendingSettlementAmount = getPendingSettlementAmount(driver);
                     log.info("待结算金额 - pendingSettlementAmount：" + pendingSettlementAmount);
-                    log.info("结算金额是否为0.00 - pendingSettlementAmount.compareTo(new BigDecimal(0.00)) == 0 - {}", pendingSettlementAmount.compareTo(new BigDecimal(0.00)) == 0);
+                    log.info("结算金额是否为0.00 - pendingSettlementAmount.compareTo(new BigDecimal(0.00)) == 0 - {}",
+                            pendingSettlementAmount.compareTo(new BigDecimal(0.00)) == 0);
                     // 操作 - 结算金额为0，则项目结算完成
                     if (pendingSettlementAmount.compareTo(new BigDecimal(0.00)) == 0) {
                         // 解析 - 赛事信息
@@ -106,11 +104,34 @@ public class BetYaBoUtil {
                             // 小于 - 说明上一局失败
                             screenings = bet_a.getScreenings() + 1;
                             betAmount = getBetAmount(false, screenings);
-                            d.sendMassage("[比赛结论：黑单" + "[比赛队伍：" + bet_a.getHomeTeamName() + " VS " + bet_a.getAwayTeamName() + "]" + "[比赛节数：" + bet_a.getWhichSection() + "]" + "[账户原金额：" + bet_a.getOriginalAmount() + "][下注金额：" + bet_a.getBetAmount() + "]" + "[账户剩余金额：" + bet_a.getBalanceAmount() + "]");
+                            d.sendMassage(
+                                    "\n---------------------"
+                                            + "\n比赛结论：黑单"
+                                            + "\n---------------------"
+                                            + "\n比赛队伍：" + bet_a.getHomeTeamName() + " VS " + bet_a.getAwayTeamName()
+                                            + "\n比赛节数：" + bet_a.getWhichSection()
+                                            + "\n---------------------"
+                                            + "\n账户原金额："
+                                            + bet_a.getOriginalAmount()
+                                            + "\n下注金额：" + bet_a.getBetAmount()
+                                            + "\n[账户剩余金额："
+                                            + bet_a.getBalanceAmount() + "");
+                            cacheMapUtil.delMap("BET_A");
                         } else if (cacheOriginalAmount.compareTo(totalAmount) < 0) {
                             // 大于 - 说明上一局成功
                             betAmount = getBetAmount(true, bet_a.getScreenings());
-                            d.sendMassage("[比赛结论：红单" + "[比赛队伍：" + bet_a.getHomeTeamName() + " VS " + bet_a.getAwayTeamName() + "]" + "[比赛节数：" + bet_a.getWhichSection() + "]" + "[账户原金额：" + bet_a.getOriginalAmount() + "][下注金额：" + bet_a.getBetAmount() + "]" + "[账户剩余金额：" + cacheOriginalAmount + "]");
+                            d.sendMassage(
+                                    "\n---------------------"
+                                            + "\n比赛结论：红单"
+                                            + "\n---------------------"
+                                            + "\n比赛队伍：" + bet_a.getHomeTeamName() + " VS " + bet_a.getAwayTeamName()
+                                            + "\n比赛节数：" + bet_a.getWhichSection()
+                                            + "\n---------------------"
+                                            + "\n账户原金额："
+                                            + bet_a.getOriginalAmount()
+                                            + "\n下注金额：" + bet_a.getBetAmount()
+                                            + "\n[账户剩余金额："
+                                            + bet_a.getBalanceAmount() + "");
                             cacheMapUtil.delMap("BET_A");
                         }
 
@@ -137,14 +158,15 @@ public class BetYaBoUtil {
                 screenings = 1;
             }
 
-
             log.info("========================================");
-            log.info("账户金额 - originalAmount：{}；剩余金额 - balanceAmount：{}；下注金额 - betAmount：{}", originalAmount, balanceAmount, betAmount);
+            log.info("账户金额 - originalAmount：{}；剩余金额 - balanceAmount：{}；下注金额 - betAmount：{}", originalAmount,
+                    balanceAmount, betAmount);
             log.info("========================================");
 
             // 获取 - 联赛名称
             List<WebElement> competition_header = driver.findElements(By.className("competition_header"));
-            WebElement competition_header_team = competition_header.get(0).findElement(By.className("competition_header_team"));
+            WebElement competition_header_team =
+                    competition_header.get(0).findElement(By.className("competition_header_team"));
             // 设定 - 联赛名称
             competitionName = competition_header_team.getText();
 
@@ -160,18 +182,20 @@ public class BetYaBoUtil {
                     // 获取 - 该模块下的所有比赛
 
                     // 获取 - 场次赛事信息
-                    List<WebElement> elements = row_live.get(0).findElement(By.className("team")).findElements(By.className("teamname_inner"));
+                    List<WebElement> elements =
+                            row_live.get(0).findElement(By.className("team")).findElements(By.className("teamname_inner"));
                     // 设定 - 主队、客队
                     homeTeamName = elements.get(0).getText();
                     awayTeamName = elements.get(1).getText();
-
 
                     // 操作 - 点击该场比赛进入投注界面
                     SleepUtil.sleepUtil(2000);
 
                     // 获取 - 比分
-                    WebElement score = row_live.get(0).findElement(By.className("team")).findElement(By.className("datetime")).findElement(By.tagName("div"));
-                    WebElement node = row_live.get(0).findElement(By.className("team")).findElement(By.className("datetime")).findElement(By.tagName("span"));
+                    WebElement score = row_live.get(0).findElement(By.className("team"))
+                            .findElement(By.className("datetime")).findElement(By.tagName("div"));
+                    WebElement node = row_live.get(0).findElement(By.className("team"))
+                            .findElement(By.className("datetime")).findElement(By.tagName("span"));
 
                     // 操作 - 同时存在及进入
                     if (score.isEnabled() && node.isEnabled()) {
@@ -179,7 +203,8 @@ public class BetYaBoUtil {
                         whichSection = changeWhichSection(node.getText());
 
                         // 获取 - 进入下注页面
-                        WebElement aClick = row_live.get(0).findElement(By.className("additional")).findElement(By.tagName("a"));
+                        WebElement aClick =
+                                row_live.get(0).findElement(By.className("additional")).findElement(By.tagName("a"));
                         SleepUtil.sleepUtil(3000);
                         aClick.click();
 
@@ -189,7 +214,8 @@ public class BetYaBoUtil {
 
                         // 操作 - 点击已节为操作
                         WebElement sevmenu_tab_content = driver.findElement(By.className("sevmenu_tab_content"));
-                        List<WebElement> sevmenu_tab_inner = sevmenu_tab_content.findElements(By.className("sevmenu_tab_inner"));
+                        List<WebElement> sevmenu_tab_inner =
+                                sevmenu_tab_content.findElements(By.className("sevmenu_tab_inner"));
                         for (WebElement sti : sevmenu_tab_inner) {
                             if (sti.getText().contains("节")) {
                                 sti.findElement(By.className("tab_label")).click();
@@ -203,9 +229,11 @@ public class BetYaBoUtil {
                         SleepUtil.sleepUtil(2000);
 
                         // 获取 - 所有下注头节点
-                        List<WebElement> betList = driver.findElement(By.className("group_wrap")).findElements(By.className("bet_type_wrap"));
+                        List<WebElement> betList =
+                                driver.findElement(By.className("group_wrap")).findElements(By.className("bet_type_wrap"));
                         for (WebElement bet : betList) {
-                            WebElement betElement = bet.findElement(By.className("bet_type_row")).findElement(By.className("left"));
+                            WebElement betElement =
+                                    bet.findElement(By.className("bet_type_row")).findElement(By.className("left"));
                             if (betElement.getText().contains("单/双")) {
                                 // 操作 - 将单双点开
                                 betElement.click();
@@ -215,13 +243,14 @@ public class BetYaBoUtil {
                                 List<WebElement> dsList = bet.findElement(By.className("ReactCollapse--collapse"))
                                         .findElement(By.className("ReactCollapse--content"))
                                         .findElement(By.className("bet_type_content"))
-                                        .findElement(By.className("content_row"))
-                                        .findElement(By.className("odds_col"))
+                                        .findElement(By.className("content_row")).findElement(By.className("odds_col"))
                                         .findElements(By.className("col"));
 
                                 // 操作 - 看倍率大小下注
-                                WebElement bet_odd = dsList.get(0).findElement(By.className("odds_wrap")).findElement(By.className("odds"));
-                                WebElement bet_double = dsList.get(1).findElement(By.className("odds_wrap")).findElement(By.className("odds"));
+                                WebElement bet_odd = dsList.get(0).findElement(By.className("odds_wrap"))
+                                        .findElement(By.className("odds"));
+                                WebElement bet_double = dsList.get(1).findElement(By.className("odds_wrap"))
+                                        .findElement(By.className("odds"));
                                 // 单/双倍率
                                 BigDecimal bet_odd_magnification = new BigDecimal(bet_odd.getText());
                                 BigDecimal bet_double_magnification = new BigDecimal(bet_double.getText());
@@ -240,7 +269,8 @@ public class BetYaBoUtil {
                                 List<WebElement> bet_slip = bet_slip_wrap.findElements(By.className("bet_slip"));
                                 for (WebElement bs : bet_slip) {
                                     // 获取 - 下注input
-                                    WebElement input_wrap = bs.findElement(By.className("input_amount_wrap")).findElement(By.className("bet_amt_input_wrap"))
+                                    WebElement input_wrap = bs.findElement(By.className("input_amount_wrap"))
+                                            .findElement(By.className("bet_amt_input_wrap"))
                                             .findElement(By.className("input_wrap"))
                                             .findElement(By.className("placebet_input"));
 
@@ -250,7 +280,8 @@ public class BetYaBoUtil {
 
                                     // 下注 - 按钮
                                     SleepUtil.sleepUtil(1000);
-                                    WebElement btn_placebet_action = bet_slip_wrap.findElement(By.className("btn_placebet_action"));
+                                    WebElement btn_placebet_action =
+                                            bet_slip_wrap.findElement(By.className("btn_placebet_action"));
 
                                     // 操作 - 按钮存在且允许点击
                                     if (btn_placebet_action.isEnabled() && btn_placebet_action.isDisplayed()) {
@@ -259,7 +290,8 @@ public class BetYaBoUtil {
 
                                         // 下注 - 确认按钮
                                         SleepUtil.sleepUtil(10000);
-                                        WebElement btn_placebet_inaction = bet_slip_wrap.findElement(By.className("btn_placebet_inaction"));
+                                        WebElement btn_placebet_inaction =
+                                                bet_slip_wrap.findElement(By.className("btn_placebet_inaction"));
                                         if (btn_placebet_inaction.isEnabled() && btn_placebet_inaction.isDisplayed()) {
                                             btn_placebet_inaction.click();
 
@@ -277,11 +309,21 @@ public class BetYaBoUtil {
                                             System.out.println(JSON.toJSONString(cacheMapUtil.getMap("BET_A")));
 
                                             // 消息 - 推送钉钉服务
-                                            d.sendMassage("[比赛队伍：" + homeTeamName + " VS " + awayTeamName + "]" + "[比赛节数：" + whichSection + "]" + "[账户原金额：" + originalAmount + "][下注金额：" + betAmount + "]" + "[账户剩余金额：" + balanceAmount + "]");
+                                            d.sendMassage(
+                                                    "\n---------------------"
+                                                            + "\n比赛队伍：" + homeTeamName + " VS " + awayTeamName
+                                                            + "\n比赛节数：" + whichSection
+                                                            + "\n---------------------"
+                                                            + "\n账户原金额："
+                                                            + originalAmount
+                                                            + "\n下注金额：" + betAmount
+                                                            + "\n[账户剩余金额："
+                                                            + balanceAmount + "");
                                         }
                                     } else {
                                         // 操作 - 关闭失败下注
-                                        WebElement close = bet_slip_wrap.findElement(By.className("icon-fi-status-close"));
+                                        WebElement close =
+                                                bet_slip_wrap.findElement(By.className("icon-fi-status-close"));
                                         close.click();
                                     }
                                 }
@@ -357,7 +399,6 @@ public class BetYaBoUtil {
         }
     }
 
-
     /**
      * 操作 - 点击刷新账号信息
      *
@@ -367,11 +408,10 @@ public class BetYaBoUtil {
     public static void clickRefreshAccount(WebDriver driver) {
 
         // 获取 - 账号刷新按钮
-        WebElement element = driver.findElement(By.className("leftmenu_account")).findElement(By.className("leftmenu_header"))
-                .findElement(By.className("float-right"))
-                .findElement(By.className("leftmenu_icon"))
-                .findElement(By.className("refresh_wrap"))
-                .findElement(By.className("icon-fi-refresh"));
+        WebElement element =
+                driver.findElement(By.className("leftmenu_account")).findElement(By.className("leftmenu_header"))
+                        .findElement(By.className("float-right")).findElement(By.className("leftmenu_icon"))
+                        .findElement(By.className("refresh_wrap")).findElement(By.className("icon-fi-refresh"));
 
         // 操作 - 刷新
         element.click();
@@ -385,8 +425,8 @@ public class BetYaBoUtil {
      */
     public static BigDecimal getTotalAmount(WebDriver driver) {
         // 获取 - 账号element
-        List<WebElement> elementTotalAmountElement = driver.findElement(By.className("leftmenu_content")).findElement(By.className("leftmenu_content_balance"))
-                .findElements(By.className("row"));
+        List<WebElement> elementTotalAmountElement = driver.findElement(By.className("leftmenu_content"))
+                .findElement(By.className("leftmenu_content_balance")).findElements(By.className("row"));
 
         // 获取 - 总金额
         WebElement elementTotalAmount = elementTotalAmountElement.get(0).findElement(By.className("text-right"));
@@ -403,15 +443,13 @@ public class BetYaBoUtil {
      */
     public static BigDecimal getPendingSettlementAmount(WebDriver driver) {
         // 获取 - 账号element
-        List<WebElement> elementPendingSettlementElement = driver.findElement(By.className("leftmenu_content")).findElement(By.className("leftmenu_content_balance"))
-                .findElements(By.className("row"));
+        List<WebElement> elementPendingSettlementElement = driver.findElement(By.className("leftmenu_content"))
+                .findElement(By.className("leftmenu_content_balance")).findElements(By.className("row"));
 
         // 获取 - 待结算金额
-        WebElement elementPendingSettlement = elementPendingSettlementElement.get(1).findElement(By.className("text-right"));
+        WebElement elementPendingSettlement =
+                elementPendingSettlementElement.get(1).findElement(By.className("text-right"));
         String pendingSettlementAmount = elementPendingSettlement.getText();
         return new BigDecimal(pendingSettlementAmount);
     }
 }
-
-
-
