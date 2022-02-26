@@ -1,11 +1,13 @@
 package com.example.selenium.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.selenium.entity.BetLock;
 import com.example.selenium.mapper.BetLockMapper;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * @author 俞春旺
@@ -13,11 +15,10 @@ import org.springframework.stereotype.Component;
  * @date 2022-02-20 12:35:33
  * @description: 描述
  */
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class CacheMapUtil {
 
-    @Autowired
     private final BetLockMapper betLockMapper;
 
     /**
@@ -29,7 +30,8 @@ public class CacheMapUtil {
     public String getMap(String key) {
         // 获取 - 缓存信息
         BetLock betLock = betLockMapper.selectOne(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
-        if (betLock == null) return null;
+        if (betLock == null)
+            return null;
         return betLock.getLockValue();
     }
 
@@ -40,18 +42,17 @@ public class CacheMapUtil {
      * @param var
      */
     public void putMap(String key, String var) {
-        // 操作 - 再一次清空数据
-        delMap(key);
         // 操作 - 查询是否存在
         BetLock betLock = betLockMapper.selectOne(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
         if (null == betLock) {
             // 操作 - 插入语句
-            BetLock saveBetLock = new BetLock();
-            saveBetLock.setLockKey(key);
-            saveBetLock.setLockValue(var);
-            betLockMapper.insert(saveBetLock);
+            betLock = new BetLock();
+            betLock.setLockKey(key);
+            betLock.setLockValue(var);
+            betLockMapper.insert(betLock);
         } else {
             betLock.setLockValue(var);
+            betLock.setLockKey(key);
             betLockMapper.updateById(betLock);
         }
     }
@@ -63,8 +64,24 @@ public class CacheMapUtil {
      */
     public void delMap(String key) {
         BetLock betLock = betLockMapper.selectOne(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
-        if (betLock != null) {
+        if (null != betLock && null != betLock.getId()) {
             betLockMapper.deleteById(betLock);
         }
+    }
+
+    /***
+     * GET - BET_URL
+     * 
+     * @param key
+     * @return java.lang.String
+     * @author yucw
+     * @date 2022-02-23 13:54
+     */
+    public String getBetUrl(String key) {
+        BetLock betLock = betLockMapper.selectOne(Wrappers.lambdaQuery(BetLock.class).eq(BetLock::getLockKey, key));
+        if (null != betLock && null != betLock.getId()) {
+            return betLock.getLockValue();
+        }
+        return "";
     }
 }

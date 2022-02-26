@@ -1,5 +1,7 @@
 package com.example.selenium.bo;
 
+import java.math.BigDecimal;
+
 import lombok.Data;
 
 /**
@@ -12,13 +14,47 @@ import lombok.Data;
 public class YaBoAccountInfoBO {
 
     /**
-     * 账号金额
+     * 联赛名称
      */
-    private Integer totalAmount;
+    private String competitionName;
 
     /**
-     * 待结算金额
+     * 主队名称
      */
-    private Integer pendingSettlementAmount;
+    private String homeTeamName;
 
+    /**
+     * 客队名称
+     */
+    private String awayTeamName;
+
+    /**
+     * 第几节
+     */
+    private String whichSection;
+
+    /**
+     * 场次
+     */
+    private Integer screenings;
+
+    /**
+     * 原始金额
+     */
+    private BigDecimal originalAmount;
+
+    /**
+     * 剩余金额
+     */
+    private BigDecimal balanceAmount;
+
+    /**
+     * 投注金额
+     */
+    private BigDecimal betAmount;
+
+    /**
+     * 操作类型
+     */
+    private String operateName;
 }
