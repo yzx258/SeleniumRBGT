@@ -191,10 +191,14 @@ public class BetYaBoUtil {
      * @date 2022-02-24 15:07
      */
     public void bettingOperation(WebDriver driver, List<WebElement> betList, YaBoAccountInfoBO yaBoAccountInfo,
-                                 DingUtil d) {
+                                 DingUtil d) throws Exception {
         for (WebElement bet : betList) {
             WebElement betElement = bet.findElement(By.className("bet_type_row")).findElement(By.className("left"));
             if (betElement.getText().contains("单/双")) {
+
+                // 设置 - 节数
+                yaBoAccountInfo.setWhichSection(changeBetWhichSection(betElement.getText()));
+
                 // 操作 - 将单双点开
                 betElement.click();
                 SleepUtil.sleepUtil(3000);
@@ -394,6 +398,21 @@ public class BetYaBoUtil {
             return "第3节";
         } else if (whichSection.contains("第4节")) {
             return "第4节";
+        } else {
+            throw new Exception("查找不到节数");
+        }
+    }
+
+    /**
+     * 转换节数
+     *
+     * @param whichSection
+     * @return
+     */
+    public String changeBetWhichSection(String whichSection) throws Exception {
+        if (whichSection.contains("第一节") || whichSection.contains("第二节") || whichSection.contains("第三节") || whichSection.contains("第四节")) {
+            log.info("存在数据：" + whichSection);
+            return whichSection;
         } else {
             throw new Exception("查找不到节数");
         }

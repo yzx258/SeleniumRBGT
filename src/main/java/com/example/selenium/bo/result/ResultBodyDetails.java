@@ -51,6 +51,11 @@ public class ResultBodyDetails {
     private BigDecimal wla;
 
     /***
+     * 是否过关
+     */
+    private BigDecimal oc;
+
+    /***
      * Details
      */
     private List<ResultBodyCompetitionDetails> wil;

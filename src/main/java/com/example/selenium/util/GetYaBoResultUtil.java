@@ -27,7 +27,7 @@ public class GetYaBoResultUtil {
 
     public static void main(String[] args) throws IOException {
         PostTest test = new PostTest();
-        test.setDateFrom("2022-02-25 14:00:00");
+        test.setDateFrom("2022-02-25 22:00:00");
         test.setDateTo("2023-08-25 11:59:59");
 
         String url = "https://im.1f873fef.com/api/MyBet/GetBetStatement";
@@ -62,6 +62,8 @@ public class GetYaBoResultUtil {
         EntityUtils.consume(entity);
         // 释放链接
         response.close();
+
+        System.out.println(body);
 
         ResultBodyBO resultBodyBO = JSON.parseObject(body, ResultBodyBO.class);
         List<ResultBodyDetails> wl = resultBodyBO.getWl();
