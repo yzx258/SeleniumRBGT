@@ -410,9 +410,14 @@ public class BetYaBoUtil {
      * @return
      */
     public String changeBetWhichSection(String whichSection) throws Exception {
-        if (whichSection.contains("第一节") || whichSection.contains("第二节") || whichSection.contains("第三节") || whichSection.contains("第四节")) {
-            log.info("存在数据：" + whichSection);
-            return whichSection;
+        if (whichSection.contains("第一节")) {
+            return "第一节";
+        } else if (whichSection.contains("第二节")) {
+            return "第二节";
+        } else if (whichSection.contains("第三节")) {
+            return "第三节";
+        } else if (whichSection.contains("第四节")) {
+            return "第四节";
         } else {
             throw new Exception("查找不到节数");
         }

@@ -2,6 +2,8 @@ package com.example.selenium.bo.result;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * File Description
  *
@@ -50,13 +52,21 @@ public class ResultBodyCompetitionDetails {
     /***
      * 倍率
      */
-    private String o;
+    private BigDecimal o;
 
-
+    /***
+     * 金额
+     */
     private String btn;
 
 
+    /***
+     * 主队比分
+     */
     private String fths;
 
+    /***
+     * 客队比分
+     */
     private String ftas;
 }

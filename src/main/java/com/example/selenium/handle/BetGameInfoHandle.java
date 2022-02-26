@@ -1,10 +1,14 @@
-package com.example.selenium.util;
+package com.example.selenium.handle;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.example.selenium.bo.PostTest;
 import com.example.selenium.bo.result.ResultBodyBO;
 import com.example.selenium.bo.result.ResultBodyDetails;
+import com.example.selenium.entity.BetGameInfo;
+import com.example.selenium.mapper.BetGameInfoMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -14,6 +18,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -23,12 +29,22 @@ import java.util.List;
 /**
  * @author 俞春旺
  * @program: SeleniumRBGT
- * @date 2022-02-26 14:02:25
+ * @date 2022-02-26 23:11:50
  * @description: 描述
  */
-public class GetYaBoResultUtil {
+@Slf4j
+@Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+public class BetGameInfoHandle {
 
-    public static void main(String[] args) throws IOException {
+    private final BetGameInfoMapper betGameInfoMapper;
+
+    /**
+     * 获取 - 赛事结果
+     *
+     * @throws IOException
+     */
+    public void getGameInfoResult() throws IOException {
         Date today = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(today);
@@ -75,10 +91,24 @@ public class GetYaBoResultUtil {
         // 释放链接
         response.close();
 
+        // 操作 - 数据
+        BetGameInfo info;
         ResultBodyBO resultBodyBO = JSON.parseObject(body, ResultBodyBO.class);
+        System.out.println(JSON.toJSONString(resultBodyBO));
         List<ResultBodyDetails> wl = resultBodyBO.getWl();
         for (ResultBodyDetails item : wl) {
-            System.out.println(JSON.toJSONString(item));
+            info = new BetGameInfo();
+            info.setCompetitionName(item.getWil().get(0).getCn());
+            info.setHomeTeamName(item.getWil().get(0).getHtn());
+            info.setHomeTeamScore(item.getWil().get(0).getFths());
+            info.setAwayTeamName(item.getWil().get(0).getAtn());
+            info.setAwayTeamScore(item.getWil().get(0).getFtas());
+            info.setCompetitionResult(item.getOc());
+            info.setIsSettlement(1);
+            info.setCompetitionDividendAmount(item.getWil().get(0).getO());
+            info.setCompetitionType(1);
+            info.setWhichSection(item.getWil().get(0).getBtn().trim().replaceAll(" 单/双", ""));
+            betGameInfoMapper.insert(info);
         }
     }
 }

@@ -53,7 +53,7 @@ public class ResultBodyDetails {
     /***
      * 是否过关
      */
-    private BigDecimal oc;
+    private Integer oc;
 
     /***
      * Details
