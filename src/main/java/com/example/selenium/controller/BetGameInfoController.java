@@ -1,13 +1,15 @@
 package com.example.selenium.controller;
 
-import com.example.selenium.handle.BetGameInfoHandle;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import com.example.selenium.handle.BetGameInfoHandle;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author 俞春旺
@@ -22,9 +24,8 @@ public class BetGameInfoController {
 
     private final BetGameInfoHandle betGameInfoHandle;
 
-    @GetMapping("/getGameInfoResult")
-    public void testGameInfo() throws IOException {
-        betGameInfoHandle.getGameInfoResult();
+    @GetMapping("/comparisonResults")
+    public void getTest() throws IOException {
+        betGameInfoHandle.comparisonResults();
     }
-
 }

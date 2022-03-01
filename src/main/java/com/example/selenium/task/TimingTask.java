@@ -17,10 +17,13 @@ public class TimingTask {
     @Autowired
     private TaskUtil taskService;
 
-    @Scheduled(cron = "0/10 * * * * ? ")
-    private void getStartGame1() {
-        System.out.println("异步线程开始 ============ YABO下注");
-        taskService.getBasketballTournament2();
-        System.out.println("异步线程开始 ============ YABO下注");
+    @Scheduled(cron = "0/30 * * * * ?")
+    private void sendYaBoBet() {
+        taskService.sendYaBoBet();
+    }
+
+    @Scheduled(cron = "0/30 * * * * ?")
+    private void comparisonResults() {
+        taskService.comparisonResults();
     }
 }

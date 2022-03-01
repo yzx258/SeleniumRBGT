@@ -1,24 +1,21 @@
 package com.example.selenium.util;
 
-import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.JSON;
-import com.example.selenium.bo.PostTest;
-import com.example.selenium.bo.result.ResultBodyBO;
-import com.example.selenium.bo.result.ResultBodyDetails;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.alibaba.fastjson.JSON;
+import com.example.selenium.bo.CompleteSettlementBO;
+import com.example.selenium.bo.WaitSettlementBO;
+import com.example.selenium.bo.result.ResultBodyBO;
+import com.example.selenium.handle.BetGameAccountInfoHandle;
+import com.example.selenium.util.img.HttpUtil;
+
+import cn.hutool.core.date.DateUtil;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author 俞春旺
@@ -26,59 +23,92 @@ import java.util.List;
  * @date 2022-02-26 14:02:25
  * @description: 描述
  */
+@Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GetYaBoResultUtil {
 
-    public static void main(String[] args) throws IOException {
+    private final BetGameAccountInfoHandle betGameAccountInfoHandle;
+
+    /***
+     * waitSettlement
+     *
+     * @return java.lang.String
+     * @author yucw
+     * @date 2022-02-28 11:05
+     */
+    public ResultBodyBO waitSettlement() throws IOException {
+        // 获取 - 参数
+        String token = betGameAccountInfoHandle.getToken();
+        String waitSettlementUrl = betGameAccountInfoHandle.getUrl("waitSettlementUrl");
+
+        WaitSettlementBO waitSettlement = new WaitSettlementBO();
+        int[] arr = new int[] {2};
+        waitSettlement.setBetConfirmationStatusList(arr);
+        String param = JSON.toJSONString(waitSettlement);
+        System.out.println("param:" + param);
+        String result = HttpUtil.YaBoPost(waitSettlementUrl, token, param);
+        if (null != result) {
+            ResultBodyBO res = JSON.parseObject(result, ResultBodyBO.class);
+            if (null != res && res.getStatusCode() == 100) {
+                return res;
+            }
+        }
+        return null;
+    }
+
+    /***
+     * completeSettlement
+     *
+     * @return
+     * @author yucw
+     * @date 2022-02-28 10:42
+     */
+    public ResultBodyBO completeSettlement() throws IOException {
+        // 获取 - 参数
+        String token = betGameAccountInfoHandle.getToken();
+        String completeSettlementUrl = betGameAccountInfoHandle.getUrl("completeSettlementUrl");
+
+        // 获取 - 当前时间
         Date today = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(today);
         c.add(Calendar.DAY_OF_MONTH, -1);
-        c.add(Calendar.HOUR_OF_DAY, 7);
+        c.add(Calendar.HOUR_OF_DAY, 6);
         // 这是昨天
         Date yesterday = c.getTime();
         String format = DateUtil.format(yesterday, "yyyy-MM-dd HH:mm:ss");
 
-        PostTest test = new PostTest();
-        test.setDateFrom(format);
-        test.setDateTo("2023-08-25 11:59:59");
+        CompleteSettlementBO param = new CompleteSettlementBO();
+        param.setDateFrom(format);
+        param.setDateTo("2023-08-25 11:59:59");
 
-        String url = "https://im.1f873fef.com/api/MyBet/GetBetStatement";
-
-        String encoding = "utf-8";
-
-        String body = "";
-
-        // 创建httpclient对象
-        CloseableHttpClient client = HttpClients.createDefault();
-        // 创建post方式请求对象
-        HttpPost httpPost = new HttpPost(url);
-
-        // 装填参数
-        StringEntity s = new StringEntity(JSON.toJSONString(test), "utf-8");
-        s.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        // 设置参数到请求对象中
-        httpPost.setEntity(s);
-
-        // 设置header信息
-        httpPost.setHeader("Content-type", "application/json");
-        httpPost.setHeader("x-token", "9fa6b866d528d71a870bb4105a0efa33");
-
-        // 执行请求操作，并拿到结果（同步阻塞）
-        CloseableHttpResponse response = client.execute(httpPost);
-        // 获取结果实体
-        HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            // 按指定编码转换结果实体为String类型
-            body = EntityUtils.toString(entity, encoding);
+        String result = HttpUtil.YaBoPost(completeSettlementUrl, token, JSON.toJSONString(param));
+        if (null != result) {
+            ResultBodyBO res = JSON.parseObject(result, ResultBodyBO.class);
+            if (null != res && res.getStatusCode() == 100) {
+                return res;
+            }
         }
-        EntityUtils.consume(entity);
-        // 释放链接
-        response.close();
+        return null;
+    }
 
-        ResultBodyBO resultBodyBO = JSON.parseObject(body, ResultBodyBO.class);
-        List<ResultBodyDetails> wl = resultBodyBO.getWl();
-        for (ResultBodyDetails item : wl) {
-            System.out.println(JSON.toJSONString(item));
+    /**
+     * 转换节数
+     *
+     * @param whichSection
+     * @return
+     */
+    public static String changeBetWhichSection(String whichSection) {
+        if (whichSection.contains("第一节")) {
+            return "第一节";
+        } else if (whichSection.contains("第二节")) {
+            return "第二节";
+        } else if (whichSection.contains("第三节")) {
+            return "第三节";
+        } else if (whichSection.contains("第四节")) {
+            return "第四节";
+        } else {
+            return "";
         }
     }
 }

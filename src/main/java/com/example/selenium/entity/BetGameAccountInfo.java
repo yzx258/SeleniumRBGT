@@ -8,16 +8,16 @@ import lombok.Data;
 /**
  * @author 俞春旺
  * @program: SeleniumRBGT
- * @date 2022-02-20 15:29:56
+ * @date 2022-02-26 22:47:16
  * @description: 描述
  */
 @Data
-public class BetLock {
+public class BetGameAccountInfo {
 
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
-    private String lockKey;
+    private String accKey;
 
-    private String lockValue;
+    private String accVal;
 }

@@ -1,9 +1,6 @@
-package com.example.selenium.entity;
+package com.example.selenium.bo;
 
 import java.math.BigDecimal;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 
 import lombok.Data;
 
@@ -14,25 +11,14 @@ import lombok.Data;
  * @description: 描述
  */
 @Data
-public class BetGameInfo {
+public class BetGameInfoBO {
 
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
+    private String lockId;
 
     /**
      * 操作线程：0-A线程;1-B线程；2-C线程
      */
     private Integer operateThreadType;
-
-    /***
-     *
-     * 线程ID
-     * 
-     * @return
-     * @author yucw
-     * @date 2022-02-28 14:20
-     */
-    private String lockId;
 
     /**
      * 联赛名称

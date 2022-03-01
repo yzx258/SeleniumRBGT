@@ -7,13 +7,11 @@ import lombok.Data;
  *
  * @author 俞春旺
  * @company 厦门市宜车时代
- * @date 2022-02-25 16:13
+ * @date 2022-02-28 10:48
  */
 @Data
-public class PostTest {
+public class WaitSettlementBO {
 
-    private String DateFrom;
-
-    private String DateTo;
+    private int[] BetConfirmationStatusList;
 
 }

@@ -1,8 +1,8 @@
 package com.example.selenium.bo.result;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import lombok.Data;
 
 /**
  * File Description
@@ -35,17 +35,17 @@ public class ResultBodyCompetitionDetails {
     // 单/双"}]}
 
     /***
-     * 赛事ID
+     * 赛事名称
      */
     private String cn;
 
     /***
-     * 时间
+     * 主队
      */
     private String htn;
 
     /***
-     * 金额
+     * 客队
      */
     private String atn;
 
@@ -55,10 +55,9 @@ public class ResultBodyCompetitionDetails {
     private BigDecimal o;
 
     /***
-     * 金额
+     * 节数
      */
     private String btn;
-
 
     /***
      * 主队比分
