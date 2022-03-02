@@ -2,6 +2,7 @@ package com.example.selenium.bet;
 
 import java.math.BigDecimal;
 import java.rmi.ServerException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,95 @@ public class BetYaBoUtil_3 {
     private final CacheMapUtil cacheMapUtil;
     private final BetGameInfoHandle betGameInfoHandle;
     private final BetGameAccountInfoHandle betGameAccountInfoHandle;
+    private final DingUtil dingUtil;
+
+    public static void main(String[] args) {
+
+        // 初始化 - 自动化浏览器
+        String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
+        System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
+        // 自己本地最新的charm版本，需要添加启动参数
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        WebDriver driver = new ChromeDriver();
+
+        // 操作 - 打开浏览器
+        driver.get(
+            "https://im.1f873fef.com/?timestamp=5QDqeNjNn3WjcklpvVj1v9dFry9H8tvpH/5qtyDkDmU=&token=9fa6b866d528d71a870bb4105a0efa33&LanguageCode=CHS");
+        // 操作 - 屏幕最大化
+        SleepUtil.sleepUtil(2000);
+        driver.manage().window().maximize();
+
+        // 判断 - 是否允许操作
+        WebElement main_wrapper = driver.findElement(By.className("main_wrapper"));
+        for (int c = 0; c < 10; c++) {
+            SleepUtil.sleepUtil(500);
+            main_wrapper.click();
+        }
+
+        log.info("========================================");
+        // 获取 - 当前页面
+        driver = driver.switchTo().window(driver.getWindowHandle());
+        SleepUtil.sleepUtil(5000);
+
+        // 操作 - 赛选篮球联赛
+        driver.findElement(By.xpath("//*[@id=\"left_panel\"]/div[5]/div/div[2]/div/div[3]/div/label/span")).click();
+        SleepUtil.sleepUtil(2000);
+
+        // 操作 - 获取正在比赛的场次
+        List<WebElement> event_listing = driver.findElements(By.className("event_listing"));
+        log.info("event_listing.isEnabled()、event_listing.isDisplayed() - {},{}", event_listing.get(0).isEnabled(),
+            event_listing.get(0).isDisplayed());
+        SleepUtil.sleepUtil(2000);
+        List<WebElement> competitionHeader = driver.findElements(By.className("competition_header"));
+        log.info("competitionHeader.isEnabled()、competitionHeader.isDisplayed() - {},{}",
+            competitionHeader.get(0).isEnabled(), competitionHeader.get(0).isDisplayed());
+        int chSize = competitionHeader.size();
+        // 将所有场次收起来
+        for (WebElement item : competitionHeader) {
+            WebElement competition_header_action = item.findElement(By.className("competition_header_action"));
+            competition_header_action.click();
+            SleepUtil.sleepUtil(1000);
+        }
+
+        // 操作 - 下注
+        for (int ch = 1; ch < chSize; ch++) {
+            WebElement competition_header_team =
+                competitionHeader.get(ch).findElement(By.className("competition_header_team"));
+            log.info("competition_header_team.isEnabled()、competition_header_team.isDisplayed() - {},{}",
+                competition_header_team.isEnabled(), competition_header_team.isDisplayed());
+            // 判断 - 是否NCAA比赛，如果是则跳过
+            if (competition_header_team.getText().contains("NCAA")) {
+                log.info("检测到NCAA比赛，跳过该比赛");
+                continue;
+            }
+
+            // 点开 - 比赛信息
+            competition_header_team.click();
+            SleepUtil.sleepUtil(1000);
+
+            // 获取 - 每个场次比赛
+            System.out.println("row_live_index:" + ch);
+            List<WebElement> row_live =
+                driver.findElements(By.className("event_listing")).get(0).findElements(By.className("row_live"));
+            log.info("row_live.isEnabled()、row_live.isDisplayed() - {},{}", row_live.get(0).isEnabled(),
+                row_live.get(0).isDisplayed());
+            if (row_live != null && row_live.size() > 0) {
+
+                // 获取 - 场次赛事信息
+                List<WebElement> elements =
+                    row_live.get(0).findElement(By.className("team")).findElements(By.className("teamname_inner"));
+                log.info("elements.isEnabled()、elements.isDisplayed() - {},{}", elements.get(0).isEnabled(),
+                    elements.get(0).isDisplayed());
+                // 设定 - 主队、客队
+                System.out.println(elements.get(0).getText());
+                System.out.println(elements.get(1).getText());
+
+                driver.close();
+                driver.quit();
+            }
+        }
+    }
 
     /***
      * bet
@@ -53,9 +143,8 @@ public class BetYaBoUtil_3 {
      * @author yucw
      * @date 2022-03-01 14:06
      */
-    public void bet(String threadName, int threadIndex, String threadEventKey) {
+    public void bet(String threadName, Integer threadIndex, String threadEventKey) {
         // 定义 - 参数
-        DingUtil d = new DingUtil();
         Object bet_tag = cacheMapUtil.getMap(threadName);
         if (null != bet_tag) {
             System.out.println("正在执行，不允许新线程操作");
@@ -118,7 +207,7 @@ public class BetYaBoUtil_3 {
         }
 
         // 操作 - 页面
-        sendBet(threadName, threadEventKey, d, bet_url, yaBoAccountInfo, bet_a, threadIndex);
+        sendBet(threadName, threadEventKey, bet_url, yaBoAccountInfo, bet_a, threadIndex);
     }
 
     /***
@@ -134,8 +223,8 @@ public class BetYaBoUtil_3 {
      * @author yucw
      * @date 2022-02-28 17:17
      */
-    public void sendBet(String threadName, String threadEventKey, DingUtil d, String bet_url,
-        YaBoAccountInfoBO yaBoAccountInfo, BetGameInfo bet_a, int threadIndex) {
+    public void sendBet(String threadName, String threadEventKey, String bet_url, YaBoAccountInfoBO yaBoAccountInfo,
+        BetGameInfo bet_a, int threadIndex) {
         // 初始化 - 自动化浏览器
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
@@ -182,32 +271,40 @@ public class BetYaBoUtil_3 {
             driver.findElement(By.xpath("//*[@id=\"left_panel\"]/div[5]/div/div[2]/div/div[3]/div/label/span")).click();
             SleepUtil.sleepUtil(2000);
 
-            // 操作 - 获取正在比赛的场次
-            List<WebElement> event_listing = driver.findElements(By.className("event_listing"));
-            log.info("event_listing.isEnabled()、event_listing.isDisplayed() - {},{}", event_listing.get(0).isEnabled(),
-                event_listing.get(0).isDisplayed());
             SleepUtil.sleepUtil(2000);
             List<WebElement> competitionHeader = driver.findElements(By.className("competition_header"));
             log.info("competitionHeader.isEnabled()、competitionHeader.isDisplayed() - {},{}",
                 competitionHeader.get(0).isEnabled(), competitionHeader.get(0).isDisplayed());
             int chSize = competitionHeader.size();
-            for (int ch = 0; ch < chSize; ch++) {
+            // 将所有场次收起来
+            for (WebElement item : competitionHeader) {
+                WebElement competition_header_action = item.findElement(By.className("competition_header_action"));
+                competition_header_action.click();
+                SleepUtil.sleepUtil(1000);
+            }
+
+            // 操作 - 下注
+            for (int ch = threadIndex; ch < chSize; ch++) {
                 WebElement competition_header_team =
                     competitionHeader.get(ch).findElement(By.className("competition_header_team"));
                 log.info("competition_header_team.isEnabled()、competition_header_team.isDisplayed() - {},{}",
                     competition_header_team.isEnabled(), competition_header_team.isDisplayed());
                 // 判断 - 是否NCAA比赛，如果是则跳过
                 if (competition_header_team.getText().contains("NCAA")) {
-                    competition_header_team.click();
-                    log.info("检测到NCAA比赛，终止此次比赛");
+                    log.info("检测到NCAA比赛，跳过该比赛");
                     continue;
                 }
+
+                // 点开 - 比赛信息
+                competition_header_team.click();
+                SleepUtil.sleepUtil(1000);
 
                 // 设定 - 联赛名称
                 yaBoAccountInfo.setCompetitionName(competition_header_team.getText());
 
                 // 获取 - 每个场次比赛
-                List<WebElement> row_live = event_listing.get(ch + threadIndex).findElements(By.className("row_live"));
+                List<WebElement> row_live =
+                    driver.findElements(By.className("event_listing")).get(0).findElements(By.className("row_live"));
                 log.info("row_live.isEnabled()、row_live.isDisplayed() - {},{}", row_live.get(0).isEnabled(),
                     row_live.get(0).isDisplayed());
                 if (row_live != null && row_live.size() > 0) {
@@ -263,7 +360,8 @@ public class BetYaBoUtil_3 {
                             driver.findElement(By.className("group_wrap")).findElements(By.className("bet_type_wrap"));
 
                         // 操作 - 下注界面
-                        this.bettingOperation(driver, betList, yaBoAccountInfo, bet_a, d, threadEventKey, threadName);
+                        this.bettingOperation(driver, betList, yaBoAccountInfo, bet_a, threadEventKey, threadName,
+                            threadIndex);
                     }
                 }
             }
@@ -292,7 +390,7 @@ public class BetYaBoUtil_3 {
      * @date 2022-02-24 15:07
      */
     public void bettingOperation(WebDriver driver, List<WebElement> betList, YaBoAccountInfoBO yaBoAccountInfo,
-        BetGameInfo bet_a, DingUtil d, String threadEventKey, String threadName) throws Exception {
+        BetGameInfo bet_a, String threadEventKey, String threadName, Integer threadIndex) throws Exception {
         for (WebElement bet : betList) {
             WebElement betElement = bet.findElement(By.className("bet_type_row")).findElement(By.className("left"));
             if (betElement.getText().contains("单/双")) {
@@ -326,10 +424,16 @@ public class BetYaBoUtil_3 {
                 if (bet_odd_magnification.compareTo(bet_double_magnification) > 0) {
                     // 选择 - 单
                     bet_odd.click();
+                    yaBoAccountInfo.setSingleOrDouble(0);
+                    yaBoAccountInfo.setCompetitionMagnification(bet_odd_magnification);
                 } else if (bet_odd_magnification.compareTo(bet_double_magnification) < 0) {
                     bet_double.click();
+                    yaBoAccountInfo.setSingleOrDouble(1);
+                    yaBoAccountInfo.setCompetitionMagnification(bet_double_magnification);
                 } else {
                     bet_odd.click();
+                    yaBoAccountInfo.setSingleOrDouble(0);
+                    yaBoAccountInfo.setCompetitionMagnification(bet_odd_magnification);
                 }
                 SleepUtil.sleepUtil(2000);
 
@@ -374,21 +478,18 @@ public class BetYaBoUtil_3 {
                                 // 消息 - 推送钉钉服务
                                 if (StringUtils.isNotEmpty(yaBoAccountInfo.getOperateName()) && bet_a != null) {
                                     // 消息 - 推送钉钉服务
-                                    sendDingMsg(d, yaBoAccountInfo.getOperateName(), bet_a.getHomeTeamName(),
-                                        bet_a.getAwayTeamName(), bet_a.getWhichSection(), bet_a.getOriginalAmount(),
-                                        bet_a.getBetAmount(), bet_a.getBalanceAmount(), threadName);
+                                    sendDingMsg(yaBoAccountInfo.getOperateName(), bet_a, threadName);
                                     SleepUtil.sleepUtil(2000);
                                 }
 
                                 // 操作 - 新校验逻辑
-                                BetGameInfo betGameInfo = saveBetGameInfo(yaBoAccountInfo);
-                                String lockId = cacheMapUtil.putMap(threadEventKey, JSON.toJSONString(betGameInfo));
-                                sendDingMsg(d, "下注完成", yaBoAccountInfo.getHomeTeamName(),
-                                    yaBoAccountInfo.getAwayTeamName(), yaBoAccountInfo.getWhichSection(),
-                                    yaBoAccountInfo.getOriginalAmount(), yaBoAccountInfo.getBetAmount(),
-                                    yaBoAccountInfo.getBalanceAmount(), threadName);
+                                BetGameInfo betGameInfo = saveBetGameInfo(yaBoAccountInfo, threadIndex);
+                                String strJson = JSON.toJSONString(betGameInfo);
+                                String lockId = cacheMapUtil.putMap(threadEventKey, strJson);
+                                sendDingMsg("下注完成", betGameInfo, threadName);
                                 // 操作 - 数据落库
                                 betGameInfo.setLockId(lockId);
+                                log.info("betGameInfoHandle.save(betGameInfo) : {}", betGameInfo);
                                 betGameInfoHandle.save(betGameInfo);
                             }
                         }
@@ -408,9 +509,10 @@ public class BetYaBoUtil_3 {
      * @author yucw
      * @date 2022-02-28 17:27
      */
-    private BetGameInfo saveBetGameInfo(YaBoAccountInfoBO yaBoAccountInfo) {
+    private BetGameInfo saveBetGameInfo(YaBoAccountInfoBO yaBoAccountInfo, Integer threadIndex) {
         BetGameInfo betGameInfo = new BetGameInfo();
-        betGameInfo.setOperateThreadType(0);
+        betGameInfo.setOperateThreadType(threadIndex);
+        betGameInfo.setCreateTime(new Date());
         betGameInfo.setCompetitionName(yaBoAccountInfo.getCompetitionName());
         betGameInfo.setHomeTeamName(yaBoAccountInfo.getHomeTeamName());
         betGameInfo.setAwayTeamName(yaBoAccountInfo.getAwayTeamName());
@@ -419,6 +521,8 @@ public class BetYaBoUtil_3 {
         betGameInfo.setOriginalAmount(yaBoAccountInfo.getOriginalAmount());
         betGameInfo.setBalanceAmount(yaBoAccountInfo.getBalanceAmount());
         betGameInfo.setBetAmount(yaBoAccountInfo.getBetAmount());
+        betGameInfo.setSingleOrDouble(yaBoAccountInfo.getSingleOrDouble());
+        betGameInfo.setCompetitionMagnification(yaBoAccountInfo.getCompetitionMagnification());
         betGameInfo.setIsSettlement(0);
         betGameInfo.setCompetitionType(0);
         return betGameInfo;
@@ -552,7 +656,7 @@ public class BetYaBoUtil_3 {
             } else if (screenings == 8) {
                 return new BigDecimal("690");
             } else if (screenings == 9) {
-                return new BigDecimal("700");
+                return new BigDecimal("1000");
             } else {
                 return new BigDecimal("0");
             }
@@ -630,12 +734,46 @@ public class BetYaBoUtil_3 {
      * @author yucw
      * @date 2022-02-22 17:06
      */
-    public static void sendDingMsg(DingUtil d, String operateName, String homeTeamName, String awayTeamName,
-        String whichSection, BigDecimal originalAmount, BigDecimal betAmount, BigDecimal balanceAmount,
-        String threadName) {
-        d.sendMassage("\n---------------------" + "\n线程名称：" + threadName + "\n比赛结论：" + operateName
-            + "\n---------------------" + "\n比赛队伍：" + homeTeamName + " VS " + awayTeamName + "\n比赛节数：" + whichSection
-            + "\n---------------------" + "\n账户原始金额：" + originalAmount + "\n当前下注金额：" + betAmount + "\n账户剩余金额："
-            + balanceAmount + "");
+    public void sendDingMsg(String operateName, BetGameInfo betGameInfo, String threadName) {
+        // 聚合 - 钉钉消息
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("\n---------------------");
+        stringBuffer.append("\n线程名称：" + threadName);
+        stringBuffer.append("\n比赛结论：" + operateName);
+        stringBuffer.append("\n---------------------");
+        stringBuffer.append("\n比赛队伍");
+        stringBuffer.append(betGameInfo.getHomeTeamName() + " VS " + betGameInfo.getAwayTeamName());
+        stringBuffer.append("\n比赛节数：" + betGameInfo.getWhichSection());
+        stringBuffer.append("\n单双选择：" + getSingleOrDoubleStr(betGameInfo.getSingleOrDouble()));
+        stringBuffer.append("\n比赛倍率：" + betGameInfo.getCompetitionMagnification());
+        if (betGameInfo.getIsSettlement() == 1) {
+            stringBuffer.append("\n比赛分数：" + betGameInfo.getHomeTeamScore() + " : " + betGameInfo.getAwayTeamScore());
+        }
+        stringBuffer.append("\n---------------------");
+        stringBuffer.append("\n账户原始金额：" + betGameInfo.getOriginalAmount());
+        stringBuffer.append("\n当前下注金额：" + betGameInfo.getBetAmount());
+        stringBuffer.append("\n账户剩余金额：" + betGameInfo.getBetAmount());
+
+        // 发送 - 钉钉消息
+        dingUtil.sendMassage(stringBuffer.toString());
+    }
+
+    /***
+     * getSingleOrDoubleStr
+     * 
+     * @param singleOrDouble
+     * @return java.lang.String
+     * @author yucw
+     * @date 2022-03-02 09:58
+     */
+    private static String getSingleOrDoubleStr(Integer singleOrDouble) {
+        if (null == singleOrDouble) {
+            return "未定义单双";
+        } else if (singleOrDouble == 0) {
+            return "单";
+        } else if (singleOrDouble == 1) {
+            return "双";
+        }
+        return "";
     }
 }

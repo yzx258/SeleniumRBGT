@@ -1,6 +1,7 @@
 package com.example.selenium.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -18,6 +19,16 @@ public class BetGameInfo {
 
     @TableId(type = IdType.ASSIGN_UUID)
     private String id;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 单 - 0；双 - 1
+     */
+    private Integer singleOrDouble;
 
     /**
      * 操作线程：0-A线程;1-B线程；2-C线程

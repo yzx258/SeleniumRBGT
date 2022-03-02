@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.selenium.bet.BetYaBoUtil_3;
 import com.example.selenium.handle.BetGameInfoHandle;
+import com.example.selenium.util.SleepUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,18 @@ public class TaskUtil {
      * sendYaBoBet
      */
     @Async("myTaskAsyncPool")
-    public void sendYaBoBet() {
-        System.out.println("task sendYaBoBet");
+    public void sendYaBoBet1() {
+        System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_A");
         betYaBoUtil.bet("THREAD_EXECUTION_A", 0, "BET_A");
+    }
+
+    /**
+     * sendYaBoBet
+     */
+    @Async("myTaskAsyncPool")
+    public void sendYaBoBet2() {
+        SleepUtil.sleepUtil(5000);
+        System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_B");
         betYaBoUtil.bet("THREAD_EXECUTION_B", 1, "BET_B");
     }
 

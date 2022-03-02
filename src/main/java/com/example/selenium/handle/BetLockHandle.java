@@ -9,6 +9,7 @@ import com.example.selenium.entity.BetLock;
 import com.example.selenium.mapper.BetLockMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * File Description
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
  * @company 厦门市宜车时代
  * @date 2022-02-28 11:24
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class BetLockHandle {

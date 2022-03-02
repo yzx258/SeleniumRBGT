@@ -19,6 +19,11 @@ public class YaBoAccountInfoBO {
     private String competitionName;
 
     /**
+     * 单 - 0；双 - 1
+     */
+    private Integer singleOrDouble;
+
+    /**
      * 主队名称
      */
     private String homeTeamName;
@@ -57,4 +62,9 @@ public class YaBoAccountInfoBO {
      * 操作类型
      */
     private String operateName;
+
+    /**
+     * 比赛倍率
+     */
+    private BigDecimal competitionMagnification;
 }
