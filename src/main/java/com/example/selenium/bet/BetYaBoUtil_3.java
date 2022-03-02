@@ -742,7 +742,7 @@ public class BetYaBoUtil_3 {
         stringBuffer.append("\n线程名称：" + threadName);
         stringBuffer.append("\n比赛结论：" + operateName);
         stringBuffer.append("\n---------------------");
-        stringBuffer.append("\n比赛队伍");
+        stringBuffer.append("\n比赛队伍:");
         stringBuffer.append("\n" + betGameInfo.getHomeTeamName() + " VS " + betGameInfo.getAwayTeamName());
         stringBuffer.append("\n比赛节数：" + betGameInfo.getWhichSection());
         stringBuffer.append("\n单双选择：" + getSingleOrDoubleStr(betGameInfo.getSingleOrDouble()));
@@ -751,7 +751,8 @@ public class BetYaBoUtil_3 {
         // 查询 - 之前结算数据
         BetGameInfo betGameInfoByLockId = betGameInfoHandle.getBetGameInfoByLockId(betGameInfo.getLockId());
         if (null != betGameInfoByLockId && betGameInfoByLockId.getIsSettlement() == 1) {
-            stringBuffer.append("\n比赛分数：" + betGameInfo.getHomeTeamScore() + " : " + betGameInfo.getAwayTeamScore());
+            stringBuffer.append(
+                "\n比赛分数：" + betGameInfoByLockId.getHomeTeamScore() + " : " + betGameInfoByLockId.getAwayTeamScore());
         }
 
         stringBuffer.append("\n---------------------");
