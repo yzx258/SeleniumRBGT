@@ -172,6 +172,7 @@ public class BetYaBoUtil_3 {
             if (null != betGameInfo && betGameInfo.getIsSettlement() == 1) {
                 // 组装 - 红黑数据
                 bet_a = JSON.parseObject(info.getLockValue(), BetGameInfo.class);
+                bet_a.setLockId(info.getId());
                 if (betGameInfo.getCompetitionResult() == 1) {
                     // 组装 - 红数据
                     betAmount = getBetAmount(true, 1);
@@ -742,17 +743,21 @@ public class BetYaBoUtil_3 {
         stringBuffer.append("\n比赛结论：" + operateName);
         stringBuffer.append("\n---------------------");
         stringBuffer.append("\n比赛队伍");
-        stringBuffer.append(betGameInfo.getHomeTeamName() + " VS " + betGameInfo.getAwayTeamName());
+        stringBuffer.append("\n" + betGameInfo.getHomeTeamName() + " VS " + betGameInfo.getAwayTeamName());
         stringBuffer.append("\n比赛节数：" + betGameInfo.getWhichSection());
         stringBuffer.append("\n单双选择：" + getSingleOrDoubleStr(betGameInfo.getSingleOrDouble()));
         stringBuffer.append("\n比赛倍率：" + betGameInfo.getCompetitionMagnification());
-        if (betGameInfo.getIsSettlement() == 1) {
+
+        // 查询 - 之前结算数据
+        BetGameInfo betGameInfoByLockId = betGameInfoHandle.getBetGameInfoByLockId(betGameInfo.getLockId());
+        if (null != betGameInfoByLockId && betGameInfoByLockId.getIsSettlement() == 1) {
             stringBuffer.append("\n比赛分数：" + betGameInfo.getHomeTeamScore() + " : " + betGameInfo.getAwayTeamScore());
         }
+
         stringBuffer.append("\n---------------------");
         stringBuffer.append("\n账户原始金额：" + betGameInfo.getOriginalAmount());
         stringBuffer.append("\n当前下注金额：" + betGameInfo.getBetAmount());
-        stringBuffer.append("\n账户剩余金额：" + betGameInfo.getBetAmount());
+        stringBuffer.append("\n账户剩余金额：" + betGameInfo.getBalanceAmount());
 
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
