@@ -67,6 +67,7 @@ public class BetGameInfoHandle {
 
         // 线程开始执行
         cacheMapUtil.putMap("THREAD_EXECUTION_COMPARISON_RESULTS", "1");
+        log.info("SEND THREAD_EXECUTION_COMPARISON_RESULTS");
         try {
             // 查询 - 待结算信息
             List<BetGameInfo> betGameInfos = betGameInfoMapper
@@ -107,8 +108,10 @@ public class BetGameInfoHandle {
                     }
                 }
             }
+            cacheMapUtil.delMap("THREAD_EXECUTION_COMPARISON_RESULTS");
         } catch (Exception e) {
             log.info("处理同步结算信息失败 - message:{}", e.getMessage());
+            cacheMapUtil.delMap("THREAD_EXECUTION_COMPARISON_RESULTS");
         } finally {
             cacheMapUtil.delMap("THREAD_EXECUTION_COMPARISON_RESULTS");
         }
