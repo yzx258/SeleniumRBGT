@@ -643,19 +643,19 @@ public class BetYaBoUtil_3 {
             if (screenings == 1) {
                 return new BigDecimal("5");
             } else if (screenings == 2) {
-                return new BigDecimal("10");
+                return new BigDecimal("10.5");
             } else if (screenings == 3) {
-                return new BigDecimal("20");
+                return new BigDecimal("22");
             } else if (screenings == 4) {
-                return new BigDecimal("40");
+                return new BigDecimal("47");
             } else if (screenings == 5) {
-                return new BigDecimal("80");
+                return new BigDecimal("99");
             } else if (screenings == 6) {
-                return new BigDecimal("170");
+                return new BigDecimal("209");
             } else if (screenings == 7) {
-                return new BigDecimal("345");
+                return new BigDecimal("440");
             } else if (screenings == 8) {
-                return new BigDecimal("690");
+                return new BigDecimal("925");
             } else if (screenings == 9) {
                 return new BigDecimal("1000");
             } else {
