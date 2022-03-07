@@ -25,8 +25,6 @@ public class BetLockController {
 
     @GetMapping("/getLock")
     public String getTest() {
-        BetYaBoUtil bet = new BetYaBoUtil();
-        bet.bet();
         return JSON.toJSONString(betLockMapper.selectById(1));
     }
 
