@@ -37,18 +37,8 @@ public class TaskUtil {
      * sendYaBoBet
      */
     @Async("myTaskAsyncPool")
-    public void sendYaBoBet4() {
-        SleepUtil.sleepUtil(1000);
-        System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_AD");
-        betYaBoUtil.bet("THREAD_EXECUTION_AD", 0, "BET_AD", 1);
-    }
-
-    /**
-     * sendYaBoBet
-     */
-    @Async("myTaskAsyncPool")
     public void sendYaBoBet2() {
-        SleepUtil.sleepUtil(2000);
+        SleepUtil.sleepUtil(1000);
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_B");
         betYaBoUtil.bet("THREAD_EXECUTION_B", 1, "BET_B", 0);
     }
@@ -57,20 +47,20 @@ public class TaskUtil {
      * sendYaBoBet
      */
     @Async("myTaskAsyncPool")
-    public void sendYaBoBet5() {
-        SleepUtil.sleepUtil(3000);
-        System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_BE");
-        betYaBoUtil.bet("THREAD_EXECUTION_BE", 1, "BET_BE", 1);
+    public void sendYaBoBet3() {
+        SleepUtil.sleepUtil(2000);
+        System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_C");
+        betYaBoUtil.bet("THREAD_EXECUTION_C", 2, "BET_C", 0);
     }
 
     /**
      * sendYaBoBet
      */
     @Async("myTaskAsyncPool")
-    public void sendYaBoBet3() {
-        SleepUtil.sleepUtil(4000);
-        System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_C");
-        betYaBoUtil.bet("THREAD_EXECUTION_C", 2, "BET_C", 0);
+    public void sendYaBoBet4() {
+        SleepUtil.sleepUtil(3000);
+        System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_D");
+        betYaBoUtil.bet("THREAD_EXECUTION_D", 0, "BET_D", 1);
     }
 
     /**

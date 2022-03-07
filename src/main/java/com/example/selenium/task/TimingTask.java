@@ -23,7 +23,6 @@ public class TimingTask {
         taskService.sendYaBoBet2();
         taskService.sendYaBoBet3();
         taskService.sendYaBoBet4();
-        taskService.sendYaBoBet5();
 
     }
 

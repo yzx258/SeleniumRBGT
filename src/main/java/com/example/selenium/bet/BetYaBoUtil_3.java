@@ -297,6 +297,7 @@ public class BetYaBoUtil_3 {
                 }
 
                 // 点开 - 比赛信息
+                SleepUtil.sleepUtil(2000);
                 competition_header_team.click();
                 SleepUtil.sleepUtil(1000);
 
@@ -304,15 +305,15 @@ public class BetYaBoUtil_3 {
                 yaBoAccountInfo.setCompetitionName(competition_header_team.getText());
 
                 // 获取 - 每个场次比赛
-                List<WebElement> row_live = driver.findElements(By.className("event_listing")).get(threadEventIndex)
-                    .findElements(By.className("row_live"));
-                log.info("row_live.isEnabled()、row_live.isDisplayed() - {},{}", row_live.get(0).isEnabled(),
-                    row_live.get(0).isDisplayed());
+                List<WebElement> row_live =
+                    driver.findElements(By.className("event_listing")).get(0).findElements(By.className("row_live"));
+                log.info("row_live.isEnabled()、row_live.isDisplayed() - {},{}",
+                    row_live.get(threadEventIndex).isEnabled(), row_live.get(threadEventIndex).isDisplayed());
                 if (row_live != null && row_live.size() > 0) {
 
                     // 获取 - 场次赛事信息
-                    List<WebElement> elements =
-                        row_live.get(0).findElement(By.className("team")).findElements(By.className("teamname_inner"));
+                    List<WebElement> elements = row_live.get(threadEventIndex).findElement(By.className("team"))
+                        .findElements(By.className("teamname_inner"));
                     log.info("elements.isEnabled()、elements.isDisplayed() - {},{}", elements.get(0).isEnabled(),
                         elements.get(0).isDisplayed());
                     // 设定 - 主队、客队
