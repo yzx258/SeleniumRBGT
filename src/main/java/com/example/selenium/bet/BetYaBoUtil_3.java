@@ -143,7 +143,7 @@ public class BetYaBoUtil_3 {
      * @author yucw
      * @date 2022-03-01 14:06
      */
-    public void bet(String threadName, Integer threadIndex, String threadEventKey) {
+    public void bet(String threadName, Integer threadIndex, String threadEventKey, Integer threadEventIndex) {
         // 定义 - 参数
         Object bet_tag = cacheMapUtil.getMap(threadName);
         if (null != bet_tag) {
@@ -208,7 +208,7 @@ public class BetYaBoUtil_3 {
         }
 
         // 操作 - 页面
-        sendBet(threadName, threadEventKey, bet_url, yaBoAccountInfo, bet_a, threadIndex);
+        sendBet(threadName, threadEventKey, bet_url, yaBoAccountInfo, bet_a, threadIndex, threadEventIndex);
     }
 
     /***
@@ -225,7 +225,7 @@ public class BetYaBoUtil_3 {
      * @date 2022-02-28 17:17
      */
     public void sendBet(String threadName, String threadEventKey, String bet_url, YaBoAccountInfoBO yaBoAccountInfo,
-        BetGameInfo bet_a, int threadIndex) {
+        BetGameInfo bet_a, int threadIndex, Integer threadEventIndex) {
         // 初始化 - 自动化浏览器
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
         System.setProperty("webdriver.chrome.driver", chromeDriverUrl);
@@ -304,8 +304,8 @@ public class BetYaBoUtil_3 {
                 yaBoAccountInfo.setCompetitionName(competition_header_team.getText());
 
                 // 获取 - 每个场次比赛
-                List<WebElement> row_live =
-                    driver.findElements(By.className("event_listing")).get(0).findElements(By.className("row_live"));
+                List<WebElement> row_live = driver.findElements(By.className("event_listing")).get(threadEventIndex)
+                    .findElements(By.className("row_live"));
                 log.info("row_live.isEnabled()、row_live.isDisplayed() - {},{}", row_live.get(0).isEnabled(),
                     row_live.get(0).isDisplayed());
                 if (row_live != null && row_live.size() > 0) {

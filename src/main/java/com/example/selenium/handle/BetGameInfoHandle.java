@@ -59,16 +59,16 @@ public class BetGameInfoHandle {
      * @date 2022-02-28 11:40
      */
     public void comparisonResults() {
-        Object bet_tag = cacheMapUtil.getMap("THREAD_EXECUTION_COMPARISON_RESULTS");
-        if (null != bet_tag) {
-            System.out.println("THREAD_EXECUTION_COMPARISON_RESULTS - 正在执行，不允许新线程操作");
-            return;
-        }
-
-        // 线程开始执行
-        cacheMapUtil.putMap("THREAD_EXECUTION_COMPARISON_RESULTS", "1");
-        log.info("SEND THREAD_EXECUTION_COMPARISON_RESULTS");
         try {
+            Object bet_tag = cacheMapUtil.getMap("THREAD_EXECUTION_COMPARISON_RESULTS");
+            if (null != bet_tag) {
+                System.out.println("THREAD_EXECUTION_COMPARISON_RESULTS - 正在执行，不允许新线程操作");
+                return;
+            }
+
+            // 线程开始执行
+            cacheMapUtil.putMap("THREAD_EXECUTION_COMPARISON_RESULTS", "1");
+            log.info("SEND THREAD_EXECUTION_COMPARISON_RESULTS");
             // 查询 - 待结算信息
             List<BetGameInfo> betGameInfos = betGameInfoMapper
                 .selectList(Wrappers.lambdaQuery(BetGameInfo.class).eq(BetGameInfo::getIsSettlement, 0));
