@@ -38,6 +38,7 @@ public class TaskUtil {
      */
     @Async("myTaskAsyncPool")
     public void sendYaBoBet4() {
+        SleepUtil.sleepUtil(1000);
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_AD");
         betYaBoUtil.bet("THREAD_EXECUTION_AD", 0, "BET_AD", 1);
     }
@@ -57,7 +58,7 @@ public class TaskUtil {
      */
     @Async("myTaskAsyncPool")
     public void sendYaBoBet5() {
-        SleepUtil.sleepUtil(2000);
+        SleepUtil.sleepUtil(3000);
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_BE");
         betYaBoUtil.bet("THREAD_EXECUTION_BE", 1, "BET_BE", 1);
     }

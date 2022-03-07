@@ -22,6 +22,9 @@ public class TimingTask {
         taskService.sendYaBoBet1();
         taskService.sendYaBoBet2();
         taskService.sendYaBoBet3();
+        taskService.sendYaBoBet4();
+        taskService.sendYaBoBet5();
+
     }
 
     @Scheduled(cron = "0/30 * * * * ?")
