@@ -30,4 +30,9 @@ public class TimingTask {
     private void comparisonResults() {
         taskService.comparisonResults();
     }
+
+    @Scheduled(cron = "0/30 * * * * ?")
+    private void compatibleData() {
+        taskService.compatibleData();
+    }
 }

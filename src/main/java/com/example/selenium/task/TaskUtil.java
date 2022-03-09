@@ -60,7 +60,7 @@ public class TaskUtil {
     public void sendYaBoBet4() {
         SleepUtil.sleepUtil(3000);
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_D");
-        betYaBoUtil.bet("THREAD_EXECUTION_D", 0, "BET_D", 1);
+        betYaBoUtil.bet("THREAD_EXECUTION_D", 3, "BET_D", 0);
     }
 
     /**
@@ -70,5 +70,14 @@ public class TaskUtil {
     public void comparisonResults() {
         System.out.println("task comparisonResults");
         betGameInfoHandle.comparisonResults();
+    }
+
+    /**
+     * comparisonResults
+     */
+    @Async("myTaskAsyncPool")
+    public void compatibleData() {
+        System.out.println("task compatibleData");
+        betGameInfoHandle.compatibleData();
     }
 }

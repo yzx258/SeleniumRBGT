@@ -1,5 +1,7 @@
 package com.example.selenium.handle;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import com.example.selenium.mapper.BetGameInfoMapper;
 import com.example.selenium.util.CacheMapUtil;
 import com.example.selenium.util.GetYaBoResultUtil;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -114,6 +118,66 @@ public class BetGameInfoHandle {
             cacheMapUtil.delMap("THREAD_EXECUTION_COMPARISON_RESULTS");
         } finally {
             cacheMapUtil.delMap("THREAD_EXECUTION_COMPARISON_RESULTS");
+        }
+    }
+
+    /***
+     *
+     * compatibleData
+     *
+     * @return void
+     * @author yucw
+     * @date 2022-02-28 11:40
+     */
+    public void compatibleData() {
+        try {
+            Object bet_tag = cacheMapUtil.getMap("THREAD_EXECUTION_COMPATIBLE_DATA");
+            if (null != bet_tag) {
+                System.out.println("THREAD_EXECUTION_COMPATIBLE_DATA - 正在执行，不允许新线程操作");
+                return;
+            }
+
+            // 线程开始执行
+            cacheMapUtil.putMap("THREAD_EXECUTION_COMPATIBLE_DATA", "1");
+            log.info("SEND THREAD_EXECUTION_COMPATIBLE_DATA");
+            // 查询 - 待结算信息
+            List<BetGameInfo> betGameInfos = betGameInfoMapper
+                .selectList(Wrappers.lambdaQuery(BetGameInfo.class).eq(BetGameInfo::getIsSettlement, 0));
+            if (null == betGameInfos || (null != betGameInfos && betGameInfos.size() == 0)) {
+                log.info("NOT THREAD_EXECUTION_COMPATIBLE_DATA");
+                cacheMapUtil.delMap("THREAD_EXECUTION_COMPATIBLE_DATA");
+                return;
+            }
+
+            // 判断当前比赛是否一直未结算
+            BigDecimal amount = new BigDecimal(0.00);
+            for (BetGameInfo item : betGameInfos) {
+                long l = DateUtil.between(new Date(), item.getCreateTime(), DateUnit.HOUR);
+                if (l < 2) {
+                    amount = item.getBalanceAmount();
+                    break;
+                }
+            }
+
+            // 判断结算
+            for (BetGameInfo item : betGameInfos) {
+                long l = DateUtil.between(new Date(), item.getCreateTime(), DateUnit.HOUR);
+                if (l >= 2 && amount.compareTo(new BigDecimal(0.00)) == 1) {
+                    item.setCompetitionResult(2);
+                    item.setIsSettlement(1);
+                    item.setHomeTeamScore("异常单 - 程序自动结算");
+                    item.setAwayTeamScore("异常单 - 程序自动结算");
+                    if (amount.compareTo(item.getBalanceAmount()) == 1) {
+                        // 现在账户金额大于之前下注金额，判断为红单
+                        item.setCompetitionResult(1);
+                    }
+                    betGameInfoMapper.updateById(item);
+                }
+            }
+        } catch (Exception e) {
+            log.info("处理同步结算信息失败 - message:{}", e.getMessage());
+        } finally {
+            cacheMapUtil.delMap("THREAD_EXECUTION_COMPATIBLE_DATA");
         }
     }
 
