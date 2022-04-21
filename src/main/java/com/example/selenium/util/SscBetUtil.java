@@ -1,6 +1,7 @@
 package com.example.selenium.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +35,13 @@ public class SscBetUtil {
 
     private final CacheMapUtil cacheMapUtil;
     private final BetSscGameInfoService betSscGameInfoService;
+    private static List<Integer> bls = new ArrayList<>();
+    static {
+        bls.add(1);
+        bls.add(10);
+        bls.add(120);
+        bls.add(1930);
+    }
 
     /***
      *
@@ -61,17 +69,11 @@ public class SscBetUtil {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox");
         WebDriver driver = new ChromeDriver();
-        Integer blResult = 1;
-        List<Integer> bls = new ArrayList<>();
-        bls.add(1);
-        bls.add(0);
-        bls.add(20);
-        bls.add(930);
-        bls.add(9600);
+        Integer blResult = bls.get(0);
         try {
 
             // 操作 - 打开浏览器
-            driver.get("https://ybtxpc.3ndfp3ai.com/lottery/52?token=591f0b3b75314a2fac7b1676bac218bc1650503131125");
+            driver.get("https://ybtxpc.3ndfp3ai.com/lottery/52?token=3df57ab5477d4e62aba4b4ad629f917a1650528901517");
 
             // 操作 - 屏幕最大化
             SleepUtil.sleepUtil(2000);
@@ -154,19 +156,19 @@ public class SscBetUtil {
                 sjResult = op(driver);
 
                 // 操作 - 游戏倍率 - 默认 1里
-                gameMagnificationSetting(driver, "1厘");
+                gameMagnificationSetting(driver, "1分");
 
-                if (bl != 0) {
-                    // 下注 - 倍数
-                    WebElement multiple = driver.findElement(By.className("lottery-content"))
-                        .findElement(By.className("lottery-content-scroll"))
-                        .findElement(By.className("statistics-standard")).findElement(By.className("mode-multiple"))
-                        .findElement(By.className("multiple")).findElement(By.className("muliple-input"));
+                // 下注 - 倍数
+                WebElement plus = driver.findElement(By.className("lottery-content"))
+                    .findElement(By.className("lottery-content-scroll"))
+                    .findElement(By.className("statistics-standard")).findElement(By.className("mode-multiple"))
+                    .findElement(By.className("multiple")).findElement(By.className("plus"));
 
-                    multiple.click();
-                    multiple.clear();
-                    multiple.sendKeys(blResult + "");
-                    SleepUtil.sleepUtil(500);
+                // 需要点击的次数
+                Integer clickNum = bls.get(bl) - 1;
+                for (int i = 0; i < clickNum; i++) {
+                    SleepUtil.sleepUtil(10);
+                    plus.click();
                 }
 
                 // 整合 - 下注信息
@@ -177,8 +179,12 @@ public class SscBetUtil {
                 System.out.println("下注成功：" + JSONUtil.toJsonStr(gmInfo));
 
                 BetSscGameInfo info = new BetSscGameInfo();
+                info.setSscType(2);
+                info.setSscNumType(1);
+                info.setCreateTime(new Date());
                 info.setPeriod(String.valueOf(Integer.parseInt(kjInfo.getPeriod()) + 1));
-                info.setTenThousand(sjResult + "");
+                info.setNumStr(sjResult + "");
+                info.setMagnification(blResult);
                 boolean saveResult = betSscGameInfoService.save(info);
                 if (!saveResult) {
                     throw new RuntimeException("保存数据失败");

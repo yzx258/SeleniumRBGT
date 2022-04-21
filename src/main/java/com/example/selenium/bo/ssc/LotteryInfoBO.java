@@ -15,6 +15,7 @@ public class LotteryInfoBO {
      * 期数
      */
     private String period;
+
     /**
      * 个
      */

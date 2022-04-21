@@ -1,5 +1,7 @@
 package com.example.selenium.entity.ssc;
 
+import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
@@ -25,29 +27,29 @@ public class BetSscGameInfo {
     private String period;
 
     /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
      * 操作类型：1：单双；2：单球
      */
     private Integer sscType;
-    /**
-     * 个
-     */
-    private String singleDigit;
-    /**
-     * 十
-     */
-    private String ten;
-    /**
-     * 百
-     */
-    private String hundreds;
-    /**
-     * 千
-     */
-    private String thousands;
-    /**
-     * 万
-     */
-    private String tenThousand;
 
+    /**
+     * 操作类型：1：W;2：Q;3：B；4：S;5：G
+     */
+    private Integer sscNumType;
+
+    /**
+     * 数字
+     */
+    private String numStr;
+
+    private Integer magnification;
+
+    /**
+     * 结果
+     */
     private Integer result;
 }
