@@ -8,6 +8,7 @@ import com.example.selenium.bet.BetYaBoUtil_3;
 import com.example.selenium.handle.BetGameInfoHandle;
 import com.example.selenium.util.SleepUtil;
 import com.example.selenium.util.SscBetUtil;
+import com.example.selenium.util.SscBetUtil_V1;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class TaskUtil {
     private final BetGameInfoHandle betGameInfoHandle;
 
     private final SscBetUtil sscBetUtil;
+    private final SscBetUtil_V1 sscBetUtil_v1;
 
     /**
      * send001
@@ -33,7 +35,7 @@ public class TaskUtil {
     @Async("myTaskAsyncPool")
     public void send001() {
         System.out.println("TASK SEND_SSC THREAD_EXECUTION_SSC_A");
-        sscBetUtil.send();
+        sscBetUtil_v1.send();
     }
 
     /**

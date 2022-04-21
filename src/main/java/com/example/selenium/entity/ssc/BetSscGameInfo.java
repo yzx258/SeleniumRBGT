@@ -37,7 +37,7 @@ public class BetSscGameInfo {
     private Integer sscType;
 
     /**
-     * 操作类型：1：W;2：Q;3：B；4：S;5：G
+     * 操作类型：0：W;1：Q;2：B；3：S;4：5
      */
     private Integer sscNumType;
 
