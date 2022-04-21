@@ -38,9 +38,9 @@ public class SscBetUtil_V1 {
     private static List<Integer> bls = new ArrayList<>();
     static {
         bls.add(1);
-        bls.add(10);
-        bls.add(120);
-        bls.add(1930);
+        bls.add(0);
+        bls.add(20);
+        bls.add(930);
     }
 
     /***
@@ -54,13 +54,13 @@ public class SscBetUtil_V1 {
     public void send() {
 
         // 定义 - 参数
-        Object bet_tag = cacheMapUtil.getMap("THREAD_EXECUTION_SSC_A");
+        Object bet_tag = cacheMapUtil.getMap("THREAD_EXECUTION_SSC_B");
         if (null != bet_tag) {
             System.out.println("正在执行，不允许新线程操作");
             return;
         }
         // 线程开始执行
-        cacheMapUtil.putMap("THREAD_EXECUTION_SSC_A", "THREAD_EXECUTION_SSC_A");
+        cacheMapUtil.putMap("THREAD_EXECUTION_SSC_B", "THREAD_EXECUTION_SSC_B");
 
         // 初始化 - 自动化浏览器
         String chromeDriverUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
@@ -276,7 +276,7 @@ public class SscBetUtil_V1 {
             System.out.println("ERROR MESSAGE :" + e.getMessage());
         } finally {
             // 结束 - 此次操作
-            cacheMapUtil.delMap("THREAD_EXECUTION_SSC_A");
+            cacheMapUtil.delMap("THREAD_EXECUTION_SSC_B");
             driver.close();
             driver.quit();
         }
@@ -297,17 +297,20 @@ public class SscBetUtil_V1 {
      */
     private void sendOk(Integer bl, String period, Integer numStr, Integer sscNumType, Integer magnification,
         WebDriver driver) {
-        // 获取 - 按钮
-        WebElement plus =
-            driver.findElement(By.className("lottery-content")).findElement(By.className("lottery-content-scroll"))
-                .findElement(By.className("statistics-standard")).findElement(By.className("mode-multiple"))
-                .findElement(By.className("multiple")).findElement(By.className("plus"));
 
-        // 需要点击的次数
-        Integer clickNum = bls.get(bl) - 1;
-        for (int i = 0; i < clickNum; i++) {
-            SleepUtil.sleepUtil(10);
-            plus.click();
+
+
+        if (bl != 0) {
+            // 下注 - 倍数
+            WebElement multiple = driver.findElement(By.className("lottery-content"))
+                    .findElement(By.className("lottery-content-scroll"))
+                    .findElement(By.className("statistics-standard")).findElement(By.className("mode-multiple"))
+                    .findElement(By.className("multiple")).findElement(By.className("muliple-input"));
+
+            multiple.click();
+            multiple.clear();
+            multiple.sendKeys(bls.get(bl) + "");
+            SleepUtil.sleepUtil(500);
         }
 
         // 插入 - 记录
@@ -331,6 +334,9 @@ public class SscBetUtil_V1 {
         driver.findElement(By.id("modals-container")).findElement(By.className("check-bet-modal"))
             .findElement(By.className("modal-btns")).findElement(By.className("confirm")).click();
         SleepUtil.sleepUtil(1000);
+
+        // 操作玩，初始化
+        bl = 0;
     }
 
     /***
