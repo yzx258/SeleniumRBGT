@@ -264,7 +264,7 @@ public class SscBetUtil_V1 {
                 log.info("万位：{},千位：{},百位：{},十位：{},个位：{}", ww, qw, bw, sw, gw);
                 // 整合 - 下注信息
                 gmInfo = new LotteryInfoBO();
-                gmInfo.setPeriod(String.valueOf(Integer.parseInt(kjInfo.getPeriod()) + 1));
+                gmInfo.setPeriod(period);
                 gmInfo.setTenThousand(ww + "");
                 gmInfo.setThousands(qw + "");
                 gmInfo.setHundreds(bw + "");
