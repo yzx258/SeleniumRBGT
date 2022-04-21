@@ -118,8 +118,7 @@ public class SscBetUtil_V1 {
                 // 校验 - 操作时间
                 Integer lastTime = getLastTime(driver);
                 for (int op = 0; op < 1000; op++) {
-                    System.out.println("当前时间：" + lastTime);
-                    if (lastTime <= 40 && lastTime > 20) {
+                    if (lastTime <= 40 && lastTime > 30) {
                         break;
                     }
                     SleepUtil.sleepUtil(3000);
