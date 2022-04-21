@@ -95,6 +95,13 @@ public class SscBetUtil {
             int bl = 0;
             // 循环 - 操作
             do {
+                // 刷新 - 当前
+                driver.navigate().refresh();
+                SleepUtil.sleepUtil(2000);
+                // 获取 - 当前
+                driver = driver.switchTo().window(driver.getWindowHandle());
+                SleepUtil.sleepUtil(2000);
+
                 // 获取 - 历史开奖
                 kjInfo = getLotteryInfo(driver);
                 if (gmInfo != null && kjInfo != null) {
@@ -143,25 +150,8 @@ public class SscBetUtil {
                     betSscGameInfoService.updateBetSscGameInfo(gmInfo.getPeriod(), bsResult);
                 }
 
-                // 获取 - 操作信息
-                List<WebElement> ballsElements = driver.findElement(By.className("lottery-content"))
-                    .findElement(By.className("lottery-content-scroll")).findElement(By.className("bet-wrapper"))
-                    .findElement(By.className("balls-ul")).findElements(By.className("balls-row"));
-
-                // 获取 - 万位操作信息
-                List<WebElement> ball =
-                    ballsElements.get(0).findElement(By.className("row-balls")).findElements(By.className("ball"));
-                if (null != ball) {
-                    // 获取 - 随机数
-                    sjResult = new Random().nextInt(10);
-                    for (int i = 0; i < ball.size(); i++) {
-                        if (i == sjResult) {
-                            continue;
-                        }
-                        ball.get(i).findElement(By.className("ball-item")).click();
-                    }
-                }
-                SleepUtil.sleepUtil(2000);
+                // 操作 - 万位
+                sjResult = op(driver);
 
                 // 操作 - 游戏倍率 - 默认 1里
                 gameMagnificationSetting(driver, "1厘");
@@ -210,6 +200,51 @@ public class SscBetUtil {
             driver.close();
             driver.quit();
         }
+    }
+
+    /***
+     * 操作 - 万位数据
+     * 
+     * @param driver
+     * @return java.lang.Integer
+     * @author yucw
+     * @date 2022-04-21 10:33
+     */
+    public static Integer op(WebDriver driver) {
+        int sjResult = 0;
+        boolean res = true;
+        List<WebElement> ballsElements = null;
+        do {
+            try {
+                // 获取 - 操作信息
+                ballsElements = driver.findElement(By.className("lottery-content"))
+                    .findElement(By.className("lottery-content-scroll")).findElement(By.className("bet-wrapper"))
+                    .findElement(By.className("balls-ul")).findElements(By.className("balls-row"));
+
+                // 获取 - 万位操作信息
+                SleepUtil.sleepUtil(1000);
+                List<WebElement> ball =
+                    ballsElements.get(0).findElement(By.className("row-balls")).findElements(By.className("ball"));
+                if (null != ball) {
+                    // 获取 - 随机数
+                    sjResult = new Random().nextInt(10);
+                    for (int i = 0; i < ball.size(); i++) {
+                        if (i == sjResult) {
+                            continue;
+                        }
+                        ball.get(i).findElement(By.className("ball-item")).click();
+                    }
+                }
+
+                res = false;
+            } catch (Exception e) {
+                System.out.println("OP - 获取操作失败......");
+                SleepUtil.sleepUtil(2000);
+                driver = driver.switchTo().window(driver.getWindowHandle());
+            }
+        } while (res);
+        SleepUtil.sleepUtil(1000);
+        return sjResult;
     }
 
     /**
