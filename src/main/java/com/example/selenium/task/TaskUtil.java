@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.selenium.bet.BetYaBoUtil_3;
 import com.example.selenium.handle.BetGameInfoHandle;
 import com.example.selenium.util.SleepUtil;
+import com.example.selenium.util.SscBetUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,21 @@ public class TaskUtil {
     private final BetYaBoUtil_3 betYaBoUtil;
     private final BetGameInfoHandle betGameInfoHandle;
 
+    private final SscBetUtil sscBetUtil;
+
+    /**
+     * send001
+     */
+    @Async("myTaskAsyncPool")
+    public void send001() {
+        System.out.println("TASK SEND_SSC THREAD_EXECUTION_SSC_A");
+        sscBetUtil.send();
+    }
+
     /**
      * sendYaBoBet
      */
-    @Async("myTaskAsyncPool")
+    // @Async("myTaskAsyncPool")
     public void sendYaBoBet1() {
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_A");
         betYaBoUtil.bet("THREAD_EXECUTION_A", 0, "BET_A", 0);
@@ -36,7 +48,7 @@ public class TaskUtil {
     /**
      * sendYaBoBet
      */
-    @Async("myTaskAsyncPool")
+    // @Async("myTaskAsyncPool")
     public void sendYaBoBet2() {
         SleepUtil.sleepUtil(1000);
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_B");
@@ -46,7 +58,7 @@ public class TaskUtil {
     /**
      * sendYaBoBet
      */
-    @Async("myTaskAsyncPool")
+    // @Async("myTaskAsyncPool")
     public void sendYaBoBet3() {
         SleepUtil.sleepUtil(2000);
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_C");
@@ -56,7 +68,7 @@ public class TaskUtil {
     /**
      * sendYaBoBet
      */
-    @Async("myTaskAsyncPool")
+    // @Async("myTaskAsyncPool")
     public void sendYaBoBet4() {
         SleepUtil.sleepUtil(3000);
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_D");
@@ -66,7 +78,7 @@ public class TaskUtil {
     /**
      * comparisonResults
      */
-    @Async("myTaskAsyncPool")
+    // @Async("myTaskAsyncPool")
     public void comparisonResults() {
         System.out.println("task comparisonResults");
         betGameInfoHandle.comparisonResults();
@@ -75,7 +87,7 @@ public class TaskUtil {
     /**
      * comparisonResults
      */
-    @Async("myTaskAsyncPool")
+    // @Async("myTaskAsyncPool")
     public void compatibleData() {
         System.out.println("task compatibleData");
         betGameInfoHandle.compatibleData();

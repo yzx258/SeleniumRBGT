@@ -17,21 +17,18 @@ public class TimingTask {
     @Autowired
     private TaskUtil taskService;
 
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "0/10 * * * * ?")
     private void sendYaBoBet() {
-        taskService.sendYaBoBet1();
-        taskService.sendYaBoBet2();
-        taskService.sendYaBoBet3();
-        taskService.sendYaBoBet4();
+        taskService.send001();
 
     }
 
-    @Scheduled(cron = "0/30 * * * * ?")
+    // @Scheduled(cron = "0/30 * * * * ?")
     private void comparisonResults() {
         taskService.comparisonResults();
     }
 
-    @Scheduled(cron = "0/30 * * * * ?")
+    // @Scheduled(cron = "0/30 * * * * ?")
     private void compatibleData() {
         taskService.compatibleData();
     }

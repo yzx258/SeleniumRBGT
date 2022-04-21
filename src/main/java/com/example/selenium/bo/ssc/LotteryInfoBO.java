@@ -36,4 +36,6 @@ public class LotteryInfoBO {
      */
     private String tenThousand;
 
+    private Integer bl;
+
 }
