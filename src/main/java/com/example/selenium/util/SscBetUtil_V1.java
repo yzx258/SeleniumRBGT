@@ -48,9 +48,9 @@ public class SscBetUtil_V1 {
     private static List<Integer> bls = new ArrayList<>();
     static {
         bls.add(1);
-        bls.add(0);
-        bls.add(20);
-        bls.add(930);
+        bls.add(1);
+        bls.add(30);
+        bls.add(700);
     }
 
     /***
@@ -128,7 +128,8 @@ public class SscBetUtil_V1 {
                         kjInfo = getLotteryInfo(driver);
                         System.out.println(
                             kjInfo.getPeriod() + ".equals(" + period + ") - " + kjInfo.getPeriod().equals(period));
-                    } while (!kjInfo.getPeriod().equals(period));
+                    } while (!kjInfo.getPeriod().equals(period)
+                        || Integer.parseInt(kjInfo.getPeriod()) < Integer.parseInt(period));
                 }
 
                 // 校验 - 操作时间
