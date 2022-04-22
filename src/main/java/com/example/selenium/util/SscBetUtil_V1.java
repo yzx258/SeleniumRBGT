@@ -48,9 +48,9 @@ public class SscBetUtil_V1 {
     private static List<Integer> bls = new ArrayList<>();
     static {
         bls.add(1);
-        bls.add(1);
-        bls.add(30);
-        bls.add(700);
+        bls.add(3);
+        bls.add(80);
+        bls.add(900);
     }
 
     /***
