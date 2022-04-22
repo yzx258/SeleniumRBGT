@@ -291,7 +291,6 @@ public class SscBetUtil_V1 {
                 gmInfo.setTen(sw + "");
                 gmInfo.setSingleDigit(gw + "");
                 System.out.println("下注成功：" + JSONUtil.toJsonStr(gmInfo));
-                sendDingMsg(gmInfo);
             } while (true);
         } catch (Exception e) {
             System.out.println("ERROR MESSAGE :" + e.getMessage());
