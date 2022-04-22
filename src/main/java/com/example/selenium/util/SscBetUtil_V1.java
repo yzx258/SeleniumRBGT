@@ -128,6 +128,11 @@ public class SscBetUtil_V1 {
                         kjInfo = getLotteryInfo(driver);
                         System.out.println(
                             kjInfo.getPeriod() + ".equals(" + period + ") - " + kjInfo.getPeriod().equals(period));
+                        if (Integer.parseInt(kjInfo.getPeriod()) > Integer.parseInt(period)) {
+                            dingUtil
+                                .sendMassage("目前期数：" + kjInfo.getPeriod() + ";购买期数：" + period + "不符合，可能存在数据丢失，请注意！！");
+                        }
+
                     } while (!kjInfo.getPeriod().equals(period)
                         || Integer.parseInt(kjInfo.getPeriod()) < Integer.parseInt(period));
                 }
