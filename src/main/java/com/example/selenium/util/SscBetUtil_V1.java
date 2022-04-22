@@ -359,7 +359,11 @@ public class SscBetUtil_V1 {
         }
 
         stringBuffer.append("\n---------------------");
-        stringBuffer.append("\n比赛倍率：1" + bsResult);
+        if (bsResult == 1) {
+            stringBuffer.append("\n比赛倍率：1");
+        } else {
+            stringBuffer.append("\n比赛倍率：1" + bsResult);
+        }
         stringBuffer.append("\n比赛结果：黑单");
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
