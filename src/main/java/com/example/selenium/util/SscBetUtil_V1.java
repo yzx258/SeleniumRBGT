@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.selenium.bo.ssc.LotteryInfoBO;
 import com.example.selenium.entity.ssc.BetSscGameInfo;
+import com.example.selenium.handle.BetGameAccountInfoHandle;
 import com.example.selenium.service.BetSscGameInfoService;
 
 import cn.hutool.json.JSONUtil;
@@ -35,6 +36,8 @@ public class SscBetUtil_V1 {
 
     private final CacheMapUtil cacheMapUtil;
     private final BetSscGameInfoService betSscGameInfoService;
+    private final BetGameAccountInfoHandle betGameAccountInfoHandle;
+
     private static List<Integer> bls = new ArrayList<>();
     static {
         bls.add(1);
@@ -59,6 +62,13 @@ public class SscBetUtil_V1 {
             System.out.println("正在执行，不允许新线程操作");
             return;
         }
+
+        // 查询 - 地址是否存在
+        String bet_url = betGameAccountInfoHandle.getUrl("SSC_URL");
+        if (bet_url == null) {
+            throw new RuntimeException("获取不到地址，请检查！");
+        }
+
         // 线程开始执行
         cacheMapUtil.putMap("THREAD_EXECUTION_SSC_B", "THREAD_EXECUTION_SSC_B");
 
@@ -73,7 +83,7 @@ public class SscBetUtil_V1 {
         try {
 
             // 操作 - 打开浏览器
-            driver.get("https://ybtxpc.3ndfp3ai.com/lottery/52?token=3df57ab5477d4e62aba4b4ad629f917a1650528901517");
+            driver.get(bet_url);
 
             // 操作 - 屏幕最大化
             SleepUtil.sleepUtil(2000);
@@ -298,12 +308,10 @@ public class SscBetUtil_V1 {
     private void sendOk(Integer bl, String period, Integer numStr, Integer sscNumType, Integer magnification,
         WebDriver driver) {
 
-
-
         if (bl != 0) {
             // 下注 - 倍数
-            WebElement multiple = driver.findElement(By.className("lottery-content"))
-                    .findElement(By.className("lottery-content-scroll"))
+            WebElement multiple =
+                driver.findElement(By.className("lottery-content")).findElement(By.className("lottery-content-scroll"))
                     .findElement(By.className("statistics-standard")).findElement(By.className("mode-multiple"))
                     .findElement(By.className("multiple")).findElement(By.className("muliple-input"));
 
