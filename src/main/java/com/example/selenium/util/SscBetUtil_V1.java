@@ -39,12 +39,6 @@ public class SscBetUtil_V1 {
     private final BetGameAccountInfoHandle betGameAccountInfoHandle;
 
     private final DingUtil dingUtil;
-
-    private static int wwBl = 0;
-    private static int qwBl = 0;
-    private static int bwBl = 0;
-    private static int swBl = 0;
-    private static int gwBl = 0;
     private static List<Integer> bls = new ArrayList<>();
     static {
         bls.add(1);
@@ -111,6 +105,12 @@ public class SscBetUtil_V1 {
             LotteryInfoBO kjInfo = null;
             LotteryInfoBO gmInfo = null;
             String period = null;
+
+            int wwBl = 0;
+            int qwBl = 0;
+            int bwBl = 0;
+            int swBl = 0;
+            int gwBl = 0;
             // 循环 - 操作
             do {
                 // 刷新 - 当前
