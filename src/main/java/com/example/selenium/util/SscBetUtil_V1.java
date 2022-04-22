@@ -429,9 +429,6 @@ public class SscBetUtil_V1 {
         driver.findElement(By.id("modals-container")).findElement(By.className("check-bet-modal"))
             .findElement(By.className("modal-btns")).findElement(By.className("confirm")).click();
         SleepUtil.sleepUtil(500);
-
-        // 操作玩，初始化
-        bl = 0;
     }
 
     /***
