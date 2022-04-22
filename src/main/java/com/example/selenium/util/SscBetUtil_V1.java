@@ -38,6 +38,8 @@ public class SscBetUtil_V1 {
     private final BetSscGameInfoService betSscGameInfoService;
     private final BetGameAccountInfoHandle betGameAccountInfoHandle;
 
+    private final DingUtil dingUtil;
+
     private static List<Integer> bls = new ArrayList<>();
     static {
         bls.add(1);
@@ -104,7 +106,11 @@ public class SscBetUtil_V1 {
             LotteryInfoBO kjInfo = null;
             LotteryInfoBO gmInfo = null;
             String period = null;
-            int bl = 0;
+            int wwBl = 0;
+            int qwBl = 0;
+            int bwBl = 0;
+            int swBl = 0;
+            int gwBl = 0;
             // 循环 - 操作
             do {
                 // 刷新 - 当前
@@ -118,7 +124,7 @@ public class SscBetUtil_V1 {
                 kjInfo = getLotteryInfo(driver);
                 if (gmInfo != null && kjInfo != null) {
                     do {
-                        SleepUtil.sleepUtil(3000);
+                        SleepUtil.sleepUtil(2000);
                         kjInfo = getLotteryInfo(driver);
                         System.out.println(
                             kjInfo.getPeriod() + ".equals(" + period + ") - " + kjInfo.getPeriod().equals(period));
@@ -128,10 +134,10 @@ public class SscBetUtil_V1 {
                 // 校验 - 操作时间
                 Integer lastTime = getLastTime(driver);
                 for (int op = 0; op < 1000; op++) {
-                    if (lastTime <= 40 && lastTime > 30) {
+                    if (lastTime <= 40 && lastTime > 35) {
                         break;
                     }
-                    SleepUtil.sleepUtil(3000);
+                    SleepUtil.sleepUtil(1000);
                     lastTime = getLastTime(driver);
                 }
 
@@ -152,12 +158,13 @@ public class SscBetUtil_V1 {
                         System.out.println("【万位】kjInfo.getTenThousand().equals(gmInfo.getTenThousand()):"
                             + kjInfo.getTenThousand() + ";" + gmInfo.getTenThousand());
                         if (kjInfo.getTenThousand().equals(gmInfo.getTenThousand())) {
-                            bl = bl + 1;
-                            blResult = bls.get(bl);
+                            sendError(0, period, ww, bls.get(wwBl), driver);
+                            wwBl = wwBl + 1;
+                            blResult = bls.get(wwBl);
                             bsResult = 0;
                         } else {
-                            bl = 0;
-                            blResult = bls.get(bl);
+                            wwBl = 0;
+                            blResult = bls.get(wwBl);
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
@@ -165,7 +172,7 @@ public class SscBetUtil_V1 {
                     }
 
                     // 下注
-                    sendOk(bl, period, ww, 0, blResult, driver);
+                    sendOk(wwBl, period, ww, 0, blResult, driver);
                 }
 
                 Integer qw = op(driver, 1);
@@ -178,12 +185,13 @@ public class SscBetUtil_V1 {
                         System.out.println("【千位】kjInfo.getTenThousand().equals(gmInfo.getThousands()):"
                             + kjInfo.getThousands() + ";" + gmInfo.getThousands());
                         if (kjInfo.getThousands().equals(gmInfo.getThousands())) {
-                            bl = bl + 1;
-                            blResult = bls.get(bl);
+                            sendError(1, period, qw, bls.get(qwBl), driver);
+                            qwBl = qwBl + 1;
+                            blResult = bls.get(qwBl);
                             bsResult = 0;
                         } else {
-                            bl = 0;
-                            blResult = bls.get(bl);
+                            qwBl = 0;
+                            blResult = bls.get(qwBl);
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
@@ -191,7 +199,7 @@ public class SscBetUtil_V1 {
                     }
 
                     // 下注
-                    sendOk(bl, period, qw, 1, blResult, driver);
+                    sendOk(qwBl, period, qw, 1, blResult, driver);
                 }
                 Integer bw = op(driver, 2);
 
@@ -204,19 +212,20 @@ public class SscBetUtil_V1 {
                         System.out.println("【百位】kjInfo.getHundreds().equals(gmInfo.getHundreds()):"
                             + kjInfo.getHundreds() + ";" + gmInfo.getHundreds());
                         if (kjInfo.getHundreds().equals(gmInfo.getHundreds())) {
-                            bl = bl + 1;
-                            blResult = bls.get(bl);
+                            sendError(2, period, bw, bls.get(bwBl), driver);
+                            bwBl = bwBl + 1;
+                            blResult = bls.get(bwBl);
                             bsResult = 0;
                         } else {
-                            bl = 0;
-                            blResult = bls.get(bl);
+                            bwBl = 0;
+                            blResult = bls.get(bwBl);
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
                         betSscGameInfoService.updateBetSscGameInfo(gmInfo.getPeriod(), bsResult);
                     }
                     // 下注
-                    sendOk(bl, period, bw, 2, blResult, driver);
+                    sendOk(bwBl, period, bw, 2, blResult, driver);
                 }
                 Integer sw = op(driver, 3);
 
@@ -229,12 +238,13 @@ public class SscBetUtil_V1 {
                         System.out.println(
                             "【十位】kjInfo.getTen().equals(gmInfo.getTen()):" + kjInfo.getTen() + ";" + gmInfo.getTen());
                         if (kjInfo.getTen().equals(gmInfo.getTen())) {
-                            bl = bl + 1;
-                            blResult = bls.get(bl);
+                            sendError(3, period, sw, bls.get(swBl), driver);
+                            swBl = swBl + 1;
+                            blResult = bls.get(swBl);
                             bsResult = 0;
                         } else {
-                            bl = 0;
-                            blResult = bls.get(bl);
+                            swBl = 0;
+                            blResult = bls.get(swBl);
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
@@ -242,7 +252,7 @@ public class SscBetUtil_V1 {
                     }
 
                     // 下注
-                    sendOk(bl, period, sw, 3, blResult, driver);
+                    sendOk(swBl, period, sw, 3, blResult, driver);
                 }
                 Integer gw = op(driver, 4);
                 // 个位下注
@@ -254,12 +264,13 @@ public class SscBetUtil_V1 {
                         System.out.println("【个位】kjInfo.getSingleDigit().equals(gmInfo.getSingleDigit()):"
                             + kjInfo.getSingleDigit() + ";" + gmInfo.getSingleDigit());
                         if (kjInfo.getSingleDigit().equals(gmInfo.getSingleDigit())) {
-                            bl = bl + 1;
-                            blResult = bls.get(bl);
+                            sendError(4, period, gw, bls.get(gwBl), driver);
+                            gwBl = gwBl + 1;
+                            blResult = bls.get(gwBl);
                             bsResult = 0;
                         } else {
-                            bl = 0;
-                            blResult = bls.get(bl);
+                            gwBl = 0;
+                            blResult = bls.get(gwBl);
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
@@ -267,7 +278,7 @@ public class SscBetUtil_V1 {
                     }
 
                     // 下注
-                    sendOk(bl, period, gw, 4, blResult, driver);
+                    sendOk(gwBl, period, gw, 4, blResult, driver);
                 }
 
                 log.info("万位：{},千位：{},百位：{},十位：{},个位：{}", ww, qw, bw, sw, gw);
@@ -279,8 +290,8 @@ public class SscBetUtil_V1 {
                 gmInfo.setHundreds(bw + "");
                 gmInfo.setTen(sw + "");
                 gmInfo.setSingleDigit(gw + "");
-                gmInfo.setBl(bl);
                 System.out.println("下注成功：" + JSONUtil.toJsonStr(gmInfo));
+                sendDingMsg(gmInfo);
             } while (true);
         } catch (Exception e) {
             System.out.println("ERROR MESSAGE :" + e.getMessage());
@@ -290,6 +301,69 @@ public class SscBetUtil_V1 {
             driver.close();
             driver.quit();
         }
+    }
+
+    /***
+     * 推送消息
+     * 
+     * @param gmInfo
+     * @return void
+     * @author yucw
+     * @date 2022-04-22 10:43
+     */
+    public void sendDingMsg(LotteryInfoBO gmInfo) {
+        // 聚合 - 钉钉消息
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("\n---------------------");
+        stringBuffer.append("\n比赛期数：" + gmInfo.getPeriod());
+        stringBuffer.append("\n---------------------");
+        stringBuffer.append("\n万位:" + gmInfo.getTenThousand());
+        stringBuffer.append("\n千位:" + gmInfo.getThousands());
+        stringBuffer.append("\n百位:" + gmInfo.getHundreds());
+        stringBuffer.append("\n十位:" + gmInfo.getTen());
+        stringBuffer.append("\n个位:" + gmInfo.getSingleDigit());
+
+        // 发送 - 钉钉消息
+        dingUtil.sendMassage(stringBuffer.toString());
+    }
+
+    /***
+     * 发送黑单信息
+     * 
+     * @param sscNumType
+     * @param period
+     * @param numStr
+     * @param bsResult
+     * @param driver
+     * @return void
+     * @author yucw
+     * @date 2022-04-22 10:53
+     */
+    public void sendError(Integer sscNumType, String period, Integer numStr, Integer bsResult, WebDriver driver) {
+        // 聚合 - 钉钉消息
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("\n---------------------");
+        stringBuffer.append("\n账户余额：" + getAccountInfo(driver));
+        stringBuffer.append("\n比赛期数：" + period);
+        stringBuffer.append("\n---------------------");
+
+        if (0 == sscNumType) {
+            stringBuffer.append("\n万位:" + numStr);
+        } else if (1 == sscNumType) {
+            stringBuffer.append("\n千位:" + numStr);
+        } else if (2 == sscNumType) {
+            stringBuffer.append("\n百位:" + numStr);
+        } else if (3 == sscNumType) {
+            stringBuffer.append("\n十位:" + numStr);
+        } else if (4 == sscNumType) {
+            stringBuffer.append("\n个位:" + numStr);
+        }
+
+        stringBuffer.append("\n---------------------");
+        stringBuffer.append("\n比赛倍率：" + bsResult);
+        stringBuffer.append("\n比赛结果：黑单");
+        // 发送 - 钉钉消息
+        dingUtil.sendMassage(stringBuffer.toString());
     }
 
     /***
@@ -338,10 +412,10 @@ public class SscBetUtil_V1 {
         bet(driver);
 
         // 操作 - 确认下注
-        SleepUtil.sleepUtil(1000);
+        SleepUtil.sleepUtil(500);
         driver.findElement(By.id("modals-container")).findElement(By.className("check-bet-modal"))
             .findElement(By.className("modal-btns")).findElement(By.className("confirm")).click();
-        SleepUtil.sleepUtil(1000);
+        SleepUtil.sleepUtil(500);
 
         // 操作玩，初始化
         bl = 0;
@@ -367,7 +441,7 @@ public class SscBetUtil_V1 {
                     .findElement(By.className("balls-ul")).findElements(By.className("balls-row"));
 
                 // 获取 - 万位操作信息
-                SleepUtil.sleepUtil(200);
+                SleepUtil.sleepUtil(50);
                 List<WebElement> ball = ballsElements.get(sscNumType).findElement(By.className("row-balls"))
                     .findElements(By.className("ball"));
                 if (null != ball) {
@@ -388,7 +462,7 @@ public class SscBetUtil_V1 {
                 driver = driver.switchTo().window(driver.getWindowHandle());
             }
         } while (res);
-        SleepUtil.sleepUtil(1000);
+        SleepUtil.sleepUtil(500);
         return sjResult;
     }
 
@@ -503,12 +577,12 @@ public class SscBetUtil_V1 {
      *
      * @param driver
      */
-    public static void getAccountInfo(WebDriver driver) {
+    public static String getAccountInfo(WebDriver driver) {
         // 获取 - 账号信息
+        SleepUtil.sleepUtil(500);
         WebElement account = driver.findElement(By.className("lottery-wrapper")).findElement(By.className("accountMsg"))
             .findElement(By.className("account")).findElement(By.className("balance")).findElement(By.tagName("span"));
-        System.out.println("account:" + account.getText());
-        SleepUtil.sleepUtil(5000);
+        return account.getText();
     }
 
     /***
