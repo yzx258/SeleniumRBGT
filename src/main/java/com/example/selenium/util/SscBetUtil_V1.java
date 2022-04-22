@@ -317,11 +317,11 @@ public class SscBetUtil_V1 {
         stringBuffer.append("\n---------------------");
         stringBuffer.append("\n比赛期数：" + gmInfo.getPeriod());
         stringBuffer.append("\n---------------------");
-        stringBuffer.append("\n万位:" + gmInfo.getTenThousand());
-        stringBuffer.append("\n千位:" + gmInfo.getThousands());
-        stringBuffer.append("\n百位:" + gmInfo.getHundreds());
-        stringBuffer.append("\n十位:" + gmInfo.getTen());
-        stringBuffer.append("\n个位:" + gmInfo.getSingleDigit());
+        stringBuffer.append("\n万位：" + gmInfo.getTenThousand());
+        stringBuffer.append("\n千位：" + gmInfo.getThousands());
+        stringBuffer.append("\n百位：" + gmInfo.getHundreds());
+        stringBuffer.append("\n十位：" + gmInfo.getTen());
+        stringBuffer.append("\n个位：" + gmInfo.getSingleDigit());
 
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
@@ -348,15 +348,15 @@ public class SscBetUtil_V1 {
         stringBuffer.append("\n---------------------");
 
         if (0 == sscNumType) {
-            stringBuffer.append("\n万位:" + numStr);
+            stringBuffer.append("\n万位：" + numStr);
         } else if (1 == sscNumType) {
-            stringBuffer.append("\n千位:" + numStr);
+            stringBuffer.append("\n千位：" + numStr);
         } else if (2 == sscNumType) {
-            stringBuffer.append("\n百位:" + numStr);
+            stringBuffer.append("\n百位：" + numStr);
         } else if (3 == sscNumType) {
-            stringBuffer.append("\n十位:" + numStr);
+            stringBuffer.append("\n十位：" + numStr);
         } else if (4 == sscNumType) {
-            stringBuffer.append("\n个位:" + numStr);
+            stringBuffer.append("\n个位：" + numStr);
         }
 
         stringBuffer.append("\n---------------------");
