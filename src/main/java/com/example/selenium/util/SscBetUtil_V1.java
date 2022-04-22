@@ -405,7 +405,11 @@ public class SscBetUtil_V1 {
         info.setCreateTime(new Date());
         info.setPeriod(period);
         info.setNumStr(numStr + "");
-        info.setMagnification(magnification);
+        if (bl == 0) {
+            info.setMagnification(1);
+        } else {
+            info.setMagnification(Integer.parseInt("1" + magnification));
+        }
         boolean saveResult = betSscGameInfoService.save(info);
         if (!saveResult) {
             throw new RuntimeException("保存数据失败");
