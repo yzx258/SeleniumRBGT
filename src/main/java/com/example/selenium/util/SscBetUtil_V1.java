@@ -282,6 +282,7 @@ public class SscBetUtil_V1 {
             } while (true);
         } catch (Exception e) {
             System.out.println("ERROR MESSAGE :" + e.getMessage());
+            dingUtil.sendMassage("操作失败，请留意系统！");
         } finally {
             // 结束 - 此次操作
             cacheMapUtil.delMap("THREAD_EXECUTION_SSC_B");
