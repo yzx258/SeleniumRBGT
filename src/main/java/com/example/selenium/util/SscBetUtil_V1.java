@@ -3,7 +3,6 @@ package com.example.selenium.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -154,7 +153,7 @@ public class SscBetUtil_V1 {
                 period = String.valueOf(Integer.parseInt(kjInfo.getPeriod()) + 1);
 
                 // 操作 - 万位
-                Integer ww = 9;
+                Integer ww = op(driver, 0);
                 // 万位下注
                 if (null != ww) {
                     if (gmInfo != null) {
@@ -181,7 +180,7 @@ public class SscBetUtil_V1 {
                     sendOk(wwBl, period, ww, 0, blResult, driver);
                 }
 
-                Integer qw = 9;
+                Integer qw = op(driver, 1);;
                 // 千位下注
                 if (null != qw) {
                     if (gmInfo != null) {
@@ -207,7 +206,7 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(qwBl, period, qw, 1, blResult, driver);
                 }
-                Integer bw = 9;
+                Integer bw = op(driver, 2);
 
                 // 百位下注
                 if (null != bw) {
@@ -233,7 +232,7 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(bwBl, period, bw, 2, blResult, driver);
                 }
-                Integer sw = 9;
+                Integer sw = op(driver, 3);
 
                 // 十位下注
                 if (null != sw) {
@@ -260,7 +259,7 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(swBl, period, sw, 3, blResult, driver);
                 }
-                Integer gw = 9;
+                Integer gw = op(driver, 4);
                 // 个位下注
                 if (null != gw) {
                     if (gmInfo != null) {
@@ -456,7 +455,7 @@ public class SscBetUtil_V1 {
                     .findElements(By.className("ball"));
                 if (null != ball) {
                     // 获取 - 随机数
-                    sjResult = new Random().nextInt(10);
+                    sjResult = 9;
                     for (int i = 0; i < ball.size(); i++) {
                         if (i == sjResult) {
                             continue;
@@ -468,7 +467,7 @@ public class SscBetUtil_V1 {
                 res = false;
             } catch (Exception e) {
                 System.out.println("OP - 获取操作失败......");
-                SleepUtil.sleepUtil(2000);
+                SleepUtil.sleepUtil(1000);
                 driver = driver.switchTo().window(driver.getWindowHandle());
             }
         } while (res);
