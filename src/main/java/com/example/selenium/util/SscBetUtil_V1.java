@@ -448,8 +448,8 @@ public class SscBetUtil_V1 {
      */
     private void sendOk(Integer bl, String period, Integer numStr, Integer sscNumType, Integer magnification,
         WebDriver driver) {
-
-        if (bl != 0) {
+        log.info("我是倍率：bl:{},bls.get(bl):{}",bl,bls.get(bl));
+        if (bl > 0) {
             // 下注 - 倍数
             WebElement multiple =
                 driver.findElement(By.className("lottery-content")).findElement(By.className("lottery-content-scroll"))
