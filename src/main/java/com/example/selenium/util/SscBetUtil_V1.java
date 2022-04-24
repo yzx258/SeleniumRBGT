@@ -361,7 +361,6 @@ public class SscBetUtil_V1 {
         stringBuffer.append("\n比赛结果：黑单");
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
-        System.out.println(stringBuffer.toString());
     }
 
     /***

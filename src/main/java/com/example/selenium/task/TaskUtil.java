@@ -34,7 +34,6 @@ public class TaskUtil {
      */
     @Async("myTaskAsyncPool")
     public void send001() {
-        System.out.println("TASK SEND_SSC THREAD_EXECUTION_SSC_A");
         sscBetUtil_v1.send();
     }
 
