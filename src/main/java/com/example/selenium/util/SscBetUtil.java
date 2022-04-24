@@ -149,7 +149,7 @@ public class SscBetUtil {
                         bsResult = 1;
                     }
                     // 更新 - 比赛结果
-                    betSscGameInfoService.updateBetSscGameInfo(gmInfo.getPeriod(), bsResult);
+                    betSscGameInfoService.updateBetSscGameInfo(gmInfo.getPeriod(), bsResult, 0);
                 }
 
                 // 操作 - 万位

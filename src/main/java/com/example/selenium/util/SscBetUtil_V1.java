@@ -173,7 +173,7 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 0);
                     }
 
                     // 下注
@@ -202,7 +202,7 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 1);
                     }
 
                     // 下注
@@ -232,7 +232,7 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 2);
                     }
                     // 下注
                     sendOk(bwBl, period, bw, 2, blResult, driver);
@@ -260,7 +260,7 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 3);
                     }
                     // 下注
                     sendOk(swBl, period, sw, 3, blResult, driver);
@@ -288,7 +288,7 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 4);
                     }
                     // 下注
                     sendOk(gwBl, period, gw, 4, blResult, driver);

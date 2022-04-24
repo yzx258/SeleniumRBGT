@@ -20,7 +20,7 @@ public interface BetSscGameInfoService extends IService<BetSscGameInfo> {
      * @author yucw
      * @date 2022-04-21 10:15
      */
-    void updateBetSscGameInfo(String period, Integer bsResult);
+    void updateBetSscGameInfo(String period, Integer bsResult, Integer sscNumType);
 
     /***
      * 获取 - 参数信息
