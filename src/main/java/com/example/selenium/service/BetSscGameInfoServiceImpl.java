@@ -35,9 +35,8 @@ public class BetSscGameInfoServiceImpl extends ServiceImpl<BetSscGameInfoMapper,
     @Override
     public BetSscGameInfo getBetSscGameInfo(String period, Integer sscNumType) {
         log.info("查询购买信息：期数：{}，类型：{}", period, sscNumType);
-        BetSscGameInfo betSscGameInfo =
-            this.baseMapper.selectOne(Wrappers.lambdaQuery(BetSscGameInfo.class).eq(BetSscGameInfo::getPeriod, period)
-                .eq(BetSscGameInfo::getSscNumType, sscNumType).eq(BetSscGameInfo::getKjHm, null));
+        BetSscGameInfo betSscGameInfo = this.baseMapper.selectOne(Wrappers.lambdaQuery(BetSscGameInfo.class)
+            .eq(BetSscGameInfo::getPeriod, period).eq(BetSscGameInfo::getSscNumType, sscNumType));
         log.info("查询购买信息：BetSscGameInfo：{}", JSONUtil.toJsonStr(betSscGameInfo));
         return betSscGameInfo;
     }
