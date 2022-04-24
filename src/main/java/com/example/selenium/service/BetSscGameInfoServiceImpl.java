@@ -23,9 +23,10 @@ public class BetSscGameInfoServiceImpl extends ServiceImpl<BetSscGameInfoMapper,
     implements BetSscGameInfoService {
 
     @Override
-    public void updateBetSscGameInfo(String period, Integer bsResult, Integer sscNumType) {
-        boolean updateResult = update(Wrappers.lambdaUpdate(BetSscGameInfo.class)
-            .set(BetSscGameInfo::getResult, bsResult).eq(BetSscGameInfo::getPeriod, period));
+    public void updateBetSscGameInfo(String period, Integer bsResult, Integer sscNumType, String kjHm) {
+        boolean updateResult =
+            update(Wrappers.lambdaUpdate(BetSscGameInfo.class).set(BetSscGameInfo::getResult, bsResult)
+                .set(BetSscGameInfo::getKjHm, kjHm).eq(BetSscGameInfo::getPeriod, period));
         if (!updateResult) {
             throw new RuntimeException("更新数据失败");
         }

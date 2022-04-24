@@ -50,6 +50,8 @@ public class BetSscGameInfo {
 
     private Integer bl;
 
+    private String kjHm;
+
     /**
      * 结果
      */

@@ -157,7 +157,6 @@ public class SscBetUtil_V1 {
                     if (wwInfo != null) {
                         // 比赛结果
                         Integer bsResult = 0;
-
                         if (kjInfo.getTenThousand().equals(wwInfo.getNumStr())) {
                             sendError(0, kjInfo.getPeriod(), ww, bls.get(wwBl), driver, kjInfo);
                             wwBl = wwInfo.getBl() + 1;
@@ -169,7 +168,8 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 0);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 0,
+                            kjInfo.getTenThousand());
                     }
                     // 下注
                     sendOk(wwBl, period, ww, 0, blResult, driver);
@@ -198,9 +198,9 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 1);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 1,
+                            kjInfo.getThousands());
                     }
-
                     // 下注
                     sendOk(qwBl, period, qw, 1, blResult, driver);
                 }
@@ -229,7 +229,7 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 2);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 2, kjInfo.getPeriod());
                     }
                     // 下注
                     sendOk(bwBl, period, bw, 2, blResult, driver);
@@ -258,7 +258,7 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 3);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 3, kjInfo.getTen());
                     }
                     // 下注
                     sendOk(swBl, period, sw, 3, blResult, driver);
@@ -287,7 +287,8 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 4);
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 4,
+                            kjInfo.getSingleDigit());
                     }
                     // 下注
                     sendOk(gwBl, period, gw, 4, blResult, driver);
