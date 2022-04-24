@@ -168,6 +168,7 @@ public class SscBetUtil_V1 {
                             wwBl = wwBl + 1;
                             blResult = bls.get(wwBl);
                             bsResult = 0;
+                            ww = Integer.parseInt(gmInfo.getTenThousand());
                         } else {
                             wwBl = 0;
                             blResult = bls.get(wwBl);
@@ -195,6 +196,7 @@ public class SscBetUtil_V1 {
                             qwBl = qwBl + 1;
                             blResult = bls.get(qwBl);
                             bsResult = 0;
+                            qw = Integer.parseInt(gmInfo.getThousands());
                         } else {
                             qwBl = 0;
                             blResult = bls.get(qwBl);
@@ -222,6 +224,7 @@ public class SscBetUtil_V1 {
                             bwBl = bwBl + 1;
                             blResult = bls.get(bwBl);
                             bsResult = 0;
+                            bw = Integer.parseInt(gmInfo.getHundreds());
                         } else {
                             bwBl = 0;
                             blResult = bls.get(bwBl);
@@ -248,6 +251,7 @@ public class SscBetUtil_V1 {
                             swBl = swBl + 1;
                             blResult = bls.get(swBl);
                             bsResult = 0;
+                            sw = Integer.parseInt(gmInfo.getTen());
                         } else {
                             swBl = 0;
                             blResult = bls.get(swBl);
@@ -274,6 +278,7 @@ public class SscBetUtil_V1 {
                             gwBl = gwBl + 1;
                             blResult = bls.get(gwBl);
                             bsResult = 0;
+                            gw = Integer.parseInt(gmInfo.getSingleDigit());
                         } else {
                             gwBl = 0;
                             blResult = bls.get(gwBl);
