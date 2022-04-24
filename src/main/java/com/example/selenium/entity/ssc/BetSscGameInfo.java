@@ -48,6 +48,8 @@ public class BetSscGameInfo {
 
     private Integer magnification;
 
+    private Integer bl;
+
     /**
      * 结果
      */
