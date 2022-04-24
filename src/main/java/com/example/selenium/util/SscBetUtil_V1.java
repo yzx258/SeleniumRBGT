@@ -125,8 +125,6 @@ public class SscBetUtil_V1 {
                     do {
                         SleepUtil.sleepUtil(2000);
                         kjInfo = getLotteryInfo(driver);
-                        System.out.println(
-                            kjInfo.getPeriod() + ".equals(" + period + ") - " + kjInfo.getPeriod().equals(period));
                         if (Integer.parseInt(kjInfo.getPeriod()) > Integer.parseInt(period)) {
                             dingUtil
                                 .sendMassage("目前期数：" + kjInfo.getPeriod() + ";购买期数：" + period + "不符合，可能存在数据丢失，请注意！！");
@@ -160,8 +158,6 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        System.out.println("【万位】kjInfo.getTenThousand().equals(gmInfo.getTenThousand()):"
-                            + kjInfo.getTenThousand() + ";" + gmInfo.getTenThousand());
                         if (kjInfo.getTenThousand().equals(gmInfo.getTenThousand())) {
                             sendError(0, period, ww, bls.get(wwBl), driver);
                             wwBl = wwBl + 1;
@@ -187,8 +183,6 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        System.out.println("【千位】kjInfo.getTenThousand().equals(gmInfo.getThousands()):"
-                            + kjInfo.getThousands() + ";" + gmInfo.getThousands());
                         if (kjInfo.getThousands().equals(gmInfo.getThousands())) {
                             sendError(1, period, qw, bls.get(qwBl), driver);
                             qwBl = qwBl + 1;
@@ -214,8 +208,6 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        System.out.println("【百位】kjInfo.getHundreds().equals(gmInfo.getHundreds()):"
-                            + kjInfo.getHundreds() + ";" + gmInfo.getHundreds());
                         if (kjInfo.getHundreds().equals(gmInfo.getHundreds())) {
                             sendError(2, period, qw, bls.get(qwBl), driver);
                             bwBl = bwBl + 1;
@@ -241,8 +233,6 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        System.out.println(
-                            "【十位】kjInfo.getTen().equals(gmInfo.getTen()):" + kjInfo.getTen() + ";" + gmInfo.getTen());
                         if (kjInfo.getTen().equals(gmInfo.getTen())) {
                             sendError(3, period, sw, bls.get(swBl), driver);
                             swBl = swBl + 1;
@@ -267,8 +257,6 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        System.out.println("【个位】kjInfo.getSingleDigit().equals(gmInfo.getSingleDigit()):"
-                            + kjInfo.getSingleDigit() + ";" + gmInfo.getSingleDigit());
                         if (kjInfo.getSingleDigit().equals(gmInfo.getSingleDigit())) {
                             sendError(4, period, gw, bls.get(gwBl), driver);
                             gwBl = gwBl + 1;
@@ -526,7 +514,6 @@ public class SscBetUtil_V1 {
         List<WebElement> series = driver.findElement(By.className("lottery-list")).findElements(By.className("series"))
             .get(2).findElements(By.tagName("li"));
         for (WebElement item : series) {
-            System.out.println("series:" + item.getText());
             if (GamesTypeName.equals(item.getText())) {
                 item.click();
                 break;
@@ -538,7 +525,6 @@ public class SscBetUtil_V1 {
         List<WebElement> handicap = driver.findElement(By.className("lottery-content-scroll"))
             .findElement(By.className("handicapList")).findElements(By.className("handicap"));
         for (WebElement item : handicap) {
-            System.out.println("handicap:" + item.getText());
             if ("标准盘".equals(item.getText())) {
                 item.click();
                 break;
