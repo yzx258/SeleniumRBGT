@@ -17,6 +17,7 @@ import com.example.selenium.entity.ssc.BetSscGameInfo;
 import com.example.selenium.handle.BetGameAccountInfoHandle;
 import com.example.selenium.service.BetSscGameInfoService;
 
+import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -278,7 +279,10 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(gwBl, period, gw, 4, blResult, driver);
                 }
+                log.info("==================================");
                 log.info("万位：{},千位：{},百位：{},十位：{},个位：{}", ww, qw, bw, sw, gw);
+                log.info("==================================");
+                System.out.println();
             } while (true);
         } catch (Exception e) {
             System.out.println("ERROR MESSAGE :" + e.getMessage());
@@ -358,6 +362,7 @@ public class SscBetUtil_V1 {
         stringBuffer.append("\n比赛信息：" + kjInfo.toString());
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
+
     }
 
     /***
@@ -496,7 +501,10 @@ public class SscBetUtil_V1 {
         info.setHundreds(span.get(2).findElement(By.tagName("i")).findElement(By.tagName("span")).getText());
         info.setThousands(span.get(1).findElement(By.tagName("i")).findElement(By.tagName("span")).getText());
         info.setTenThousand(span.get(0).findElement(By.tagName("i")).findElement(By.tagName("span")).getText());
-        System.out.println("开奖信息：" + info.toString());
+        log.info("==================================");
+        log.info("开奖信息：" + JSONUtil.toJsonStr(info));
+        log.info("==================================");
+        System.out.println();
         return info;
     }
 

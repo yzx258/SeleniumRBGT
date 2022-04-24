@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.selenium.entity.ssc.BetSscGameInfo;
 import com.example.selenium.mapper.BetSscGameInfoMapper;
 
+import cn.hutool.json.JSONUtil;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * File Description
  *
@@ -14,6 +17,7 @@ import com.example.selenium.mapper.BetSscGameInfoMapper;
  * @company 厦门市宜车时代
  * @date 2022-04-20 15:35
  */
+@Slf4j
 @Service
 public class BetSscGameInfoServiceImpl extends ServiceImpl<BetSscGameInfoMapper, BetSscGameInfo>
     implements BetSscGameInfoService {
@@ -29,8 +33,13 @@ public class BetSscGameInfoServiceImpl extends ServiceImpl<BetSscGameInfoMapper,
 
     @Override
     public BetSscGameInfo getBetSscGameInfo(String period, Integer sscNumType) {
+        log.info("==================================");
+        log.info("查询购买信息：期数：{}，类型：{}", period, sscNumType);
         BetSscGameInfo betSscGameInfo = this.baseMapper.selectOne(Wrappers.lambdaQuery(BetSscGameInfo.class)
             .eq(BetSscGameInfo::getPeriod, period).eq(BetSscGameInfo::getSscNumType, sscNumType));
+        log.info("查询购买信息：BetSscGameInfo：{}", JSONUtil.toJsonStr(betSscGameInfo));
+        log.info("==================================");
+        System.out.println();
         return betSscGameInfo;
     }
 }
