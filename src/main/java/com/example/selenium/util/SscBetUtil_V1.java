@@ -217,6 +217,7 @@ public class SscBetUtil_V1 {
                         System.out.println("【百位】kjInfo.getHundreds().equals(gmInfo.getHundreds()):"
                             + kjInfo.getHundreds() + ";" + gmInfo.getHundreds());
                         if (kjInfo.getHundreds().equals(gmInfo.getHundreds())) {
+                            sendError(2, period, qw, bls.get(qwBl), driver);
                             bwBl = bwBl + 1;
                             blResult = bls.get(bwBl);
                             bsResult = 0;
