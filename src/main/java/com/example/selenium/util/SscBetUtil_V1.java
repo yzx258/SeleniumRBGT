@@ -126,7 +126,6 @@ public class SscBetUtil_V1 {
                     } while (!kjInfo.getPeriod().equals(period)
                         || Integer.parseInt(kjInfo.getPeriod()) < Integer.parseInt(period));
                 }
-                kjInfo = getLotteryInfo(driver);
                 log.info("==================================");
                 log.info("开奖信息：" + JSONUtil.toJsonStr(kjInfo));
                 log.info("==================================");
