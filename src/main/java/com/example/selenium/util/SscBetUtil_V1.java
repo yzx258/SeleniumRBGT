@@ -163,7 +163,7 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         if (kjInfo.getTenThousand().equals(wwInfo.getNumStr())) {
-                            sendError(0, period, ww, bls.get(wwBl), driver, kjInfo);
+                            sendError(0, kjInfo.getPeriod(), ww, bls.get(wwBl), driver, kjInfo);
                             wwBl = wwBl + 1;
                             blResult = bls.get(wwBl);
                             bsResult = 0;
@@ -192,7 +192,7 @@ public class SscBetUtil_V1 {
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
                         if (kjInfo.getThousands().equals(qwInfo.getNumStr())) {
-                            sendError(1, period, qw, bls.get(qwBl), driver, kjInfo);
+                            sendError(1, kjInfo.getPeriod(), qw, bls.get(qwBl), driver, kjInfo);
                             qwBl = qwBl + 1;
                             blResult = bls.get(qwBl);
                             bsResult = 0;
@@ -221,7 +221,7 @@ public class SscBetUtil_V1 {
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
                         if (kjInfo.getHundreds().equals(bwInfo.getNumStr())) {
-                            sendError(2, period, qw, bls.get(qwBl), driver, kjInfo);
+                            sendError(2, kjInfo.getPeriod(), qw, bls.get(qwBl), driver, kjInfo);
                             bwBl = bwBl + 1;
                             blResult = bls.get(bwBl);
                             bsResult = 0;
@@ -250,7 +250,7 @@ public class SscBetUtil_V1 {
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
                         if (null != swInfo && kjInfo.getTen().equals(swInfo.getNumStr())) {
-                            sendError(3, period, sw, bls.get(swBl), driver, kjInfo);
+                            sendError(3, kjInfo.getPeriod(), sw, bls.get(swBl), driver, kjInfo);
                             swBl = swBl + 1;
                             blResult = bls.get(swBl);
                             bsResult = 0;
@@ -278,7 +278,7 @@ public class SscBetUtil_V1 {
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
                         if (kjInfo.getSingleDigit().equals(gwInfo.getNumStr())) {
-                            sendError(4, period, gw, bls.get(gwBl), driver, kjInfo);
+                            sendError(4, kjInfo.getPeriod(), gw, bls.get(gwBl), driver, kjInfo);
                             gwBl = gwBl + 1;
                             blResult = bls.get(gwBl);
                             bsResult = 0;
