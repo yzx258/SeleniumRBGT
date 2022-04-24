@@ -348,9 +348,9 @@ public class SscBetUtil_V1 {
             stringBuffer.append("\n比赛倍率：1" + bsResult);
         }
         stringBuffer.append("\n比赛结果：黑单");
-        stringBuffer.append(
-            "\n比赛信息：期数 - " + kjInfo.getPeriod() + ";万位 - " + kjInfo.getTenThousand() + ";千位 - " + kjInfo.getThousands()
-                + ";百位 - " + kjInfo.getHundreds() + ";十位 - " + kjInfo.getTen() + ";个位 - " + kjInfo.getSingleDigit());
+        stringBuffer
+            .append("\n比赛信息：" + kjInfo.getPeriod() + "(期数);" + kjInfo.getTenThousand() + "(万);" + kjInfo.getThousands()
+                + "(千);" + kjInfo.getHundreds() + "(百);" + kjInfo.getTen() + "(十);" + kjInfo.getSingleDigit() + "(个)");
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
 
