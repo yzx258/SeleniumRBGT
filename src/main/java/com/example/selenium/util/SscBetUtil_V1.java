@@ -449,7 +449,7 @@ public class SscBetUtil_V1 {
      */
     private void sendOk(Integer bl, String period, Integer numStr, Integer sscNumType, Integer magnification,
         WebDriver driver) {
-        log.info("我是倍率：bl:{},bls.get(bl):{}",bl,bls.get(bl));
+        log.info("我是倍率：bl:{},bls.get(bl):{},magnification:{}",bl,bls.get(bl),magnification);
         if (bl > 0) {
             // 下注 - 倍数
             WebElement multiple =
@@ -459,7 +459,7 @@ public class SscBetUtil_V1 {
 
             multiple.click();
             multiple.clear();
-            multiple.sendKeys(bls.get(bl) + "");
+            multiple.sendKeys(magnification + "");
             SleepUtil.sleepUtil(500);
         }
 
