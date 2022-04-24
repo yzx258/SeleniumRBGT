@@ -154,7 +154,7 @@ public class SscBetUtil_V1 {
                 period = String.valueOf(Integer.parseInt(kjInfo.getPeriod()) + 1);
 
                 // 操作 - 万位
-                Integer ww = op(driver, 0);
+                Integer ww = 9;
                 // 万位下注
                 if (null != ww) {
                     if (gmInfo != null) {
@@ -168,7 +168,6 @@ public class SscBetUtil_V1 {
                             wwBl = wwBl + 1;
                             blResult = bls.get(wwBl);
                             bsResult = 0;
-                            ww = Integer.parseInt(gmInfo.getTenThousand());
                         } else {
                             wwBl = 0;
                             blResult = bls.get(wwBl);
@@ -182,7 +181,7 @@ public class SscBetUtil_V1 {
                     sendOk(wwBl, period, ww, 0, blResult, driver);
                 }
 
-                Integer qw = op(driver, 1);
+                Integer qw = 9;
                 // 千位下注
                 if (null != qw) {
                     if (gmInfo != null) {
@@ -196,7 +195,6 @@ public class SscBetUtil_V1 {
                             qwBl = qwBl + 1;
                             blResult = bls.get(qwBl);
                             bsResult = 0;
-                            qw = Integer.parseInt(gmInfo.getThousands());
                         } else {
                             qwBl = 0;
                             blResult = bls.get(qwBl);
@@ -209,7 +207,7 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(qwBl, period, qw, 1, blResult, driver);
                 }
-                Integer bw = op(driver, 2);
+                Integer bw = 9;
 
                 // 百位下注
                 if (null != bw) {
@@ -220,7 +218,6 @@ public class SscBetUtil_V1 {
                         System.out.println("【百位】kjInfo.getHundreds().equals(gmInfo.getHundreds()):"
                             + kjInfo.getHundreds() + ";" + gmInfo.getHundreds());
                         if (kjInfo.getHundreds().equals(gmInfo.getHundreds())) {
-                            sendError(2, period, bw, bls.get(bwBl), driver);
                             bwBl = bwBl + 1;
                             blResult = bls.get(bwBl);
                             bsResult = 0;
@@ -236,7 +233,7 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(bwBl, period, bw, 2, blResult, driver);
                 }
-                Integer sw = op(driver, 3);
+                Integer sw = 9;
 
                 // 十位下注
                 if (null != sw) {
@@ -251,7 +248,6 @@ public class SscBetUtil_V1 {
                             swBl = swBl + 1;
                             blResult = bls.get(swBl);
                             bsResult = 0;
-                            sw = Integer.parseInt(gmInfo.getTen());
                         } else {
                             swBl = 0;
                             blResult = bls.get(swBl);
@@ -264,7 +260,7 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(swBl, period, sw, 3, blResult, driver);
                 }
-                Integer gw = op(driver, 4);
+                Integer gw = 9;
                 // 个位下注
                 if (null != gw) {
                     if (gmInfo != null) {
@@ -278,7 +274,6 @@ public class SscBetUtil_V1 {
                             gwBl = gwBl + 1;
                             blResult = bls.get(gwBl);
                             bsResult = 0;
-                            gw = Integer.parseInt(gmInfo.getSingleDigit());
                         } else {
                             gwBl = 0;
                             blResult = bls.get(gwBl);
