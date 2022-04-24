@@ -176,6 +176,10 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(wwBl, period, ww, SscNumType.SSC_NUM_TYPE_0.getCode(), blResult, driver);
+                    if(wwBl > 0){
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_0.getCode(), kjInfo.getPeriod(), ww, bls.get(wwBl),
+                                driver, kjInfo);
+                    }
                 }
                 log.info("==================================");
                 System.out.println();
@@ -208,6 +212,10 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(qwBl, period, qw, SscNumType.SSC_NUM_TYPE_1.getCode(), blResult, driver);
+                    if(qwBl > 0){
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_1.getCode(), kjInfo.getPeriod(), ww, bls.get(qwBl),
+                                driver, kjInfo);
+                    }
                 }
                 log.info("==================================");
                 System.out.println();
@@ -237,10 +245,14 @@ public class SscBetUtil_V1 {
                         }
                         // 更新 - 比赛结果
                         betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult,
-                            SscNumType.SSC_NUM_TYPE_2.getCode(), kjInfo.getPeriod());
+                            SscNumType.SSC_NUM_TYPE_2.getCode(), kjInfo.getHundreds());
                     }
                     // 下注
                     sendOk(bwBl, period, bw, SscNumType.SSC_NUM_TYPE_2.getCode(), blResult, driver);
+                    if(bwBl > 0){
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_2.getCode(), kjInfo.getPeriod(), ww, bls.get(bwBl),
+                                driver, kjInfo);
+                    }
                 }
                 log.info("==================================");
                 System.out.println();
@@ -256,7 +268,7 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        if (null != swInfo && kjInfo.getTen().equals(swInfo.getNumStr())) {
+                        if (kjInfo.getTen().equals(swInfo.getNumStr())) {
                             sendError(SscNumType.SSC_NUM_TYPE_3.getCode(), kjInfo.getPeriod(), sw, bls.get(swBl),
                                 driver, kjInfo);
                             swBl = swInfo.getBl() + 1;
@@ -273,6 +285,10 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(swBl, period, sw, SscNumType.SSC_NUM_TYPE_3.getCode(), blResult, driver);
+                    if(swBl > 0){
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_3.getCode(), kjInfo.getPeriod(), ww, bls.get(swBl),
+                                driver, kjInfo);
+                    }
                 }
                 log.info("==================================");
                 System.out.println();
@@ -305,6 +321,10 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(gwBl, period, gw, SscNumType.SSC_NUM_TYPE_4.getCode(), blResult, driver);
+                    if(gwBl > 0){
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_4.getCode(), kjInfo.getPeriod(), ww, bls.get(gwBl),
+                                driver, kjInfo);
+                    }
                 }
                 log.info("==================================");
                 System.out.println();
@@ -364,6 +384,50 @@ public class SscBetUtil_V1 {
         stringBuffer
             .append("\n比赛信息：" + kjInfo.getPeriod() + "(期数);" + kjInfo.getTenThousand() + "(万);" + kjInfo.getThousands()
                 + "(千);" + kjInfo.getHundreds() + "(百);" + kjInfo.getTen() + "(十);" + kjInfo.getSingleDigit() + "(个)");
+        // 发送 - 钉钉消息
+        dingUtil.sendMassage(stringBuffer.toString());
+
+    }
+
+    /***
+     * 发送黑单信息
+     *
+     * @param sscNumType
+     * @param period
+     * @param numStr
+     * @param bsResult
+     * @param driver
+     * @return void
+     * @author yucw
+     * @date 2022-04-22 10:53
+     */
+    public void sendSuccess(Integer sscNumType, String period, Integer numStr, Integer bsResult, WebDriver driver,
+                          LotteryInfoBO kjInfo) {
+        // 聚合 - 钉钉消息
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("\n---------------------");
+        stringBuffer.append("\n账户余额：" + getAccountInfo(driver));
+        stringBuffer.append("\n比赛期数：" + period);
+        stringBuffer.append("\n---------------------");
+
+        if (0 == sscNumType) {
+            stringBuffer.append("\n万位：" + numStr);
+        } else if (1 == sscNumType) {
+            stringBuffer.append("\n千位：" + numStr);
+        } else if (2 == sscNumType) {
+            stringBuffer.append("\n百位：" + numStr);
+        } else if (3 == sscNumType) {
+            stringBuffer.append("\n十位：" + numStr);
+        } else if (4 == sscNumType) {
+            stringBuffer.append("\n个位：" + numStr);
+        }
+
+        stringBuffer.append("\n---------------------");
+        if (bsResult == 1) {
+            stringBuffer.append("\n比赛倍率：1");
+        } else {
+            stringBuffer.append("\n比赛倍率：1" + bsResult);
+        }
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
 
