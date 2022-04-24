@@ -26,4 +26,11 @@ public class BetSscGameInfoServiceImpl extends ServiceImpl<BetSscGameInfoMapper,
             throw new RuntimeException("更新数据失败");
         }
     }
+
+    @Override
+    public BetSscGameInfo getBetSscGameInfo(String period, Integer sscNumType) {
+        BetSscGameInfo betSscGameInfo = this.baseMapper.selectOne(Wrappers.lambdaQuery(BetSscGameInfo.class)
+            .eq(BetSscGameInfo::getPeriod, period).eq(BetSscGameInfo::getSscNumType, sscNumType));
+        return betSscGameInfo;
+    }
 }

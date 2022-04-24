@@ -158,8 +158,9 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        if (kjInfo.getTenThousand().equals(gmInfo.getTenThousand())) {
-                            sendError(0, period, ww, bls.get(wwBl), driver);
+                        BetSscGameInfo wwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 0);
+                        if (null != wwInfo && kjInfo.getTenThousand().equals(wwInfo.getNumStr())) {
+                            sendError(0, period, ww, bls.get(wwBl), driver, kjInfo);
                             wwBl = wwBl + 1;
                             blResult = bls.get(wwBl);
                             bsResult = 0;
@@ -183,8 +184,9 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        if (kjInfo.getThousands().equals(gmInfo.getThousands())) {
-                            sendError(1, period, qw, bls.get(qwBl), driver);
+                        BetSscGameInfo qwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 1);
+                        if (null != qwInfo && kjInfo.getThousands().equals(qwInfo.getNumStr())) {
+                            sendError(1, period, qw, bls.get(qwBl), driver, kjInfo);
                             qwBl = qwBl + 1;
                             blResult = bls.get(qwBl);
                             bsResult = 0;
@@ -208,8 +210,9 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        if (kjInfo.getHundreds().equals(gmInfo.getHundreds())) {
-                            sendError(2, period, qw, bls.get(qwBl), driver);
+                        BetSscGameInfo bwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 2);
+                        if (null != bwInfo && kjInfo.getHundreds().equals(bwInfo.getNumStr())) {
+                            sendError(2, period, qw, bls.get(qwBl), driver, kjInfo);
                             bwBl = bwBl + 1;
                             blResult = bls.get(bwBl);
                             bsResult = 0;
@@ -233,8 +236,9 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        if (kjInfo.getTen().equals(gmInfo.getTen())) {
-                            sendError(3, period, sw, bls.get(swBl), driver);
+                        BetSscGameInfo swInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 3);
+                        if (null != swInfo && kjInfo.getTen().equals(swInfo.getNumStr())) {
+                            sendError(3, period, sw, bls.get(swBl), driver, kjInfo);
                             swBl = swBl + 1;
                             blResult = bls.get(swBl);
                             bsResult = 0;
@@ -257,8 +261,9 @@ public class SscBetUtil_V1 {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
-                        if (kjInfo.getSingleDigit().equals(gmInfo.getSingleDigit())) {
-                            sendError(4, period, gw, bls.get(gwBl), driver);
+                        BetSscGameInfo gwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 4);
+                        if (null != gwInfo && kjInfo.getSingleDigit().equals(gwInfo.getNumStr())) {
+                            sendError(4, period, gw, bls.get(gwBl), driver, kjInfo);
                             gwBl = gwBl + 1;
                             blResult = bls.get(gwBl);
                             bsResult = 0;
@@ -332,7 +337,8 @@ public class SscBetUtil_V1 {
      * @author yucw
      * @date 2022-04-22 10:53
      */
-    public void sendError(Integer sscNumType, String period, Integer numStr, Integer bsResult, WebDriver driver) {
+    public void sendError(Integer sscNumType, String period, Integer numStr, Integer bsResult, WebDriver driver,
+        LotteryInfoBO kjInfo) {
         // 聚合 - 钉钉消息
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("\n---------------------");
@@ -359,6 +365,7 @@ public class SscBetUtil_V1 {
             stringBuffer.append("\n比赛倍率：1" + bsResult);
         }
         stringBuffer.append("\n比赛结果：黑单");
+        stringBuffer.append("\n比赛信息：" + kjInfo.toString());
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
     }

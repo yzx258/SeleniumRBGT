@@ -22,4 +22,15 @@ public interface BetSscGameInfoService extends IService<BetSscGameInfo> {
      */
     void updateBetSscGameInfo(String period, Integer bsResult);
 
+    /***
+     * 获取 - 参数信息
+     * 
+     * @param period
+     * @param sscNumType
+     * @return com.example.selenium.entity.ssc.BetSscGameInfo
+     * @author yucw
+     * @date 2022-04-24 13:41
+     */
+    BetSscGameInfo getBetSscGameInfo(String period, Integer sscNumType);
+
 }
