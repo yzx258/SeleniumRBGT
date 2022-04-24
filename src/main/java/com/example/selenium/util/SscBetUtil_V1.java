@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.selenium.bo.ssc.LotteryInfoBO;
 import com.example.selenium.entity.ssc.BetSscGameInfo;
+import com.example.selenium.enums.SscNumType;
 import com.example.selenium.handle.BetGameAccountInfoHandle;
 import com.example.selenium.service.BetSscGameInfoService;
 
@@ -148,17 +149,19 @@ public class SscBetUtil_V1 {
 
                 // 操作 - 万位
                 log.info("==================================");
-                Integer ww = op(driver, 0);
+                Integer ww = op(driver, SscNumType.SSC_NUM_TYPE_0.getCode());
                 // 万位下注
                 if (null != ww) {
                     Integer wwBl = 0;
                     // 校验 - 第一次不校验红黑
-                    BetSscGameInfo wwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 0);
+                    BetSscGameInfo wwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(),
+                        SscNumType.SSC_NUM_TYPE_0.getCode());
                     if (wwInfo != null) {
                         // 比赛结果
                         Integer bsResult = 0;
                         if (kjInfo.getTenThousand().equals(wwInfo.getNumStr())) {
-                            sendError(0, kjInfo.getPeriod(), ww, bls.get(wwBl), driver, kjInfo);
+                            sendError(SscNumType.SSC_NUM_TYPE_0.getCode(), kjInfo.getPeriod(), ww, bls.get(wwBl),
+                                driver, kjInfo);
                             wwBl = wwInfo.getBl() + 1;
                             blResult = bls.get(wwBl);
                             bsResult = 0;
@@ -168,27 +171,29 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 0,
-                            kjInfo.getTenThousand());
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult,
+                            SscNumType.SSC_NUM_TYPE_0.getCode(), kjInfo.getTenThousand());
                     }
                     // 下注
-                    sendOk(wwBl, period, ww, 0, blResult, driver);
+                    sendOk(wwBl, period, ww, SscNumType.SSC_NUM_TYPE_0.getCode(), blResult, driver);
                 }
                 log.info("==================================");
                 System.out.println();
 
                 log.info("==================================");
-                Integer qw = op(driver, 1);;
+                Integer qw = op(driver, SscNumType.SSC_NUM_TYPE_1.getCode());
                 // 千位下注
                 if (null != qw) {
                     Integer qwBl = 0;
-                    BetSscGameInfo qwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 1);
+                    BetSscGameInfo qwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(),
+                        SscNumType.SSC_NUM_TYPE_1.getCode());
                     if (qwInfo != null) {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
                         if (kjInfo.getThousands().equals(qwInfo.getNumStr())) {
-                            sendError(1, kjInfo.getPeriod(), qw, bls.get(qwBl), driver, kjInfo);
+                            sendError(SscNumType.SSC_NUM_TYPE_1.getCode(), kjInfo.getPeriod(), qw, bls.get(qwBl),
+                                driver, kjInfo);
                             qwBl = qwInfo.getBl() + 1;
                             blResult = bls.get(qwBl);
                             bsResult = 0;
@@ -198,27 +203,29 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 1,
-                            kjInfo.getThousands());
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult,
+                            SscNumType.SSC_NUM_TYPE_1.getCode(), kjInfo.getThousands());
                     }
                     // 下注
-                    sendOk(qwBl, period, qw, 1, blResult, driver);
+                    sendOk(qwBl, period, qw, SscNumType.SSC_NUM_TYPE_1.getCode(), blResult, driver);
                 }
                 log.info("==================================");
                 System.out.println();
 
                 log.info("==================================");
-                Integer bw = op(driver, 2);
+                Integer bw = op(driver, SscNumType.SSC_NUM_TYPE_2.getCode());
                 // 百位下注
                 if (null != bw) {
                     Integer bwBl = 0;
-                    BetSscGameInfo bwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 2);
+                    BetSscGameInfo bwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(),
+                        SscNumType.SSC_NUM_TYPE_2.getCode());
                     if (bwInfo != null) {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
                         if (kjInfo.getHundreds().equals(bwInfo.getNumStr())) {
-                            sendError(2, kjInfo.getPeriod(), qw, bls.get(bwBl), driver, kjInfo);
+                            sendError(SscNumType.SSC_NUM_TYPE_2.getCode(), kjInfo.getPeriod(), qw, bls.get(bwBl),
+                                driver, kjInfo);
                             bwBl = bwInfo.getBl() + 1;
                             blResult = bls.get(bwBl);
                             bsResult = 0;
@@ -229,26 +236,29 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 2, kjInfo.getPeriod());
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult,
+                            SscNumType.SSC_NUM_TYPE_2.getCode(), kjInfo.getPeriod());
                     }
                     // 下注
-                    sendOk(bwBl, period, bw, 2, blResult, driver);
+                    sendOk(bwBl, period, bw, SscNumType.SSC_NUM_TYPE_2.getCode(), blResult, driver);
                 }
                 log.info("==================================");
                 System.out.println();
 
                 log.info("==================================");
-                Integer sw = op(driver, 3);
+                Integer sw = op(driver, SscNumType.SSC_NUM_TYPE_3.getCode());
                 // 十位下注
                 if (null != sw) {
                     Integer swBl = 0;
-                    BetSscGameInfo swInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 3);
+                    BetSscGameInfo swInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(),
+                        SscNumType.SSC_NUM_TYPE_3.getCode());
                     if (swInfo != null) {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
                         if (null != swInfo && kjInfo.getTen().equals(swInfo.getNumStr())) {
-                            sendError(3, kjInfo.getPeriod(), sw, bls.get(swBl), driver, kjInfo);
+                            sendError(SscNumType.SSC_NUM_TYPE_3.getCode(), kjInfo.getPeriod(), sw, bls.get(swBl),
+                                driver, kjInfo);
                             swBl = swInfo.getBl() + 1;
                             blResult = bls.get(swBl);
                             bsResult = 0;
@@ -258,26 +268,29 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 3, kjInfo.getTen());
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult,
+                            SscNumType.SSC_NUM_TYPE_3.getCode(), kjInfo.getTen());
                     }
                     // 下注
-                    sendOk(swBl, period, sw, 3, blResult, driver);
+                    sendOk(swBl, period, sw, SscNumType.SSC_NUM_TYPE_3.getCode(), blResult, driver);
                 }
                 log.info("==================================");
                 System.out.println();
 
                 log.info("==================================");
-                Integer gw = op(driver, 4);
+                Integer gw = op(driver, SscNumType.SSC_NUM_TYPE_4.getCode());
                 // 个位下注
                 if (null != gw) {
                     Integer gwBl = 0;
-                    BetSscGameInfo gwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 4);
+                    BetSscGameInfo gwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(),
+                        SscNumType.SSC_NUM_TYPE_4.getCode());
                     if (gwInfo != null) {
                         // 比赛结果
                         Integer bsResult = 0;
                         // 校验 - 第一次不校验红黑
                         if (kjInfo.getSingleDigit().equals(gwInfo.getNumStr())) {
-                            sendError(4, kjInfo.getPeriod(), gw, bls.get(gwBl), driver, kjInfo);
+                            sendError(SscNumType.SSC_NUM_TYPE_4.getCode(), kjInfo.getPeriod(), gw, bls.get(gwBl),
+                                driver, kjInfo);
                             gwBl = gwInfo.getBl() + 1;
                             blResult = bls.get(gwBl);
                             bsResult = 0;
@@ -287,11 +300,11 @@ public class SscBetUtil_V1 {
                             bsResult = 1;
                         }
                         // 更新 - 比赛结果
-                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult, 4,
-                            kjInfo.getSingleDigit());
+                        betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult,
+                            SscNumType.SSC_NUM_TYPE_4.getCode(), kjInfo.getSingleDigit());
                     }
                     // 下注
-                    sendOk(gwBl, period, gw, 4, blResult, driver);
+                    sendOk(gwBl, period, gw, SscNumType.SSC_NUM_TYPE_4.getCode(), blResult, driver);
                 }
                 log.info("==================================");
                 System.out.println();

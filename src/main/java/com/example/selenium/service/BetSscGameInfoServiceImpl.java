@@ -24,9 +24,9 @@ public class BetSscGameInfoServiceImpl extends ServiceImpl<BetSscGameInfoMapper,
 
     @Override
     public void updateBetSscGameInfo(String period, Integer bsResult, Integer sscNumType, String kjHm) {
-        boolean updateResult =
-            update(Wrappers.lambdaUpdate(BetSscGameInfo.class).set(BetSscGameInfo::getResult, bsResult)
-                .set(BetSscGameInfo::getKjHm, kjHm).eq(BetSscGameInfo::getPeriod, period));
+        boolean updateResult = update(Wrappers.lambdaUpdate(BetSscGameInfo.class)
+            .set(BetSscGameInfo::getResult, bsResult).set(BetSscGameInfo::getKjHm, kjHm)
+            .eq(BetSscGameInfo::getPeriod, period).eq(BetSscGameInfo::getSscNumType, sscNumType));
         if (!updateResult) {
             throw new RuntimeException("更新数据失败");
         }
@@ -35,8 +35,9 @@ public class BetSscGameInfoServiceImpl extends ServiceImpl<BetSscGameInfoMapper,
     @Override
     public BetSscGameInfo getBetSscGameInfo(String period, Integer sscNumType) {
         log.info("查询购买信息：期数：{}，类型：{}", period, sscNumType);
-        BetSscGameInfo betSscGameInfo = this.baseMapper.selectOne(Wrappers.lambdaQuery(BetSscGameInfo.class)
-            .eq(BetSscGameInfo::getPeriod, period).eq(BetSscGameInfo::getSscNumType, sscNumType));
+        BetSscGameInfo betSscGameInfo =
+            this.baseMapper.selectOne(Wrappers.lambdaQuery(BetSscGameInfo.class).eq(BetSscGameInfo::getPeriod, period)
+                .eq(BetSscGameInfo::getSscNumType, sscNumType).eq(BetSscGameInfo::getKjHm, null));
         log.info("查询购买信息：BetSscGameInfo：{}", JSONUtil.toJsonStr(betSscGameInfo));
         return betSscGameInfo;
     }
