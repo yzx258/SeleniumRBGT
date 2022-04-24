@@ -131,6 +131,11 @@ public class SscBetUtil_V1 {
                     } while (!kjInfo.getPeriod().equals(period)
                         || Integer.parseInt(kjInfo.getPeriod()) < Integer.parseInt(period));
                 }
+                kjInfo = getLotteryInfo(driver);
+                log.info("==================================");
+                log.info("开奖信息：" + JSONUtil.toJsonStr(kjInfo));
+                log.info("==================================");
+                System.out.println();
                 // 校验 - 操作时间
                 Integer lastTime = getLastTime(driver);
                 for (int op = 0; op < 1000; op++) {
@@ -148,6 +153,7 @@ public class SscBetUtil_V1 {
                 period = String.valueOf(Integer.parseInt(kjInfo.getPeriod()) + 1);
 
                 // 操作 - 万位
+                log.info("==================================");
                 Integer ww = op(driver, 0);
                 // 万位下注
                 if (null != ww) {
@@ -173,7 +179,10 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(wwBl, period, ww, 0, blResult, driver);
                 }
+                log.info("==================================");
+                System.out.println();
 
+                log.info("==================================");
                 Integer qw = op(driver, 1);;
                 // 千位下注
                 if (null != qw) {
@@ -199,8 +208,11 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(qwBl, period, qw, 1, blResult, driver);
                 }
-                Integer bw = op(driver, 2);
+                log.info("==================================");
+                System.out.println();
 
+                log.info("==================================");
+                Integer bw = op(driver, 2);
                 // 百位下注
                 if (null != bw) {
                     BetSscGameInfo bwInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 2);
@@ -225,8 +237,11 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(bwBl, period, bw, 2, blResult, driver);
                 }
-                Integer sw = op(driver, 3);
+                log.info("==================================");
+                System.out.println();
 
+                log.info("==================================");
+                Integer sw = op(driver, 3);
                 // 十位下注
                 if (null != sw) {
                     BetSscGameInfo swInfo = betSscGameInfoService.getBetSscGameInfo(kjInfo.getPeriod(), 3);
@@ -247,10 +262,13 @@ public class SscBetUtil_V1 {
                         // 更新 - 比赛结果
                         betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult);
                     }
-
                     // 下注
                     sendOk(swBl, period, sw, 3, blResult, driver);
                 }
+                log.info("==================================");
+                System.out.println();
+
+                log.info("==================================");
                 Integer gw = op(driver, 4);
                 // 个位下注
                 if (null != gw) {
@@ -272,14 +290,12 @@ public class SscBetUtil_V1 {
                         // 更新 - 比赛结果
                         betSscGameInfoService.updateBetSscGameInfo(kjInfo.getPeriod(), bsResult);
                     }
-
                     // 下注
                     sendOk(gwBl, period, gw, 4, blResult, driver);
                 }
                 log.info("==================================");
-                log.info("万位：{},千位：{},百位：{},十位：{},个位：{}", ww, qw, bw, sw, gw);
-                log.info("==================================");
                 System.out.println();
+                log.info(period + "期，下注完成，请等待开奖......");
             } while (true);
         } catch (Exception e) {
             System.out.println("ERROR MESSAGE :" + e.getMessage());
@@ -474,10 +490,6 @@ public class SscBetUtil_V1 {
         info.setHundreds(span.get(2).findElement(By.tagName("i")).findElement(By.tagName("span")).getText());
         info.setThousands(span.get(1).findElement(By.tagName("i")).findElement(By.tagName("span")).getText());
         info.setTenThousand(span.get(0).findElement(By.tagName("i")).findElement(By.tagName("span")).getText());
-        log.info("==================================");
-        log.info("开奖信息：" + JSONUtil.toJsonStr(info));
-        log.info("==================================");
-        System.out.println();
         return info;
     }
 
