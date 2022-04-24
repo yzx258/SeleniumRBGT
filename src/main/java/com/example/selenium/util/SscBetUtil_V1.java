@@ -428,6 +428,7 @@ public class SscBetUtil_V1 {
         } else {
             stringBuffer.append("\n比赛倍率：1" + bsResult);
         }
+        stringBuffer.append("\n比赛结果：下注完成！");
         // 发送 - 钉钉消息
         dingUtil.sendMassage(stringBuffer.toString());
 
