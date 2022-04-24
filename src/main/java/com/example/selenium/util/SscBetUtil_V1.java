@@ -17,7 +17,6 @@ import com.example.selenium.entity.ssc.BetSscGameInfo;
 import com.example.selenium.handle.BetGameAccountInfoHandle;
 import com.example.selenium.service.BetSscGameInfoService;
 
-import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -279,17 +278,7 @@ public class SscBetUtil_V1 {
                     // 下注
                     sendOk(gwBl, period, gw, 4, blResult, driver);
                 }
-
                 log.info("万位：{},千位：{},百位：{},十位：{},个位：{}", ww, qw, bw, sw, gw);
-                // 整合 - 下注信息
-                gmInfo = new LotteryInfoBO();
-                gmInfo.setPeriod(period);
-                gmInfo.setTenThousand(ww + "");
-                gmInfo.setThousands(qw + "");
-                gmInfo.setHundreds(bw + "");
-                gmInfo.setTen(sw + "");
-                gmInfo.setSingleDigit(gw + "");
-                System.out.println("下注成功：" + JSONUtil.toJsonStr(gmInfo));
             } while (true);
         } catch (Exception e) {
             System.out.println("ERROR MESSAGE :" + e.getMessage());
