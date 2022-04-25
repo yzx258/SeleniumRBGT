@@ -44,6 +44,30 @@ public class BetGameAccountInfoHandle {
 
     /***
      *
+     * GET - TOKEN
+     *
+     * @return java.lang.String
+     * @author yucw
+     * @date 2022-02-28 11:31
+     */
+    public String getSscToken() {
+        return this.getKey("SSC_TOKEN");
+    }
+
+    /***
+     *
+     * GET - TOKEN
+     *
+     * @return java.lang.String
+     * @author yucw
+     * @date 2022-02-28 11:31
+     */
+    public String getSscUrl() {
+        return this.getUrl("SSC_URL") + this.getSscToken();
+    }
+
+    /***
+     *
      * GET - URL
      * 
      * @return java.lang.String
@@ -51,6 +75,18 @@ public class BetGameAccountInfoHandle {
      * @date 2022-02-28 12:46
      */
     public String getUrl(String key) {
+        return this.getKey(key);
+    }
+
+    /***
+     *
+     * GET - URL
+     *
+     * @return java.lang.String
+     * @author yucw
+     * @date 2022-02-28 12:46
+     */
+    public String getKey(String key) {
         BetGameAccountInfo info = betGameAccountInfoMapper
             .selectOne(Wrappers.lambdaQuery(BetGameAccountInfo.class).eq(BetGameAccountInfo::getAccKey, key));
         if (null != info && StringUtils.isNotEmpty(info.getAccVal())) {
@@ -59,4 +95,23 @@ public class BetGameAccountInfoHandle {
         return null;
     }
 
+    /***
+     *
+     * GET - URL
+     *
+     * @return java.lang.String
+     * @author yucw
+     * @date 2022-02-28 12:46
+     */
+    public Integer updateKey(String key, String val) {
+        // 查询 - 缓存信息
+        BetGameAccountInfo info = betGameAccountInfoMapper
+            .selectOne(Wrappers.lambdaQuery(BetGameAccountInfo.class).eq(BetGameAccountInfo::getAccKey, key));
+        if (null == info) {
+            throw new RuntimeException("查询不到缓存信息");
+        }
+
+        info.setAccVal(val);
+        return betGameAccountInfoMapper.updateById(info);
+    }
 }

@@ -65,9 +65,14 @@ public class SscBetUtil_V1 {
         }
 
         // 查询 - 地址是否存在
-        String bet_url = betGameAccountInfoHandle.getUrl("SSC_URL");
+        String bet_url = betGameAccountInfoHandle.getSscUrl();
         if (bet_url == null) {
-            throw new RuntimeException("获取不到地址，请检查！");
+            throw new RuntimeException("获取不到bet_url，请检查！");
+        }
+        // 查询 - 地址是否存在
+        String bet_gms = betGameAccountInfoHandle.getKey("SSC_GMS");
+        if (bet_gms == null) {
+            throw new RuntimeException("获取不到bet_gms，请检查！");
         }
 
         // 线程开始执行
@@ -142,7 +147,7 @@ public class SscBetUtil_V1 {
                 }
 
                 // 操作 - 游戏倍率 - 默认
-                gameMagnificationSetting(driver, "1分");
+                gameMagnificationSetting(driver, bet_gms);
 
                 // 期数
                 period = String.valueOf(Integer.parseInt(kjInfo.getPeriod()) + 1);
@@ -176,9 +181,9 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(wwBl, period, ww, SscNumType.SSC_NUM_TYPE_0.getCode(), blResult, driver);
-                    if(wwBl > 0){
-                        sendSuccess(SscNumType.SSC_NUM_TYPE_0.getCode(), kjInfo.getPeriod(), ww, bls.get(wwBl),
-                                driver, kjInfo);
+                    if (wwBl > 0) {
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_0.getCode(), kjInfo.getPeriod(), ww, bls.get(wwBl), driver,
+                            kjInfo);
                     }
                 }
                 log.info("==================================");
@@ -212,9 +217,9 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(qwBl, period, qw, SscNumType.SSC_NUM_TYPE_1.getCode(), blResult, driver);
-                    if(qwBl > 0){
-                        sendSuccess(SscNumType.SSC_NUM_TYPE_1.getCode(), kjInfo.getPeriod(), ww, bls.get(qwBl),
-                                driver, kjInfo);
+                    if (qwBl > 0) {
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_1.getCode(), kjInfo.getPeriod(), ww, bls.get(qwBl), driver,
+                            kjInfo);
                     }
                 }
                 log.info("==================================");
@@ -249,9 +254,9 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(bwBl, period, bw, SscNumType.SSC_NUM_TYPE_2.getCode(), blResult, driver);
-                    if(bwBl > 0){
-                        sendSuccess(SscNumType.SSC_NUM_TYPE_2.getCode(), kjInfo.getPeriod(), ww, bls.get(bwBl),
-                                driver, kjInfo);
+                    if (bwBl > 0) {
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_2.getCode(), kjInfo.getPeriod(), ww, bls.get(bwBl), driver,
+                            kjInfo);
                     }
                 }
                 log.info("==================================");
@@ -285,9 +290,9 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(swBl, period, sw, SscNumType.SSC_NUM_TYPE_3.getCode(), blResult, driver);
-                    if(swBl > 0){
-                        sendSuccess(SscNumType.SSC_NUM_TYPE_3.getCode(), kjInfo.getPeriod(), ww, bls.get(swBl),
-                                driver, kjInfo);
+                    if (swBl > 0) {
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_3.getCode(), kjInfo.getPeriod(), ww, bls.get(swBl), driver,
+                            kjInfo);
                     }
                 }
                 log.info("==================================");
@@ -321,9 +326,9 @@ public class SscBetUtil_V1 {
                     }
                     // 下注
                     sendOk(gwBl, period, gw, SscNumType.SSC_NUM_TYPE_4.getCode(), blResult, driver);
-                    if(gwBl > 0){
-                        sendSuccess(SscNumType.SSC_NUM_TYPE_4.getCode(), kjInfo.getPeriod(), ww, bls.get(gwBl),
-                                driver, kjInfo);
+                    if (gwBl > 0) {
+                        sendSuccess(SscNumType.SSC_NUM_TYPE_4.getCode(), kjInfo.getPeriod(), ww, bls.get(gwBl), driver,
+                            kjInfo);
                     }
                 }
                 log.info("==================================");
@@ -402,7 +407,7 @@ public class SscBetUtil_V1 {
      * @date 2022-04-22 10:53
      */
     public void sendSuccess(Integer sscNumType, String period, Integer numStr, Integer bsResult, WebDriver driver,
-                          LotteryInfoBO kjInfo) {
+        LotteryInfoBO kjInfo) {
         // 聚合 - 钉钉消息
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("\n---------------------");
@@ -449,7 +454,7 @@ public class SscBetUtil_V1 {
      */
     private void sendOk(Integer bl, String period, Integer numStr, Integer sscNumType, Integer magnification,
         WebDriver driver) {
-        log.info("我是倍率：bl:{},bls.get(bl):{},magnification:{}",bl,bls.get(bl),magnification);
+        log.info("我是倍率：bl:{},bls.get(bl):{},magnification:{}", bl, bls.get(bl), magnification);
         if (bl > 0) {
             // 下注 - 倍数
             WebElement multiple =
