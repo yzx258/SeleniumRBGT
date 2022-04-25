@@ -127,10 +127,10 @@ public class SscBetUtil_V1 {
                         if (Integer.parseInt(kjInfo.getPeriod()) > Integer.parseInt(period)) {
                             dingUtil
                                 .sendMassage("目前期数：" + kjInfo.getPeriod() + ";购买期数：" + period + "不符合，可能存在数据丢失，请注意！！");
+                            throw new RuntimeException("期数对应不上，请检查！！！");
                         }
 
-                    } while (!kjInfo.getPeriod().equals(period)
-                        || Integer.parseInt(kjInfo.getPeriod()) < Integer.parseInt(period));
+                    } while (!kjInfo.getPeriod().equals(period));
                 }
                 // 校验 - 操作时间
                 Integer lastTime = getLastTime(driver);
