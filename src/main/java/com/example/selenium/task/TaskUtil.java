@@ -1,6 +1,7 @@
 package com.example.selenium.task;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.selenium.bet.BetYaBoUtil_3;
@@ -31,7 +32,7 @@ public class TaskUtil {
     /**
      * send001
      */
-    // @Async("myTaskAsyncPool")
+    @Async("myTaskAsyncPool")
     public void send001() {
         sscBetUtil_v1.send();
     }
