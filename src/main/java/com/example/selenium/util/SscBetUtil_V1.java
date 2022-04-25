@@ -132,10 +132,6 @@ public class SscBetUtil_V1 {
                     } while (!kjInfo.getPeriod().equals(period)
                         || Integer.parseInt(kjInfo.getPeriod()) < Integer.parseInt(period));
                 }
-                log.info("==================================");
-                log.info("开奖信息：" + JSONUtil.toJsonStr(kjInfo));
-                log.info("==================================");
-                System.out.println();
                 // 校验 - 操作时间
                 Integer lastTime = getLastTime(driver);
                 for (int op = 0; op < 1000; op++) {
@@ -145,6 +141,12 @@ public class SscBetUtil_V1 {
                     SleepUtil.sleepUtil(1000);
                     lastTime = getLastTime(driver);
                 }
+
+                kjInfo = getLotteryInfo(driver);
+                log.info("==================================");
+                log.info("开奖信息：" + JSONUtil.toJsonStr(kjInfo));
+                log.info("==================================");
+                System.out.println();
 
                 // 操作 - 游戏倍率 - 默认
                 gameMagnificationSetting(driver, bet_gms);
