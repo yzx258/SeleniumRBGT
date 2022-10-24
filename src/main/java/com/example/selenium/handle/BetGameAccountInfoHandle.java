@@ -63,7 +63,7 @@ public class BetGameAccountInfoHandle {
      * @date 2022-02-28 11:31
      */
     public String getSscUrl() {
-        return this.getUrl("SSC_URL") + this.getSscToken();
+        return this.getUrl("SSC_URL");
     }
 
     /***
