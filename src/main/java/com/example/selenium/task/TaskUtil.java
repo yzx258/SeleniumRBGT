@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.example.selenium.bet.BetKaiYunSportsUtil;
 import com.example.selenium.bet.BetYaBoUtil_3;
 import com.example.selenium.handle.BetGameInfoHandle;
 import com.example.selenium.util.SleepUtil;
-import com.example.selenium.util.SscBetUtil;
 import com.example.selenium.util.SscBetUtil_V1;
 
 import lombok.RequiredArgsConstructor;
@@ -26,13 +26,13 @@ public class TaskUtil {
     private final BetYaBoUtil_3 betYaBoUtil;
     private final BetGameInfoHandle betGameInfoHandle;
 
-    private final SscBetUtil sscBetUtil;
+    private final BetKaiYunSportsUtil betKaiYunSportsUtil;
     private final SscBetUtil_V1 sscBetUtil_v1;
 
     /**
      * send001
      */
-    @Async("myTaskAsyncPool")
+    // @Async("myTaskAsyncPool")
     public void send001() {
         sscBetUtil_v1.send();
     }
@@ -40,10 +40,10 @@ public class TaskUtil {
     /**
      * sendYaBoBet
      */
-    // @Async("myTaskAsyncPool")
+    @Async("myTaskAsyncPool")
     public void sendYaBoBet1() {
         System.out.println("TASK SEND_YA_BO_BET THREAD_EXECUTION_A");
-        betYaBoUtil.bet("THREAD_EXECUTION_A", 0, "BET_A", 0);
+        betKaiYunSportsUtil.bet("THREAD_EXECUTION_A", 0, "BET_A", 0);
     }
 
     /**

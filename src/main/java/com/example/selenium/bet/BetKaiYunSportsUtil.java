@@ -33,12 +33,12 @@ import lombok.extern.slf4j.Slf4j;
  * @author 俞春旺
  * @program: SeleniumRBGT
  * @date 2022-02-12 15:46:39
- * @description: 描述
+ * @description: 开云体育自动下注逻辑
  */
 @Slf4j
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class BetYaBoUtil_3 {
+public class BetKaiYunSportsUtil {
 
     private final CacheMapUtil cacheMapUtil;
     private final BetGameInfoHandle betGameInfoHandle;
@@ -56,8 +56,9 @@ public class BetYaBoUtil_3 {
         WebDriver driver = new ChromeDriver();
 
         // 操作 - 打开浏览器
+        // https://www.ky456.com:6001/game/sport/im?url=https://im.1f873fef.com/?timestamp=CgrzJIg7IALpgm6AMJ4YpLUCd2CeGhOXTADm0NJz02s=&token=dd125bd58e7f3bf7f424df55e337ddeb&LanguageCode=CHS
         driver.get(
-            "https://im.1f873fef.com/?timestamp=5QDqeNjNn3WjcklpvVj1v9dFry9H8tvpH/5qtyDkDmU=&token=9fa6b866d528d71a870bb4105a0efa33&LanguageCode=CHS");
+            "https://im.1f873fef.com/?timestamp=2pEi0RYLfcXr6v2y7q7bi5h1oK3cRquNTzNlSRvFLRY=&token=2e6ad437a01b08a015512e121ef39b01&LanguageCode=CMS");
         // 操作 - 屏幕最大化
         SleepUtil.sleepUtil(2000);
         driver.manage().window().maximize();
@@ -135,7 +136,7 @@ public class BetYaBoUtil_3 {
 
     /***
      * bet
-     * 
+     *
      * @param threadName
      * @param threadIndex
      * @param threadEventKey
@@ -213,7 +214,7 @@ public class BetYaBoUtil_3 {
 
     /***
      * sendBet
-     * 
+     *
      * @param threadName
      * @param threadEventKey
      * @param d
@@ -252,10 +253,12 @@ public class BetYaBoUtil_3 {
             // 获取 - 当前页面
             driver = driver.switchTo().window(driver.getWindowHandle());
             SleepUtil.sleepUtil(5000);
-
+            System.out.println("driver = driver.switchTo().window(driver.getWindowHandle())");
             // 操作 - 账号刷新操作
             clickRefreshAccount(driver);
             SleepUtil.sleepUtil(5000);
+            System.out.println("clickRefreshAccount");
+
             // 获取 - 账户总金额
             BigDecimal totalAmount = getTotalAmount(driver);
             // 定义 - 全新的数据
@@ -505,7 +508,7 @@ public class BetYaBoUtil_3 {
 
     /***
      * saveBetGameInfo
-     * 
+     *
      * @param yaBoAccountInfo
      * @return void
      * @author yucw
@@ -672,7 +675,6 @@ public class BetYaBoUtil_3 {
      * @return
      */
     public static void clickRefreshAccount(WebDriver driver) {
-
         // 获取 - 账号刷新按钮
         WebElement element =
             driver.findElement(By.className("leftmenu_account")).findElement(By.className("leftmenu_header"))
@@ -693,7 +695,7 @@ public class BetYaBoUtil_3 {
         // 获取 - 账号element
         List<WebElement> elementTotalAmountElement =
             driver.findElement(By.className("leftmenu_account")).findElement(By.className("leftmenu_content"))
-                .findElement(By.className("leftmenu_content_balance")).findElements(By.className("row"));
+                .findElement(By.className("table")).findElements(By.className("row"));
 
         // 获取 - 总金额
         WebElement elementTotalAmount = elementTotalAmountElement.get(0).findElement(By.className("text-right"));
@@ -723,18 +725,13 @@ public class BetYaBoUtil_3 {
     }
 
     /***
-     * 推送消息
-     *
-     * @param d
-     * @param homeTeamName
-     * @param awayTeamName
-     * @param whichSection
-     * @param originalAmount
-     * @param betAmount
-     * @param balanceAmount
-     * @return java.lang.String
+     * 
+     * @param operateName
+     * @param betGameInfo
+     * @param threadName
+     * @return void
      * @author yucw
-     * @date 2022-02-22 17:06
+     * @date 2022-10-26 16:19
      */
     public void sendDingMsg(String operateName, BetGameInfo betGameInfo, String threadName) {
         // 聚合 - 钉钉消息
@@ -767,7 +764,7 @@ public class BetYaBoUtil_3 {
 
     /***
      * getSingleOrDoubleStr
-     * 
+     *
      * @param singleOrDouble
      * @return java.lang.String
      * @author yucw

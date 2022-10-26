@@ -19,7 +19,7 @@ public class TimingTask {
 
     @Scheduled(cron = "0/10 * * * * ?")
     private void sendYaBoBet() {
-        taskService.send001();
+        taskService.sendYaBoBet1();
 
     }
 
