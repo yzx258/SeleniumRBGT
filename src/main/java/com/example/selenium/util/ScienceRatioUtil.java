@@ -123,6 +123,8 @@ public class ScienceRatioUtil {
                     // 获取 - 下注金额
                     BigDecimal betAmount = getBetAmount(new BigDecimal(5), scienceRatio);
                     log.info("投注金额:{}", betAmount);
+                    // 设置 - 上期金额
+                    param.setPriorPeriodAmount(betAmount);
                     // 设置 - 下注总额
                     param.setBetTotalAmount(param.getBetTotalAmount().add(betAmount));
                     // 设置 - 最新倍率
@@ -136,6 +138,8 @@ public class ScienceRatioUtil {
                     // 获取 - 下注金额
                     BigDecimal betAmount = getBetAmount(new BigDecimal(5), scienceRatio);
                     log.info("投注金额:{}", betAmount);
+                    // 设置 - 上期金额
+                    param.setPriorPeriodAmount(betAmount);
                     // 设置 - 下注总额
                     param.setBetTotalAmount(param.getBetTotalAmount().add(betAmount));
                     // 设置 - 最新倍率
