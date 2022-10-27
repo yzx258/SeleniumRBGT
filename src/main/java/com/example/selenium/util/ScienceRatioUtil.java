@@ -101,7 +101,25 @@ public class ScienceRatioUtil {
             for (int i = 2; i < 10000; i++) {
                 log.info("第" + i + "期下注");
                 param.setQs("第" + i + "期下注");
+                if (i == 2) {
+                    // 获取 - 下注倍率
+                    BigDecimal scienceRatio = getBetScienceRatio(param);
+                    // 获取 - 下注金额
+                    BigDecimal betAmount = getBetAmount(new BigDecimal(5), scienceRatio);
+                    log.info("投注金额:{}", betAmount);
+                    // 设置 - 上期金额
+                    param.setPriorPeriodAmount(betAmount);
+                    // 设置 - 下注总额
+                    param.setBetTotalAmount(param.getBetTotalAmount().add(betAmount));
+                    // 设置 - 最新倍率
+                    param.setScienceRatio(scienceRatio);
+                    log.info("param -> {}", JSON.toJSONString(param));
+                    log.info("--------------------------------");
+                    continue;
+                }
+
                 if (testResult()) {
+                    log.info("中奖");
                     // 中奖
                     // 设置 - 剩余中奖次数
                     param.setResidueWinningNumber(param.getResidueWinningNumber().subtract(new BigDecimal(1)));
@@ -133,6 +151,12 @@ public class ScienceRatioUtil {
                     log.info("--------------------------------");
                 } else {
                     // 未中将
+                    log.info("未中奖");
+                    // 设置 - 前期亏损
+                    param.setEarlierStageLoss(param.getEarlierStageLoss().add(param.getPriorPeriodAmount()));
+                    // 设置 - 盈亏总额 = 前期盈利 - 前期亏损
+                    param.setProfitAndLossTotalAmount(param.getEarlierProfit().subtract(param.getEarlierStageLoss()));
+
                     // 获取 - 下注倍率
                     BigDecimal scienceRatio = getBetScienceRatio(param);
                     // 获取 - 下注金额
@@ -144,10 +168,6 @@ public class ScienceRatioUtil {
                     param.setBetTotalAmount(param.getBetTotalAmount().add(betAmount));
                     // 设置 - 最新倍率
                     param.setScienceRatio(scienceRatio);
-                    // 设置 - 前期亏损
-                    param.setEarlierStageLoss(param.getEarlierStageLoss().add(param.getPriorPeriodAmount()));
-                    // 设置 - 盈亏总额 = 前期盈利 - 前期亏损
-                    param.setProfitAndLossTotalAmount(param.getEarlierProfit().subtract(param.getEarlierStageLoss()));
                     log.info("param -> {}", JSON.toJSONString(param));
                     log.info("--------------------------------");
                 }
